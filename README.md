@@ -24,15 +24,7 @@ Follow the instructions to install homebrew.
 open -a "Safari" "https://brew.sh"
 ```
 
-### GNU stow
-
-Organize software configuration neatly under a single directory tree (e.g. ~/.dotfiles)
-
-```
-brew install stow
-```
-
-## Installation
+## Deploy the shell configuration
 
 First, check out the .dotfiles repo in your $HOME directory using git
 
@@ -42,15 +34,15 @@ $ git clone git@github.com/ve2caz/.dotfiles.git
 $ cd .dotfiles
 ```
 
-Now use GNU stow to create symlinks
-
-```
-$ stow .
-```
-
 ## Install the rest of the tooling using Brewfile
 
 ```
-brew bundle
+$ brew bundle
+```
+
+Now use GNU stow to create symlinks activating the configuration
+
+```
+$ stow .
 ```
 
