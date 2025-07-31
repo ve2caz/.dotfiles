@@ -19,5 +19,12 @@ fi
 # Add Powerlevel10k
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
+# Add zsh plugins
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-syntax-highlighting
+
+# Load completions
+autoload -U compinit && compinit
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
