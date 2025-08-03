@@ -56,13 +56,14 @@ setopt hist_ignore_dups         # Ignore duplicate commands entered consecutivel
 setopt hist_find_no_dups        # Don't show duplicates when searching history
 
 # Completion styling
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'                # Case-insensitive tab completion
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"               # Use LS_COLORS for completion list coloring
+zstyle ':completion:*' menu no                                        # Disable completion menu selection
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'    # Show directory contents in fzf preview for 'cd'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath' # Show directory contents in fzf preview for zoxide
 
 # Aliases
+alias cd='z'
 alias cls='clear'
 alias ls="eza --color=always"
 alias l='eza -lh --color=always'
@@ -70,6 +71,9 @@ alias la='eza -lah --color=always'
 alias ll='eza -laah --color=always'
 alias vim='nvim'
 
+# Add Homebrew curl to PATH (to use newer version instead of Apple's curl)
+export PATH="/opt/homebrew/opt/curl/bin:$PATH"
+
 # Shell integrations
-eval "$(fzf --zsh)"
-eval "$(zoxide init --cmd cd zsh)"
+eval "$(fzf --zsh)"                # Enable fzf shell integration for zsh (fuzzy finder)
+eval "$(zoxide init --cmd cd zsh)" # Enable zoxide integration with 'cd' command in zsh (smart directory jumping)

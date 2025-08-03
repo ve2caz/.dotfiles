@@ -1,4 +1,6 @@
 tap "jesseduffield/lazygit"
+# Get a file from an HTTP, HTTPS or FTP server
+brew "curl"
 # Modern, maintained replacement for ls
 brew "eza"
 # Command-line fuzzy finder written in Go
