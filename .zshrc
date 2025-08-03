@@ -64,13 +64,12 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
 alias cls='clear'
-alias l='ls -lah --color=auto'
-alias la='ls -lAh --color=auto'
-alias ll='ls -lh --color=auto'
-alias ls='ls -G --color=auto'
+alias ls="eza --color=always"
+alias l='eza -lh --color=always'
+alias la='eza -lah --color=always'
+alias ll='eza -laah --color=always'
 alias vim='nvim'
 
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
-

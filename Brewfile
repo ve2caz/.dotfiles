@@ -1,4 +1,6 @@
 tap "jesseduffield/lazygit"
+# Modern, maintained replacement for ls
+brew "eza"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GitHub command-line tool
