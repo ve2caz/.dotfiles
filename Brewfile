@@ -1,3 +1,4 @@
+tap "jesseduffield/lazygit"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GitHub command-line tool
@@ -14,6 +15,8 @@ brew "tpm"
 brew "tree"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# A simple terminal UI for git commands, written in Go
+brew "jesseduffield/lazygit/lazygit"
 # GPU-accelerated terminal emulator
 cask "alacritty"
 cask "font-jetbrains-mono-nerd-font"
