@@ -60,10 +60,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'                # Case-ins
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"               # Use LS_COLORS for completion list coloring
 zstyle ':completion:*' menu no                                        # Disable completion menu selection
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'    # Show directory contents in fzf preview for 'cd'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath' # Show directory contents in fzf preview for zoxide
 
 # Aliases
-alias cd='z'
 alias cls='clear'
 alias ls="eza --color=always"
 alias l='eza -lh --color=always'
