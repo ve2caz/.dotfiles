@@ -43,17 +43,17 @@ bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
 
 # History
-HISTSIZE=5000
-HISTFILE=~/.zsh_history
-SAVEHIST=$HISTSIZE
-HISTDUP=erase
-setopt appendhistory
-setopt sharehistory
-setopt hist_ignore_space
-setopt hist_ignore_all_dups
-setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_find_no_dups
+HISTFILE=~/.zsh_history         # File to save command history
+HISTSIZE=5000                   # Number of commands to keep in memory
+SAVEHIST=$HISTSIZE              # Number of commands to save to HISTFILE
+HISTDUP=erase                   # Remove older duplicate commands from history
+setopt appendhistory            # Append new history lines to HISTFILE, not overwrite
+setopt sharehistory             # Share history across all zsh sessions
+setopt hist_ignore_space        # Ignore commands that start with a space
+setopt hist_ignore_all_dups     # Remove all previous duplicates in history
+setopt hist_save_no_dups        # Don't write duplicate commands to HISTFILE
+setopt hist_ignore_dups         # Ignore duplicate commands entered consecutively
+setopt hist_find_no_dups        # Don't show duplicates when searching history
 
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
