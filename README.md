@@ -40,9 +40,8 @@ $ cd .dotfiles
 $ brew bundle
 ```
 
-Now use GNU stow to create symlinks activating the configuration
+From the .dotfiles folder, use GNU stow to create symlinks activating the configuration
 
 ```
 $ stow .
 ```
-
