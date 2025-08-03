@@ -3,6 +3,8 @@ tap "jesseduffield/lazygit"
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
+# Distributed revision control system
+brew "git"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -17,6 +19,8 @@ brew "tree"
 brew "zoxide"
 # A simple terminal UI for git commands, written in Go
 brew "jesseduffield/lazygit/lazygit"
-# GPU-accelerated terminal emulator
-cask "alacritty"
-cask "font-jetbrains-mono-nerd-font"
+cask "font-meslo-lg-nerd-font"
+# GPU-accelerated cross-platform terminal emulator and multiplexer
+cask "wezterm"
+vscode "github.copilot"
+vscode "github.copilot-chat"
