@@ -24,6 +24,8 @@ brew "neovim"
 brew "stow"
 # Programmatically correct mistyped console commands
 brew "thefuck"
+# Official tldr client written in Rust
+brew "tlrc"
 # Terminal multiplexer
 brew "tmux"
 # Plugin manager for tmux
