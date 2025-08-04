@@ -33,6 +33,18 @@ if [ ! -d "$FZFGIT_HOME" ]; then
     git clone https://github.com/junegunn/fzf-git.sh.git "$FZFGIT_HOME"
 fi
 
+# bat is a cat clone with syntax highlighting and Git integration.
+# This sets up custom themes for enhanced syntax highlighting.
+# Set the directory to store bat themes
+BAT_THEMES_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/bat/themes"
+if [ ! -d "$BAT_THEMES_HOME" ]; then
+    mkdir -p "$BAT_THEMES_HOME"
+    cd "$BAT_THEMES_HOME"
+    curl -O https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/sublime/tokyonight_night.tmTheme
+    bat cache --build
+fi
+
+
 # Add Powerlevel10k prompts
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
@@ -82,6 +94,7 @@ setopt hist_find_no_dups                                                 # Don't
 # - Enhanced file viewing with syntax highlighting and color support
 export LESS='-R'                                                         # Display colors correctly
 if command -v bat >/dev/null 2>&1; then
+    export BAT_THEME=tokyonight_night                                    # Set bat theme to Tokyo Night
     export LESSOPEN='|bat --color=always %s'                             # Use bat for syntax highlighting in less
 fi
 export PAGER='less -R'                                                   # Set less as default pager with color support
@@ -134,6 +147,7 @@ alias rmdir='rmdir --ignore-fail-on-non-empty'                           # Remov
 # File viewing and content display
 if command -v bat >/dev/null 2>&1; then
     alias cat='bat --style=plain --color=auto'                           # Enhanced cat with syntax highlighting via bat
+
 fi
 alias more='less -R'                                                     # Use less with color support instead of more
 
