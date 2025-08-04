@@ -118,7 +118,9 @@ alias egrep='egrep --color=auto'                                     # Enable co
 alias fgrep='fgrep --color=auto'                                     # Enable colored output for fixed string grep
 alias diff='diff --color=auto'                                       # Enable colored output for diff
 
-# Editor preferences
+# Development tooling
+alias lg='lazygit'                                                   # Use lazygit for git operations (if installed)
+alias fm='yazi'                                                      # Use yazi for file management (if installed)
 alias vim='nvim'                                                     # Use neovim instead of vim
 
 # Shell integrations - with error checking
