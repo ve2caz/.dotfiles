@@ -38,8 +38,6 @@ bindkey -e                               # Use Emacs-style key bindings
 bindkey '^p' history-search-backward     # Ctrl+P: Search backward in history
 bindkey '^n' history-search-forward      # Ctrl+N: Search forward in history  
 bindkey '^[w' kill-region                # Alt+W: Cut/kill selected region
-bindkey '^I' fzf-tab-complete            # Tab: Use fzf-tab for completion
-bindkey '^[[Z' reverse-menu-complete     # Shift+Tab: Reverse completion navigation
 
 # History
 HISTFILE=~/.zsh_history         # File to save command history
@@ -72,18 +70,14 @@ fi
 # Set EZA_COLORS to match LS_COLORS for consistency
 export EZA_COLORS=$LS_COLORS
 
-# Completion styling
+# Completion styling - minimal setup for fzf-tab
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'               # Case-insensitive tab completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"              # Use LS_COLORS for completion list coloring
-zstyle ':completion:*' menu no                                       # Disable completion menu selection
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --color=always --long --no-permissions --no-user --no-time $realpath 2>/dev/null || eza --color=always $realpath'
 
-# fzf-tab configuration for better navigation
-zstyle ':fzf-tab:*' fzf-command fzf                          # Use standard fzf (more compatible than tmux popup)
-zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'                        # Accept with tab instead of enter
-zstyle ':fzf-tab:*' accept-line enter                                # Use enter for accept-line
-zstyle ':fzf-tab:*' continuous-trigger '/'                           # Continue completion after '/'
-zstyle ':fzf-tab:*' fzf-min-height 15                                # Minimum height for fzf window
+# fzf-tab configuration
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'  # Colored preview for directories
+zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'                        # Tab accepts selection but doesn't execute
+zstyle ':fzf-tab:*' accept-line enter                                # Only Enter executes the command
 
 # Aliases - Enhanced command replacements and shortcuts
 
