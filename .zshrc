@@ -147,7 +147,6 @@ alias rmdir='rmdir --ignore-fail-on-non-empty'                           # Remov
 # File viewing and content display
 if command -v bat >/dev/null 2>&1; then
     alias cat='bat --style=plain --color=auto'                           # Enhanced cat with syntax highlighting via bat
-
 fi
 alias more='less -R'                                                     # Use less with color support instead of more
 
