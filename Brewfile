@@ -35,5 +35,3 @@ brew "zoxide"
 cask "font-meslo-lg-nerd-font"
 # GPU-accelerated cross-platform terminal emulator and multiplexer
 cask "wezterm"
-vscode "github.copilot"
-vscode "github.copilot-chat"

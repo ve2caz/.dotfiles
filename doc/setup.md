@@ -17,7 +17,7 @@ cd .dotfiles
 Use the cross-platform installer script:
 
 ```bash
-./install-packages.sh
+./scripts/install-packages.sh
 ```
 
 ### Manual installation
@@ -30,7 +30,7 @@ brew bundle
 
 #### Linux
 
-The `install-packages.sh` script handles Linux package installation automatically, but if you prefer manual installation, here are the main packages needed:
+The `scripts/install-packages.sh` script handles Linux package installation automatically, but if you prefer manual installation, here are the main packages needed:
 
 - **Core tools**: `curl git neovim stow tmux tree fzf bat`
 - **Special installations**: `eza`, `zoxide`, `thefuck`, `gh`, `lazygit`
