@@ -1,5 +1,6 @@
 # .gitignore
 # This file specifies intentionally untracked files to ignore in the repository.
 *.py[cod]
-.DS_Store
 __pycache__/
+.config/bat/themes/*
+.DS_Store
