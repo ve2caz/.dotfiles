@@ -181,7 +181,7 @@ if command -v fzf >/dev/null 2>&1; then
     purple="#B388FF"
     blue="#06BCE4"
     cyan="#2CF9ED"
-    export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${purple},fg+:${fg},bg+:${bg_highlight},hl+:${purple},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan}"
+    export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${purple},fg+:${fg},bg+:${bg_highlight},hl+:${purple},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan} --bind='?:toggle-preview,ctrl-/:toggle-preview,shift-up:preview-up,shift-down:preview-down,shift-left:preview-page-up,shift-right:preview-page-down,ctrl-b:preview-page-up,ctrl-f:preview-page-down,ctrl-a:preview-top,ctrl-e:preview-bottom'"
 
     # Use fd instead of find in fzf for better performance and usability
     # fd is a simple, fast and user-friendly alternative to find.
@@ -201,16 +201,41 @@ if command -v fzf >/dev/null 2>&1; then
           fd --type=d --hidden --exclude .git . "$1"
         }
     fi
+
+    # fzf preview options for built-in commands
+    show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {} 2>/dev/null || cat {}; fi"
+    
+    export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview' --preview-window='right:50%:wrap'"
+    export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --level=2 {} 2>/dev/null || ls -la {}' --preview-window='right:50%:wrap'"
+
+    # Advanced customization of fzf options via _fzf_comprun function
+    # - The first argument to the function is the name of the command.
+    # - You should make sure to pass the rest of the arguments to fzf.
+    _fzf_comprun() {
+      local command=$1
+      shift
+
+      case "$command" in
+        cd)           fzf --preview 'eza --tree --color=always --level=2 {} 2>/dev/null || ls -la {}' "$@" ;;
+        export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
+        ssh)          fzf --preview 'dig {}'                   "$@" ;;
+        *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+      esac
+    }
     
     # fzf-tab configuration - Configure after fzf is initialized
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'  # Colored preview for directories
     zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'                        # Tab accepts selection but doesn't execute
     zstyle ':fzf-tab:*' accept-line enter                                # Only Enter executes the command
+    zstyle ':fzf-tab:*' fzf-flags '--preview-window=right:50%:wrap'      # Set preview window position and wrapping
     
     # Load fzf-git key bindings for Git operations - Load after fzf is initialized
     if [[ -f "$FZFGIT_HOME/fzf-git.sh" ]]; then
         source "$FZFGIT_HOME/fzf-git.sh"
     fi
+    
+    # Ensure Alt-C binding is properly set (sometimes needed on certain terminals)
+    bindkey '^[c' fzf-cd-widget                                          # Alt+C: Directory navigation with fzf
 fi
 
 if command -v thefuck >/dev/null 2>&1; then
