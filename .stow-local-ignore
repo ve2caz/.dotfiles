@@ -3,5 +3,6 @@
 .gitignore
 .gitkeep
 Brewfile
+doc
 LICENSE
 README.md
