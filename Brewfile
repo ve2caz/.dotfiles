@@ -1,4 +1,5 @@
-tap "jesseduffield/lazygit"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
 # Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
 # Modern, maintained replacement for ls
@@ -9,6 +10,8 @@ brew "fzf"
 brew "gh"
 # Distributed revision control system
 brew "git"
+# Simple terminal UI for git commands
+brew "lazygit"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -21,8 +24,6 @@ brew "tpm"
 brew "tree"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# A simple terminal UI for git commands, written in Go
-brew "jesseduffield/lazygit/lazygit"
 cask "font-meslo-lg-nerd-font"
 # GPU-accelerated cross-platform terminal emulator and multiplexer
 cask "wezterm"

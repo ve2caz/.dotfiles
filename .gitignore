@@ -1,0 +1,5 @@
+# .gitignore
+# This file specifies intentionally untracked files to ignore in the repository.
+*.py[cod]
+.DS_Store
+__pycache__/
