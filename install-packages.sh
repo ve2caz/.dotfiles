@@ -1,0 +1,135 @@
+#!/bin/bash
+# Cross-platform package installer script
+#
+# Note: Using bash instead of zsh for maximum compatibility during initial setup.
+# This script runs before zsh configuration is deployed, so bash ensures it works
+# on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
+# to be available on macOS and virtually all Linux distributions out of the box.
+
+set -e
+
+# Detect operating system
+OS="$(uname -s)"
+DISTRO=""
+
+if [[ "$OS" == "Linux" ]]; then
+    # Detect Linux distribution
+    if command -v apt >/dev/null 2>&1; then
+        DISTRO="debian"
+    elif command -v yum >/dev/null 2>&1; then
+        DISTRO="rhel"
+    elif command -v pacman >/dev/null 2>&1; then
+        DISTRO="arch"
+    else
+        echo "Unsupported Linux distribution"
+        exit 1
+    fi
+fi
+
+echo "Detected OS: $OS"
+[[ -n "$DISTRO" ]] && echo "Detected distribution: $DISTRO"
+
+# Ensure zsh is installed (required for dotfiles configuration)
+if ! command -v zsh >/dev/null 2>&1; then
+    echo "Zsh not found. Installing zsh..."
+    case "$OS" in
+        Darwin)
+            # macOS has zsh as default since 10.15 (Catalina, 2019)
+            echo "ERROR: Zsh not found on macOS. This is unexpected."
+            echo "Please check your macOS version or install zsh manually."
+            exit 1
+            ;;
+        Linux)
+            case "$DISTRO" in
+                debian)
+                    sudo apt update && sudo apt install -y zsh
+                    ;;
+                rhel)
+                    sudo yum install -y zsh
+                    ;;
+                arch)
+                    sudo pacman -S --noconfirm zsh
+                    ;;
+                *)
+                    echo "ERROR: Cannot install zsh automatically on this distribution."
+                    echo "Please install zsh manually with your package manager."
+                    exit 1
+                    ;;
+            esac
+            ;;
+    esac
+    echo "Zsh installed successfully!"
+else
+    echo "Zsh is already installed: $(zsh --version)"
+fi
+
+case "$OS" in
+    Darwin)
+        echo "Installing packages with Homebrew..."
+        if ! command -v brew >/dev/null 2>&1; then
+            echo "Homebrew not found. Please install it first:"
+            echo 'open -a "Safari" "https://brew.sh"'
+            exit 1
+        fi
+        brew bundle
+        ;;
+    Linux)
+        case "$DISTRO" in
+            debian)
+                echo "Installing packages with apt..."
+                sudo apt update
+                # Install packages that are available via apt (zsh handled separately above)
+                sudo apt install -y curl git neovim stow tmux tree fzf bat
+                
+                # Install packages that need special handling
+                echo "Installing additional packages..."
+                
+                # eza (modern ls replacement)
+                if ! command -v eza >/dev/null 2>&1; then
+                    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+                    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+                    sudo apt update
+                    sudo apt install -y eza
+                fi
+                
+                # zoxide (smart cd)
+                if ! command -v zoxide >/dev/null 2>&1; then
+                    curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+                fi
+                
+                # thefuck
+                if ! command -v thefuck >/dev/null 2>&1; then
+                    pip3 install --user thefuck
+                fi
+                
+                # gh (GitHub CLI)
+                if ! command -v gh >/dev/null 2>&1; then
+                    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+                    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+                    sudo apt update
+                    sudo apt install -y gh
+                fi
+                
+                # lazygit
+                if ! command -v lazygit >/dev/null 2>&1; then
+                    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+                    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+                    tar xf lazygit.tar.gz lazygit
+                    sudo install lazygit /usr/local/bin
+                    rm lazygit.tar.gz lazygit
+                fi
+                ;;
+            *)
+                echo "Package installation for $DISTRO not implemented yet"
+                echo "Please install packages manually or contribute to this script!"
+                exit 1
+                ;;
+        esac
+        ;;
+    *)
+        echo "Unsupported operating system: $OS"
+        exit 1
+        ;;
+esac
+
+echo "Package installation completed!"

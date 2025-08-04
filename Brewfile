@@ -6,6 +6,10 @@ brew "curl"
 brew "eza"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Magnificent app which corrects your previous console command
+brew "thefuck"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
