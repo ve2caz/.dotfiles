@@ -110,12 +110,12 @@ alias cls='clear'                                                        # Clear
 
 # File listing with eza (modern ls replacement) - Only if eza is available
 if command -v eza >/dev/null 2>&1; then
-    alias ls='eza --color=always --group-directories-first'              # Basic listing with colors, directories first
-    alias l='eza -lh --color=always --group-directories-first'           # Long format with human-readable sizes
-    alias la='eza -lah --color=always --group-directories-first'         # Long format including hidden files
-    alias ll='eza -laah --color=always --group-directories-first'        # Long format with all details and hidden files
-    alias lt='eza --tree --color=always --group-directories-first'       # Tree view of directory structure
-    alias lta='eza --tree -a --color=always --group-directories-first'   # Tree view including hidden files
+    alias ls='eza --color=auto --group-directories-first'                # Basic listing with auto color, directories first
+    alias l='eza -lh --color=auto --group-directories-first'             # Long format including hidden files
+    alias la='eza -lah --color=auto --group-directories-first'           # Long format including hidden files
+    alias ll='eza -laah --color=auto --group-directories-first'          # Long format with all details and hidden files
+    alias lt='eza --tree --color=auto --group-directories-first'         # Tree view of directory structure
+    alias lta='eza --tree -a --color=auto --group-directories-first'     # Tree view including hidden files
 else
     # Fallback to standard ls with basic colors
     alias ls='ls --color=auto'
