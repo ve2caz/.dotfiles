@@ -147,6 +147,23 @@ case "$OS" in
                     rm -rf yazi.zip yazi-x86_64-unknown-linux-gnu
                 fi
                 
+                # git-delta (syntax-highlighting pager for git and diff output)
+                if ! command -v delta >/dev/null 2>&1; then
+                    DELTA_VERSION=$(curl -s "https://api.github.com/repos/dandavison/delta/releases/latest" | grep -Po '"tag_name": "\K[^"]*')
+                    curl -Lo git-delta.deb "https://github.com/dandavison/delta/releases/latest/download/git-delta_${DELTA_VERSION}_amd64.deb"
+                    sudo dpkg -i git-delta.deb
+                    rm git-delta.deb
+                fi
+                
+                # tlrc (official tldr client written in Rust)
+                if ! command -v tldr >/dev/null 2>&1; then
+                    TLRC_VERSION=$(curl -s "https://api.github.com/repos/tldr-pages/tlrc/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+                    curl -Lo tlrc.tar.gz "https://github.com/tldr-pages/tlrc/releases/latest/download/tlrc-v${TLRC_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+                    tar xf tlrc.tar.gz
+                    sudo install tlrc /usr/local/bin/tldr
+                    rm tlrc.tar.gz tlrc
+                fi
+                
                 # wezterm (GPU-accelerated terminal emulator)
                 if ! command -v wezterm >/dev/null 2>&1; then
                     curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
