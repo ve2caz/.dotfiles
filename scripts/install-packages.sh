@@ -79,6 +79,7 @@ case "$OS" in
                 echo "Installing packages with apt..."
                 sudo apt update
                 # Install packages that are available via apt (zsh handled separately above)
+                # Note: coreutils (GNU File, Shell, and Text utilities) are included by default on Linux
                 sudo apt install -y curl git neovim stow tmux tree fzf bat
                 
                 # Install packages that need special handling
@@ -117,6 +118,41 @@ case "$OS" in
                     tar xf lazygit.tar.gz lazygit
                     sudo install lazygit /usr/local/bin
                     rm lazygit.tar.gz lazygit
+                fi
+                
+                # fd (simple, fast alternative to find)
+                if ! command -v fd >/dev/null 2>&1; then
+                    sudo apt install -y fd-find
+                    # Create symlink for 'fd' command (Ubuntu/Debian names it fd-find)
+                    if [ ! -f ~/.local/bin/fd ]; then
+                        mkdir -p ~/.local/bin
+                        ln -s $(which fdfind) ~/.local/bin/fd
+                    fi
+                fi
+                
+                # tpm (Tmux Plugin Manager)
+                if [ ! -d "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tpm" ]; then
+                    mkdir -p "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins"
+                    git clone https://github.com/tmux-plugins/tpm "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tpm"
+                fi
+                
+                # yazi (terminal file manager)
+                if ! command -v yazi >/dev/null 2>&1; then
+                    # Install from GitHub releases
+                    YAZI_VERSION=$(curl -s "https://api.github.com/repos/sxyazi/yazi/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+                    curl -Lo yazi.zip "https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-gnu.zip"
+                    unzip yazi.zip
+                    sudo install yazi-x86_64-unknown-linux-gnu/yazi /usr/local/bin/
+                    sudo install yazi-x86_64-unknown-linux-gnu/ya /usr/local/bin/
+                    rm -rf yazi.zip yazi-x86_64-unknown-linux-gnu
+                fi
+                
+                # wezterm (GPU-accelerated terminal emulator)
+                if ! command -v wezterm >/dev/null 2>&1; then
+                    curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+                    echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+                    sudo apt update
+                    sudo apt install -y wezterm
                 fi
                 ;;
             *)

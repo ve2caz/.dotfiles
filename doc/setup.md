@@ -32,8 +32,8 @@ brew bundle
 
 The `scripts/install-packages.sh` script handles Linux package installation automatically, but if you prefer manual installation, here are the main packages needed:
 
-- **Core tools**: `curl git neovim stow tmux tree fzf bat`
-- **Special installations**: `eza`, `zoxide`, `thefuck`, `gh`, `lazygit`
+- **Core tools**: `curl git neovim stow tmux tree fzf bat fd-find`
+- **Special installations**: `eza`, `zoxide`, `thefuck`, `gh`, `lazygit`, `tpm`, `yazi`, `wezterm`
 
 Install with your distribution's package manager, then follow the script's logic for tools that need special installation methods.
 
@@ -49,7 +49,7 @@ stow .
 
 - ✅ Zsh configuration with Zinit plugin manager
 - ✅ Powerlevel10k prompt
-- ✅ Modern CLI tools (eza, fzf, bat, zoxide, etc.)
+- ✅ Modern CLI tools (eza, fzf, bat, fd, zoxide, yazi, etc.)
 - ✅ Color schemes and completions
 - ✅ Key bindings and aliases
 - ✅ Smart fallbacks for GNU/BSD tool differences
