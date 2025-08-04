@@ -119,8 +119,9 @@ alias fgrep='fgrep --color=auto'                                     # Enable co
 alias diff='diff --color=auto'                                       # Enable colored output for diff
 
 # Development tooling
-alias lg='lazygit'                                                   # Use lazygit for git operations (if installed)
 alias fm='yazi'                                                      # Use yazi for file management (if installed)
+alias lg='lazygit'                                                   # Use lazygit for git operations (if installed)
+alias tree='tree -C'                                                 # Force colored output for tree command even when piping
 alias vim='nvim'                                                     # Use neovim instead of vim
 
 # Shell integrations - with error checking
