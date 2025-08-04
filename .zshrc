@@ -15,6 +15,15 @@ if [ ! -d "$ZINIT_HOME" ]; then
 fi
 source "${ZINIT_HOME}/zinit.zsh"
 
+# TPM (Tmux Plugin Manager) is a plugin manager for tmux.
+# It allows you to install and manage tmux plugins easily.
+# Set the directory to store TPM and tmux plugins
+TPM_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tpm"
+if [ ! -d "$TPM_HOME" ]; then
+	mkdir -p "$(dirname $TPM_HOME)"
+	git clone https://github.com/tmux-plugins/tpm "$TPM_HOME"
+fi
+
 # Add Powerlevel10k prompts
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
