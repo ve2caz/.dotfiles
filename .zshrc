@@ -24,6 +24,15 @@ if [ ! -d "$TPM_HOME" ]; then
 	git clone https://github.com/tmux-plugins/tpm "$TPM_HOME"
 fi
 
+# fzf-git is a collection of bash/zsh key bindings for Git that use fzf.
+# It provides interactive Git operations like browsing branches, commits, and files.
+# Set the directory to store fzf-git
+FZFGIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/fzf-git"
+if [ ! -d "$FZFGIT_HOME" ]; then
+    mkdir -p "$(dirname $FZFGIT_HOME)"
+    git clone https://github.com/junegunn/fzf-git.sh.git "$FZFGIT_HOME"
+fi
+
 # Add Powerlevel10k prompts
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
@@ -55,6 +64,7 @@ bindkey -e                                                           # Use Emacs
 bindkey '^p' history-search-backward                                 # Ctrl+P: Search backward in history
 bindkey '^n' history-search-forward                                  # Ctrl+N: Search forward in history  
 bindkey '^[w' kill-region                                            # Alt+W: Cut/kill selected region
+source "$FZFGIT_HOME/fzf-git.sh"                                     # Load fzf-git key bindings for Git operations
 
 # History
 HISTFILE=~/.zsh_history                                              # File to save command history
@@ -75,7 +85,18 @@ export LESS='-R'                                                     # Display c
 export LESSOPEN='|[[ $(file -b %s) =~ ^text ]] && bat --color=always %s || command cat %s' # Use bat for syntax highlighting in less, fallback to cat for non-text files
 export PAGER='less -R'                                               # Set less as default pager with color support
 
-# Use fd instead of fzf
+# fzf custom theme
+fg="#CBE0F0"
+bg="#011628"
+bg_highlight="#143652"
+purple="#B388FF"
+blue="#06BCE4"
+cyan="#2CF9ED"
+export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${purple},fg+:${fg},bg+:${bg_highlight},hl+:${purple},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan}"
+
+# Use fd instead of find in fzf-tab for better performance and usability
+# fd is a simple, fast and user-friendly alternative to find.
+# It is used for file and directory searching, with options to ignore hidden files and directories.
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
