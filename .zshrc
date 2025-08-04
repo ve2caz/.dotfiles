@@ -35,7 +35,7 @@ zinit cdreplay -q
 
 # Keybindings
 bindkey -e                               # Use Emacs-style key bindings
-bindkey '^p' history-search-backward.    # Ctrl+P: Search backward in history
+bindkey '^p' history-search-backward     # Ctrl+P: Search backward in history
 bindkey '^n' history-search-forward      # Ctrl+N: Search forward in history  
 bindkey '^[w' kill-region                # Alt+W: Cut/kill selected region
 bindkey '^I' fzf-tab-complete            # Tab: Use fzf-tab for completion
@@ -55,9 +55,8 @@ setopt hist_ignore_dups         # Ignore duplicate commands entered consecutivel
 setopt hist_find_no_dups        # Don't show duplicates when searching history
 
 # Environment Variables
-export PATH="/opt/homebrew/opt/curl/bin:$PATH"     # Add Homebrew curl to PATH (to use newer version instead of Apple's curl)
 export LESS='-R'                                   # Display colors correctly
-export LESSOPEN='|[[ $(file -b %s) =~ ^text ]] && bat --color=always %s || cat %s'
+export LESSOPEN='|[[ $(file -b %s) =~ ^text ]] && bat --color=always %s || command cat %s'
 export PAGER='less -R'                             # Set less as default pager with color support
 
 # Set up colors for ls/eza and completions
@@ -80,24 +79,54 @@ zstyle ':completion:*' menu no                                       # Disable c
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --color=always --long --no-permissions --no-user --no-time $realpath 2>/dev/null || eza --color=always $realpath'
 
 # fzf-tab configuration for better navigation
-zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup                       # Use popup mode (if available)
+zstyle ':fzf-tab:*' fzf-command fzf                          # Use standard fzf (more compatible than tmux popup)
 zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'                        # Accept with tab instead of enter
 zstyle ':fzf-tab:*' accept-line enter                                # Use enter for accept-line
 zstyle ':fzf-tab:*' continuous-trigger '/'                           # Continue completion after '/'
 zstyle ':fzf-tab:*' fzf-min-height 15                                # Minimum height for fzf window
 
-# Aliases - Replace ls with eza
-alias cls='clear'
-alias ls='eza --color=always --group-directories-first'
-alias l='eza -lh --color=always --group-directories-first'
-alias la='eza -lah --color=always --group-directories-first'
-alias ll='eza -laah --color=always --group-directories-first'
-alias lt='eza --tree --color=always --group-directories-first'
-alias lta='eza --tree -a --color=always --group-directories-first'
-alias more='less -R'  # Use less with color support instead of more
-alias vim='nvim'
+# Aliases - Enhanced command replacements and shortcuts
 
-# Shell integrations
-eval "$(fzf --zsh)"                # Enable fzf shell integration for zsh (fuzzy finder)
-eval $(thefuck --alias tf)         # Enable thefuck command correction (use 'tf' after wrong command)
-eval "$(zoxide init --cmd cd zsh)" # Enable zoxide integration with 'cd' command in zsh (smart directory jumping)
+# System shortcuts
+alias cls='clear'                                                    # Clear screen shortcut
+
+# File listing with eza (modern ls replacement)
+alias ls='eza --color=always --group-directories-first'              # Basic listing with colors, directories first
+alias l='eza -lh --color=always --group-directories-first'           # Long format with human-readable sizes
+alias la='eza -lah --color=always --group-directories-first'         # Long format including hidden files
+alias ll='eza -laah --color=always --group-directories-first'        # Long format with all details and hidden files
+alias lt='eza --tree --color=always --group-directories-first'       # Tree view of directory structure
+alias lta='eza --tree -a --color=always --group-directories-first'   # Tree view including hidden files
+
+# File and directory operations with safety prompts
+alias cp='cp -i'                                                     # Prompt before overwriting files when copying
+alias mv='mv -i'                                                     # Prompt before overwriting files when moving
+alias rm='rm -i'                                                     # Prompt before deleting files for safety
+alias mkdir='mkdir -p'                                               # Create parent directories automatically if needed
+alias rmdir='rmdir --ignore-fail-on-non-empty'                       # Remove directories, ignore if not empty
+
+# File viewing and content display
+alias cat='bat --style=plain --color=auto'                           # Enhanced cat with syntax highlighting via bat
+alias more='less -R'                                                 # Use less with color support instead of more
+
+# Text processing and search commands with color support  
+alias grep='grep --color=auto'                                       # Enable colored output for grep
+alias egrep='egrep --color=auto'                                     # Enable colored output for extended grep
+alias fgrep='fgrep --color=auto'                                     # Enable colored output for fixed string grep
+alias diff='diff --color=auto'                                       # Enable colored output for diff
+
+# Editor preferences
+alias vim='nvim'                                                     # Use neovim instead of vim
+
+# Shell integrations - with error checking
+if command -v fzf >/dev/null 2>&1; then
+    eval "$(fzf --zsh)"                # Enable fzf shell integration for zsh (fuzzy finder)
+fi
+
+if command -v thefuck >/dev/null 2>&1; then
+    eval $(thefuck --alias tf)         # Enable thefuck command correction (use 'tf' after wrong command)
+fi
+
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init --cmd cd zsh)" # Enable zoxide integration with 'cd' command in zsh (smart directory jumping)
+fi
