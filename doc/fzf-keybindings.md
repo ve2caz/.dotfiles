@@ -2,9 +2,6 @@
 
 ## Core Key Bindings
 
-✅
-❌
-
 | Category | Key Binding | Description | Test |
 |-----------|-------------|-------------|------|
 | **File Search** | `CTRL-T` | Look for files and directories with preview | ✅ |
