@@ -20,5 +20,6 @@ This configuration includes modern CLI tools for enhanced productivity:
 This shell configuration provides comprehensive key bindings for efficient command line usage:
 
 - **[zsh key bindings](doc/zsh-keybindings.md)** - Emacs-style key bindings for command line editing
+- **[tmux key bindings](doc/tmux-keybindings.md)** - Terminal multiplexer shortcuts for session, window, and pane management
 - **[fzf key bindings](doc/fzf-keybindings.md)** - Fuzzy finder shortcuts for files, directories, and command history
 - **[fzf-git key bindings](doc/fzf-git-keybindings.md)** - Interactive Git operations with fzf integration
