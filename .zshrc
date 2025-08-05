@@ -163,6 +163,9 @@ fi
 if command -v lazygit >/dev/null 2>&1; then
     alias lg='lazygit'                                                   # Use lazygit for git operations
 fi
+if command -v tmux >/dev/null 2>&1; then
+    alias tm='tmux'                                                      # Use tm as shortcut for tmux
+fi
 if command -v tree >/dev/null 2>&1; then
     alias tree='tree -C'                                                 # Force colored output for tree command even when piping
 fi
