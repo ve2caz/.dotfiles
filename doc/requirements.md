@@ -14,7 +14,7 @@ xcode-select --install
 
 ### Homebrew
 
-This is a popular package manager for macOS.
+This is a popular package manager for MacOS.
 The following command will open a browser to this site.
 Follow the instructions to install homebrew.
 

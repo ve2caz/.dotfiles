@@ -4,7 +4,7 @@
 # Note: Using bash instead of zsh for maximum compatibility during initial setup.
 # This script runs before zsh configuration is deployed, so bash ensures it works
 # on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
-# to be available on macOS and virtually all Linux distributions out of the box.
+# to be available on MacOS and virtually all Linux distributions out of the box.
 
 set -e
 
@@ -34,9 +34,9 @@ if ! command -v zsh >/dev/null 2>&1; then
     echo "Zsh not found. Installing zsh..."
     case "$OS" in
         Darwin)
-            # macOS has zsh as default since 10.15 (Catalina, 2019)
-            echo "ERROR: Zsh not found on macOS. This is unexpected."
-            echo "Please check your macOS version or install zsh manually."
+            # MacOS has zsh as default since 10.15 (Catalina, 2019)
+            echo "ERROR: Zsh not found on MacOS. This is unexpected."
+            echo "Please check your MacOS version or install zsh manually."
             exit 1
             ;;
         Linux)
@@ -85,7 +85,7 @@ case "$OS" in
                 # Install packages that need special handling
                 echo "Installing additional packages..."
                 
-                # Install Nerd Fonts (equivalents of cask fonts from macOS)
+                # Install Nerd Fonts (equivalents of cask fonts from MacOS)
                 echo "Installing Nerd Fonts..."
                 if [ ! -d ~/.local/share/fonts ]; then
                     mkdir -p ~/.local/share/fonts

@@ -16,7 +16,6 @@ export XDG_CONFIG_HOME XDG_DATA_HOME XDG_CACHE_HOME
 
 # Create config and data directories if they don't exist
 mkdir -p "${XDG_CONFIG_HOME}/bat/themes"
-mkdir -p "${XDG_CONFIG_HOME}/yazi/flavors"
 
 # Download and install Tokyo Night theme for bat
 echo "📄 Setting up bat theme..."
@@ -30,25 +29,26 @@ else
     echo "✅ bat theme already installed"
 fi
 
-# Install Tokyo Night theme for yazi (if available)
-echo "📁 Setting up yazi theme..."
-YAZI_FLAVORS_DIR="${XDG_CONFIG_HOME}/yazi/flavors"
-TOKYO_NIGHT_FLAVOR="$YAZI_FLAVORS_DIR/tokyo-night/flavor.toml"
+# Verify yazi Tokyo Night theme is available via dotfiles
+echo "📁 Verifying yazi theme..."
+TOKYO_NIGHT_FLAVOR="${XDG_CONFIG_HOME}/yazi/flavors/tokyo-night/flavor.toml"
 if [ -f "$TOKYO_NIGHT_FLAVOR" ]; then
-    echo "✅ yazi Tokyo Night flavor already available"
+    echo "✅ yazi Tokyo Night flavor available"
 else
     echo "⚠️  yazi Tokyo Night flavor not found at $TOKYO_NIGHT_FLAVOR"
-    echo "    Make sure to stow the dotfiles to install the custom Tokyo Night flavor"
+    echo "    Make sure dotfiles are properly stowed/linked"
 fi
 
-# Verify btop Tokyo Night theme
-echo "📊 Verifying btop theme..."
+# Download and install Tokyo Night theme for btop
+echo "📊 Setting up btop theme..."
 BTOP_THEMES_DIR="${XDG_CONFIG_HOME}/btop/themes"
-if [ ! -d "$BTOP_THEMES_DIR" ] || [ ! -f "$BTOP_THEMES_DIR/tokyo-night.theme" ]; then
-    echo "⚠️  btop Tokyo Night theme may need manual installation"
-    echo "    Check https://github.com/rxyhn/tokyo-night-btop for theme file"
+mkdir -p "$BTOP_THEMES_DIR"
+if [ ! -f "$BTOP_THEMES_DIR/tokyo-night.theme" ]; then
+    curl -L -o "$BTOP_THEMES_DIR/tokyo-night.theme" \
+        "https://raw.githubusercontent.com/rxyhn/tokyo-night-btop/main/tokyo-night.theme"
+    echo "✅ btop theme installed"
 else
-    echo "✅ btop theme verified"
+    echo "✅ btop theme already installed"
 fi
 
 echo ""

@@ -55,4 +55,4 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 - [**curl**](https://curl.se/) - Tool for transferring data from servers
 - [**stow**](https://www.gnu.org/software/stow/) - Symlink farm manager for organizing dotfiles  
 - [**openssl**](https://www.openssl.org/) - Cryptography and SSL/TLS toolkit
-- [**coreutils**](https://www.gnu.org/software/coreutils/) - GNU File, Shell, and Text utilities (macOS via Homebrew)
+- [**coreutils**](https://www.gnu.org/software/coreutils/) - GNU File, Shell, and Text utilities (MacOS via Homebrew)

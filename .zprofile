@@ -14,7 +14,7 @@ export LC_TIME="en_US.UTF-8"
 # Detect operating system
 case "$(uname -s)" in
     Darwin)
-        # macOS - Set up Homebrew
+        # MacOS - Set up Homebrew
         if [[ -f "/opt/homebrew/bin/brew" ]]; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
             # Add Homebrew curl to PATH (newer version instead of Apple's curl)
