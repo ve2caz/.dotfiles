@@ -32,8 +32,8 @@ brew bundle
 
 The `scripts/install-packages.sh` script handles Linux package installation automatically, but if you prefer manual installation, here are the main packages needed:
 
-- **Core tools**: `curl git neovim stow tmux tree fzf bat fd-find`
-- **Special installations**: `eza`, `zoxide`, `thefuck`, `gh`, `lazygit`, `git-delta`, `tlrc`, `tpm`, `yazi`, `wezterm`
+- **Core tools**: `curl git neovim stow tmux tree fzf bat fd-find htop imagemagick jq nmap ripgrep p7zip-full`
+- **Special installations**: `eza`, `zoxide`, `thefuck`, `gh`, `lazygit`, `git-delta`, `tlrc`, `tpm`, `yazi`, `wezterm`, `btop`, `yq`, `k9s`, `kubie`, `lazydocker`
 
 Install with your distribution's package manager, then follow the script's logic for tools that need special installation methods.
 
@@ -65,6 +65,11 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 - **lazygit** - Simple terminal UI for git commands
 - **neovim** - Modern, extensible text editor
 
+### Container and Kubernetes Management
+- **k9s** - Kubernetes CLI to manage clusters in style
+- **kubie** - Powerful alternative to kubectx and kubens
+- **lazydocker** - Simple terminal UI for Docker management
+
 ### File and Directory Navigation
 - **eza** - Modern replacement for `ls` with colors and icons
 - **fd** - Simple, fast alternative to `find`
@@ -75,7 +80,19 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 ### Text Processing and Search
 - **bat** - Clone of `cat` with syntax highlighting and Git integration
 - **fzf** - Command-line fuzzy finder for files, directories, and history
+- **ripgrep** - Extremely fast text search tool
+- **jq** - Lightweight JSON processor
+- **yq** - Process YAML, JSON, XML, CSV and properties documents
 - **tlrc** - Official tldr client for community-maintained help pages (use `tldr <command>`)
+
+### System Monitoring and Utilities
+- **btop** - Resource monitor (modern alternative to htop)
+- **htop** - Interactive process viewer
+- **nmap** - Network discovery and security auditing utility
+- **ipcalc** - Calculate various network masks from IP addresses
+- **imagemagick** - Tools and libraries to manipulate images
+- **sevenzip** (p7zip-full on Linux) - File archiver with high compression ratio
+- **poppler-utils** (Linux) - PDF rendering utilities
 
 ### Terminal and Productivity
 - **tmux** - Terminal multiplexer for session management

@@ -80,7 +80,7 @@ case "$OS" in
                 sudo apt update
                 # Install packages that are available via apt (zsh handled separately above)
                 # Note: coreutils (GNU File, Shell, and Text utilities) are included by default on Linux
-                sudo apt install -y curl git neovim stow tmux tree fzf bat
+                sudo apt install -y curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip-full
                 
                 # Install packages that need special handling
                 echo "Installing additional packages..."
@@ -170,6 +170,66 @@ case "$OS" in
                     echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
                     sudo apt update
                     sudo apt install -y wezterm
+                fi
+                
+                # btop (resource monitor)
+                if ! command -v btop >/dev/null 2>&1; then
+                    BTOP_VERSION=$(curl -s "https://api.github.com/repos/aristocratos/btop/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+                    curl -Lo btop.tbz "https://github.com/aristocratos/btop/releases/latest/download/btop-x86_64-linux-musl.tbz"
+                    tar -xjf btop.tbz
+                    sudo install btop/bin/btop /usr/local/bin/
+                    rm -rf btop.tbz btop
+                fi
+                
+                # ffmpegthumbnailer (create thumbnails for video files)
+                if ! command -v ffmpegthumbnailer >/dev/null 2>&1; then
+                    sudo apt install -y ffmpegthumbnailer
+                fi
+                
+                # ipcalc (calculate network masks)
+                if ! command -v ipcalc >/dev/null 2>&1; then
+                    sudo apt install -y ipcalc
+                fi
+                
+                # poppler-utils (PDF utilities)
+                if ! command -v pdfinfo >/dev/null 2>&1; then
+                    sudo apt install -y poppler-utils
+                fi
+                
+                # yq (YAML/JSON/XML processor)
+                if ! command -v yq >/dev/null 2>&1; then
+                    YQ_VERSION=$(curl -s "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+                    curl -Lo yq "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64"
+                    chmod +x yq
+                    sudo install yq /usr/local/bin/
+                    rm yq
+                fi
+                
+                # k9s (Kubernetes CLI)
+                if ! command -v k9s >/dev/null 2>&1; then
+                    K9S_VERSION=$(curl -s "https://api.github.com/repos/derailed/k9s/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+                    curl -Lo k9s.tar.gz "https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz"
+                    tar xf k9s.tar.gz k9s
+                    sudo install k9s /usr/local/bin/
+                    rm k9s.tar.gz k9s
+                fi
+                
+                # kubie (kubectx/kubens alternative)
+                if ! command -v kubie >/dev/null 2>&1; then
+                    KUBIE_VERSION=$(curl -s "https://api.github.com/repos/sbstp/kubie/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+                    curl -Lo kubie "https://github.com/sbstp/kubie/releases/latest/download/kubie-linux-amd64"
+                    chmod +x kubie
+                    sudo install kubie /usr/local/bin/
+                    rm kubie
+                fi
+                
+                # lazydocker (docker management)
+                if ! command -v lazydocker >/dev/null 2>&1; then
+                    LAZYDOCKER_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazydocker/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+                    curl -Lo lazydocker.tar.gz "https://github.com/jesseduffield/lazydocker/releases/latest/download/lazydocker_${LAZYDOCKER_VERSION}_Linux_x86_64.tar.gz"
+                    tar xf lazydocker.tar.gz lazydocker
+                    sudo install lazydocker /usr/local/bin/
+                    rm lazydocker.tar.gz lazydocker
                 fi
                 ;;
             *)
