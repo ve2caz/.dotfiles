@@ -4,10 +4,44 @@ This directory contains the dotfiles for a development shell environment that wo
 ## Features
 
 This configuration includes modern CLI tools for enhanced productivity:
-- Modern file navigation (`eza`, `fd`, `yazi`, `zoxide`)
-- Enhanced Git workflow (`git-delta`, `lazygit`, `gh`)
-- Improved text processing (`bat`, `fzf`, `tlrc`)
-- Terminal productivity (`tmux`, `wezterm`, `thefuck`)
+
+### File Navigation & Management
+- `eza` - Modern replacement for `ls` with colors and git integration
+- `fd` - Simple, fast alternative to `find`
+- `yazi` - Blazing fast terminal file manager
+- `zoxide` - Smart cd command that learns your habits
+
+### Text Processing & Search
+- `bat` - Clone of `cat` with syntax highlighting
+- `fzf` - Command-line fuzzy finder
+- `ripgrep` - Extremely fast text search tool
+- `jq` - Lightweight JSON processor
+- `yq` - Process YAML, JSON, XML, CSV documents
+
+### Git Workflow
+- `git-delta` - Syntax-highlighting pager for git and diff output
+- `lazygit` - Simple terminal UI for git commands
+- `gh` - GitHub command-line tool
+
+### System Monitoring & Management
+- `btop` - Resource monitor (htop alternative)
+- `htop` - Interactive process viewer
+- `tmux` - Terminal multiplexer
+
+### Development Tools
+- `neovim` - Modern Vim-based text editor
+- `k9s` - Kubernetes CLI management tool
+- `kubie` - Alternative to kubectx and kubens
+- `lazydocker` - Simple terminal UI for Docker
+
+### Network & Security
+- `nmap` - Network discovery and security auditing
+- `ipcalc` - Network address calculator
+
+### Productivity & Fun
+- `thefuck` - Corrects errors in previous console commands
+- `tlrc` - Fast tldr client for quick command help
+- `wezterm` - GPU-accelerated terminal emulator
 
 ## Instructions
 
