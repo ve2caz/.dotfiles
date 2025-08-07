@@ -22,7 +22,7 @@ echo ""
 # Step 2: Check if stow is available (should be installed by step 1)
 if ! command -v stow >/dev/null 2>&1; then
     echo "❌ GNU Stow is required but not installed."
-    echo "   Install with: brew install stow (macOS) or sudo apt install stow (Linux)"
+    echo "   Install with: brew install stow (MacOS) or sudo apt install stow (Linux)"
     exit 1
 fi
 

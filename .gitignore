@@ -3,6 +3,4 @@
 __pycache__/
 .config/bat/themes/
 .config/btop/themes/
-.config/yazi/flavors/
-.config/yazi/package.toml
 .DS_Store
