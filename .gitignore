@@ -1,6 +1,7 @@
 # .gitignore
-# This file specifies intentionally untracked files to ignore in the repository.
 *.py[cod]
 __pycache__/
 .config/bat/themes/*
+.config/yazi/flavors/
+.config/yazi/package.toml
 .DS_Store

@@ -10,8 +10,8 @@ fi
 # Set the directory to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [ ! -d "$ZINIT_HOME" ]; then
-	mkdir -p "$(dirname $ZINIT_HOME)"
-	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+    mkdir -p "$(dirname $ZINIT_HOME)"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 source "${ZINIT_HOME}/zinit.zsh"
 
@@ -20,8 +20,8 @@ source "${ZINIT_HOME}/zinit.zsh"
 # Set the directory to store TPM and tmux plugins
 TPM_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tpm"
 if [ ! -d "$TPM_HOME" ]; then
-	mkdir -p "$(dirname $TPM_HOME)"
-	git clone https://github.com/tmux-plugins/tpm "$TPM_HOME"
+    mkdir -p "$(dirname $TPM_HOME)"
+    git clone https://github.com/tmux-plugins/tpm "$TPM_HOME"
 fi
 
 # fzf-git is a collection of bash/zsh key bindings for Git that use fzf.
@@ -158,7 +158,28 @@ alias diff='diff --color=auto'                                           # Enabl
 
 # Development tooling - Only alias if tools are available
 if command -v yazi >/dev/null 2>&1; then
-    alias fm='yazi'                                                      # Use yazi for file management
+
+    YAZI_THEMES_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/yazi/flavors"
+    if [ ! -d "$YAZI_THEMES_HOME" ]; then
+        mkdir -p "$YAZI_THEMES_HOME"
+    fi
+    
+    # Ensure nightfly theme is installed
+    if [ ! -d "$YAZI_THEMES_HOME/nightfly.yazi" ]; then
+        # Try to install, but if it fails because package exists, use install command instead
+        if ! ya pkg add tkapias/nightfly 2>/dev/null; then
+            ya pkg install 2>/dev/null || true  # Install all packages from registry
+        fi
+    fi
+
+    function fm() {                                                      # Use yazi for file management
+        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+        yazi "$@" --cwd-file="$tmp"
+        if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+            builtin cd -- "$cwd"
+        fi
+        rm -f -- "$tmp"
+    }
 fi
 if command -v lazygit >/dev/null 2>&1; then
     alias lg='lazygit'                                                   # Use lazygit for git operations
@@ -171,6 +192,7 @@ if command -v tree >/dev/null 2>&1; then
 fi
 if command -v nvim >/dev/null 2>&1; then
     alias vim='nvim'                                                     # Use neovim instead of vim
+    export EDITOR=nvim
 fi
 
 # Shell integrations - Initialize tools first, then configure
