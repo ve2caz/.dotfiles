@@ -1,59 +1,41 @@
 # .dotfiles
 This directory contains the dotfiles for a development shell environment that works on both MacOS and Linux.
 
-## Features
+## 🚀 Quick Setup
 
-This configuration includes modern CLI tools for enhanced productivity:
+```bash
+# Clone the repository
+git clone https://github.com/ve2caz/.dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 
-### File Navigation & Management
-- [`eza`](https://github.com/eza-community/eza) - Modern replacement for `ls` with colors and git integration
-- [`fd`](https://github.com/sharkdp/fd) - Simple, fast alternative to `find`
-- [`yazi`](https://yazi-rs.github.io/) - Blazing fast terminal file manager
-- [`zoxide`](https://github.com/ajeetdsouza/zoxide) - Smart cd command that learns your habits
+# Run the master setup script (installs everything)
+./scripts/setup.sh
+```
 
-### Text Processing & Search
-- [`bat`](https://github.com/sharkdp/bat) - Clone of `cat` with syntax highlighting
-- [`fzf`](https://github.com/junegunn/fzf) - Command-line fuzzy finder
-- [`ripgrep`](https://github.com/BurntSushi/ripgrep) - Extremely fast text search tool
-- [`jq`](https://jqlang.github.io/jq/) - Lightweight JSON processor
-- [`yq`](https://github.com/mikefarah/yq) - Process YAML, JSON, XML, CSV documents
+## �️ What's Included
 
-### Git Workflow
-- [`git-delta`](https://github.com/dandavison/delta) - Syntax-highlighting pager for git and diff output
-- [`lazygit`](https://github.com/jesseduffield/lazygit) - Simple terminal UI for git commands
-- [`gh`](https://github.com/cli/cli) - GitHub command-line tool
+This configuration includes modern command-line tools across these categories:
 
-### System Monitoring & Management
-- [`btop`](https://github.com/aristocratos/btop) - Resource monitor (htop alternative)
-- [`htop`](https://github.com/htop-dev/htop) - Interactive process viewer
-- [`tmux`](https://github.com/tmux/tmux) - Terminal multiplexer
+- **Core Development Tools** - git, neovim, GitHub CLI, and more
+- **Container & Kubernetes Management** - k9s, kubie, lazydocker
+- **File & Directory Navigation** - eza, fd, tree, yazi, zoxide
+- **Text Processing & Search** - bat, fzf, ripgrep, jq, yq
+- **System Monitoring & Utilities** - btop, htop, nmap, imagemagick
+- **Terminal & Productivity** - tmux, thefuck, wezterm
+- **Fonts & Typography** - MesloLG Nerd Font and more
 
-### Development Tools
-- [`neovim`](https://neovim.io/) - Modern Vim-based text editor
-- [`k9s`](https://k9scli.io/) - Kubernetes CLI management tool
-- [`kubie`](https://github.com/sbstp/kubie) - Alternative to kubectx and kubens
-- [`lazydocker`](https://github.com/jesseduffield/lazydocker) - Simple terminal UI for Docker
+See **[Included Tools](doc/tools.md)** for the complete list of modern command-line tools included in this configuration
 
-### Network & Security
-- [`nmap`](https://nmap.org/) - Network discovery and security auditing
-- [`ipcalc`](https://github.com/kjokjo/ipcalc) - Network address calculator
+## 📚 Documentation
 
-### Productivity & Fun
-- [`thefuck`](https://github.com/nvbn/thefuck) - Corrects errors in previous console commands
-- [`tlrc`](https://github.com/tldr-pages/tlrc) - Fast tldr client for quick command help
-- [`wezterm`](https://wezfurlong.org/wezterm/) - GPU-accelerated terminal emulator
+- **[Requirements](doc/requirements.md)** - Platform-specific prerequisites and dependencies
+- **[Setup Guide](doc/setup.md)** - Complete installation, configuration, maintenance, and troubleshooting instructions
+- **[Cross-Platform Tools](doc/cross-platform-tools.md)** - How MacOS Brewfile tools are installed on Linux
+- **[Tokyo Night Theme](doc/tokyo-night-theme.md)** - Unified dark theme configuration across all tools
 
-## Instructions
+## ⌨️ Key Bindings
 
-- [Requirements](doc/requirements.md) for platform-specific setup instructions.
-
-- [Setup Guide](doc/setup.md) for complete installation and configuration instructions.
-
-- [Cross-Platform Tools](doc/cross-platform-tools.md) for details on how macOS Brewfile tools are installed on Linux.
-
-## Key Bindings
-
-This shell configuration provides comprehensive key bindings for efficient command line usage:
+Comprehensive key bindings for efficient command line usage:
 
 - **[zsh key bindings](doc/zsh-keybindings.md)** - Emacs-style key bindings for command line editing
 - **[tmux key bindings](doc/tmux-keybindings.md)** - Terminal multiplexer shortcuts for session, window, and pane management
