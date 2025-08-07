@@ -68,5 +68,7 @@ brew "yq"
 brew "zoxide"
 cask "font-meslo-lg-nerd-font"
 cask "font-symbols-only-nerd-font"
+# Desktop client for GitHub repositories
+cask "github"
 # GPU-accelerated cross-platform terminal emulator and multiplexer
 cask "wezterm"

@@ -80,10 +80,38 @@ case "$OS" in
                 sudo apt update
                 # Install packages that are available via apt (zsh handled separately above)
                 # Note: coreutils (GNU File, Shell, and Text utilities) are included by default on Linux
-                sudo apt install -y curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip-full
+                sudo apt install -y curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip-full openssl
                 
                 # Install packages that need special handling
                 echo "Installing additional packages..."
+                
+                # Install Nerd Fonts (equivalents of cask fonts from macOS)
+                echo "Installing Nerd Fonts..."
+                if [ ! -d ~/.local/share/fonts ]; then
+                    mkdir -p ~/.local/share/fonts
+                fi
+                
+                # Install MesloLG Nerd Font
+                if [ ! -f ~/.local/share/fonts/MesloLGSNerdFontMono-Regular.ttf ]; then
+                    cd /tmp
+                    wget -q https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip
+                    unzip -q Meslo.zip -d meslo-font
+                    cp meslo-font/*.ttf ~/.local/share/fonts/
+                    rm -rf Meslo.zip meslo-font
+                    fc-cache -fv >/dev/null 2>&1
+                    echo "MesloLG Nerd Font installed"
+                fi
+                
+                # Install Symbols Only Nerd Font
+                if [ ! -f ~/.local/share/fonts/SymbolsNerdFontMono-Regular.ttf ]; then
+                    cd /tmp
+                    wget -q https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
+                    unzip -q NerdFontsSymbolsOnly.zip -d symbols-font
+                    cp symbols-font/*.ttf ~/.local/share/fonts/
+                    rm -rf NerdFontsSymbolsOnly.zip symbols-font
+                    fc-cache -fv >/dev/null 2>&1
+                    echo "Symbols Only Nerd Font installed"
+                fi
                 
                 # eza (modern ls replacement)
                 if ! command -v eza >/dev/null 2>&1; then
@@ -231,10 +259,56 @@ case "$OS" in
                     sudo install lazydocker /usr/local/bin/
                     rm lazydocker.tar.gz lazydocker
                 fi
+                
+                # GitHub Desktop (optional GUI application)
+                if ! command -v github-desktop >/dev/null 2>&1; then
+                    echo "Installing GitHub Desktop..."
+                    wget -qO - https://apt.packages.shiftkey.dev/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/shiftkey-packages.gpg > /dev/null
+                    sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/shiftkey-packages.gpg] https://apt.packages.shiftkey.dev/ubuntu/ any main" > /etc/apt/sources.list.d/shiftkey-packages.list'
+                    sudo apt update
+                    sudo apt install -y github-desktop
+                fi
+                ;;
+            rhel)
+                echo "Installing packages with yum/dnf..."
+                # Detect if system uses dnf (newer) or yum (older)
+                if command -v dnf >/dev/null 2>&1; then
+                    PKG_MGR="dnf"
+                else
+                    PKG_MGR="yum"
+                fi
+                
+                # Install basic packages
+                sudo $PKG_MGR install -y curl git neovim stow tmux tree fzf bat htop ImageMagick jq nmap ripgrep p7zip openssl
+                
+                echo "RHEL/Fedora support is basic. Many tools will be installed from GitHub releases."
+                echo "Consider using the GitHub releases installation methods for better tool coverage."
+                
+                # Note: Most other tools would need to be installed via GitHub releases
+                # This is a minimal implementation for RHEL-based systems
+                ;;
+            arch)
+                echo "Installing packages with pacman..."
+                # Update package database
+                sudo pacman -Sy
+                
+                # Install basic packages
+                sudo pacman -S --noconfirm curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip openssl
+                
+                echo "Arch Linux support is basic. Many tools will be installed from AUR or GitHub releases."
+                echo "Consider using an AUR helper like 'yay' for better tool coverage."
+                
+                # Note: Many tools are available in AUR but this script doesn't use AUR helpers
                 ;;
             *)
                 echo "Package installation for $DISTRO not implemented yet"
                 echo "Please install packages manually or contribute to this script!"
+                echo ""
+                echo "Required packages for manual installation:"
+                echo "  curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip openssl"
+                echo ""
+                echo "Additional tools can be installed from their respective GitHub releases:"
+                echo "  eza, zoxide, thefuck, gh, lazygit, git-delta, tlrc, yazi, wezterm, btop, yq, k9s, kubie, lazydocker"
                 exit 1
                 ;;
         esac
@@ -246,3 +320,15 @@ case "$OS" in
 esac
 
 echo "Package installation completed!"
+echo ""
+echo "Installed tools are now available:"
+echo "  Core tools: curl, git, neovim, stow, tmux, tree, fzf, bat, htop"
+echo "  Modern CLI: eza, fd, ripgrep, zoxide, yazi, thefuck, tldr"
+echo "  Development: gh, lazygit, git-delta, k9s, kubie, lazydocker"
+echo "  System: btop, imagemagick, jq, yq, nmap, ipcalc"
+echo "  Fonts: MesloLG Nerd Font, Symbols Only Nerd Font"
+echo "  GUI: WezTerm terminal, GitHub Desktop (optional)"
+echo ""
+echo "Next steps:"
+echo "  1. Run 'stow .' from the .dotfiles directory to activate configuration"
+echo "  2. Restart your shell or run 'exec zsh' to load the new environment"
