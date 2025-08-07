@@ -31,7 +31,7 @@ fi
 
 # Verify yazi Tokyo Night theme is available via dotfiles
 echo "📁 Verifying yazi theme..."
-TOKYO_NIGHT_FLAVOR="${XDG_CONFIG_HOME}/yazi/flavors/tokyo-night/flavor.toml"
+TOKYO_NIGHT_FLAVOR="${XDG_CONFIG_HOME}/yazi/flavors/tokyo-night.yazi/flavor.toml"
 if [ -f "$TOKYO_NIGHT_FLAVOR" ]; then
     echo "✅ yazi Tokyo Night flavor available"
 else
