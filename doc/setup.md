@@ -20,6 +20,12 @@ Use the cross-platform installer script:
 ./scripts/install-packages.sh
 ```
 
+To verify what's installed, you can run:
+
+```bash
+./scripts/check-installation.sh
+```
+
 ### Manual installation
 
 #### MacOS with Homebrew
@@ -32,8 +38,10 @@ brew bundle
 
 The `scripts/install-packages.sh` script handles Linux package installation automatically, but if you prefer manual installation, here are the main packages needed:
 
-- **Core tools**: `curl git neovim stow tmux tree fzf bat fd-find htop imagemagick jq nmap ripgrep p7zip-full`
+- **Core tools**: `curl git neovim stow tmux tree fzf bat fd-find htop imagemagick jq nmap ripgrep p7zip-full openssl`
 - **Special installations**: `eza`, `zoxide`, `thefuck`, `gh`, `lazygit`, `git-delta`, `tlrc`, `tpm`, `yazi`, `wezterm`, `btop`, `yq`, `k9s`, `kubie`, `lazydocker`
+- **Fonts**: `MesloLG Nerd Font`, `Symbols Only Nerd Font` (installed to `~/.local/share/fonts`)
+- **GUI Applications**: `GitHub Desktop` (optional)
 
 Install with your distribution's package manager, then follow the script's logic for tools that need special installation methods.
 
@@ -100,12 +108,42 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 - **thefuck** - Corrects mistyped console commands
 - **wezterm** - GPU-accelerated cross-platform terminal emulator
 
+### Fonts and Typography
+- **MesloLG Nerd Font** - Patched font with programming symbols and icons
+- **Symbols Only Nerd Font** - Icon font for terminal and status line symbols
+
+### GUI Applications (Linux)
+- **GitHub Desktop** - Desktop client for GitHub repositories (optional)
+
 ### System Utilities
 - **curl** - Tool for transferring data from servers
-- **stow** - Symlink farm manager for organizing dotfiles
+- **stow** - Symlink farm manager for organizing dotfiles  
+- **openssl** - Cryptography and SSL/TLS toolkit
 - **coreutils** - GNU File, Shell, and Text utilities (macOS via Homebrew)
 
 ## Platform-specific features
 
-- **macOS**: Homebrew integration, newer curl from Homebrew
-- **Linux**: Uses distribution package managers, native GNU tools
+- **macOS**: Homebrew integration, newer curl from Homebrew, macOS-specific fonts via casks
+- **Linux**: Uses distribution package managers, native GNU tools, automatic Nerd Font installation to `~/.local/share/fonts`
+
+## Automatic vs Manual Installation
+
+The automated installation script (`./scripts/install-packages.sh`) will:
+
+### On all platforms:
+- Verify and install `zsh` if missing
+- Install all core command-line tools
+- Set up tmux plugin manager (tpm)
+- Create necessary directories and symlinks
+
+### On macOS:
+- Use `brew bundle` to install packages from Brewfile
+- Install cask applications (fonts, GitHub Desktop, WezTerm)
+
+### On Linux:
+- Install packages via distribution package manager (apt/yum/pacman)
+- Download and install tools not available in repos (from GitHub releases)
+- Install Nerd Fonts to user font directory
+- Optionally install GitHub Desktop via third-party repository
+
+**Note**: Full automation is available for Debian/Ubuntu systems. RHEL/CentOS/Fedora and Arch Linux have basic support with core packages only.
