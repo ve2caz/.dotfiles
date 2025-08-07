@@ -59,17 +59,17 @@ wezterm.on('window-resized', function(window, pane)
   window:set_config_overrides(overrides)
 end)
 
--- my coolnight colorscheme:
+-- Tokyo Night colorscheme for consistency across tools
 config.colors = {
-	foreground = "#CBE0F0",
-	background = "#011423",
-	cursor_bg = "#47FF9C",
-	cursor_border = "#47FF9C",
-	cursor_fg = "#011423",
-	selection_bg = "#033259",
-	selection_fg = "#CBE0F0",
-	ansi = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#0FC5ED", "#a277ff", "#24EAF7", "#24EAF7" },
-	brights = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#A277FF", "#a277ff", "#24EAF7", "#24EAF7" },
+	foreground = "#c0caf5",
+	background = "#1a1b26",
+	cursor_bg = "#c0caf5",
+	cursor_border = "#c0caf5",
+	cursor_fg = "#1a1b26",
+	selection_bg = "#283457",
+	selection_fg = "#c0caf5",
+	ansi = { "#15161e", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6" },
+	brights = { "#414868", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5" },
 }
 
 -- and finally, return the configuration to wezterm

@@ -37,13 +37,13 @@
   # Zsh >= 5.1 is required.
   [[ $ZSH_VERSION == (5.<1->*|<6->.*) ]] || return
 
-  # Prompt colors.
+  # Prompt colors - Tokyo Night palette.
   local grey='242'
-  local red='1'
-  local yellow='3'
-  local blue='4'
-  local magenta='5'
-  local cyan='6'
+  local red='203'        # Tokyo Night red (#f7768e)
+  local yellow='215'     # Tokyo Night yellow (#e0af68)
+  local blue='111'       # Tokyo Night blue (#7aa2f7)
+  local magenta='177'    # Tokyo Night purple (#bb9af7)
+  local cyan='117'       # Tokyo Night cyan (#7dcfff)
   local white='7'
 
   # Left prompt segments.

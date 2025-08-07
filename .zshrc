@@ -1,49 +1,34 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+
+# Set up XDG Base Directory Specification
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+
+if [[ -r "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Zinit is a flexible and fast Zshell plugin manager.
-# It allow you to install everything from GitHub and other sites.
+# Installation is handled by install-packages.sh script
 # Set the directory to store zinit and plugins
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-if [ ! -d "$ZINIT_HOME" ]; then
-    mkdir -p "$(dirname $ZINIT_HOME)"
-    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-fi
+ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
 # TPM (Tmux Plugin Manager) is a plugin manager for tmux.
-# It allows you to install and manage tmux plugins easily.
-# Set the directory to store TPM and tmux plugins
-TPM_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tpm"
-if [ ! -d "$TPM_HOME" ]; then
-    mkdir -p "$(dirname $TPM_HOME)"
-    git clone https://github.com/tmux-plugins/tpm "$TPM_HOME"
-fi
+# Installation is handled by install-packages.sh script
+# Set the directory for tpm (tmux plugin manager)
+TPM_HOME="${XDG_DATA_HOME}/tmux/plugins/tpm"
 
 # fzf-git is a collection of bash/zsh key bindings for Git that use fzf.
-# It provides interactive Git operations like browsing branches, commits, and files.
+# Installation is handled by install-packages.sh script
 # Set the directory to store fzf-git
-FZFGIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/fzf-git"
-if [ ! -d "$FZFGIT_HOME" ]; then
-    mkdir -p "$(dirname $FZFGIT_HOME)"
-    git clone https://github.com/junegunn/fzf-git.sh.git "$FZFGIT_HOME"
-fi
+FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"
 
 # bat is a cat clone with syntax highlighting and Git integration.
-# This sets up custom themes for enhanced syntax highlighting.
-# Set the directory to store bat themes
-BAT_THEMES_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/bat/themes"
-if [ ! -d "$BAT_THEMES_HOME" ]; then
-    mkdir -p "$BAT_THEMES_HOME"
-    cd "$BAT_THEMES_HOME"
-    curl -O https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/sublime/tokyonight_night.tmTheme
-    bat cache --build
-fi
-
+# Theme installation is handled by setup-tokyo-night-theme.sh script
 
 # Add Powerlevel10k prompts
 zinit ice depth=1; zinit light romkatv/powerlevel10k
@@ -159,18 +144,13 @@ alias diff='diff --color=auto'                                           # Enabl
 # Development tooling - Only alias if tools are available
 if command -v yazi >/dev/null 2>&1; then
 
-    YAZI_THEMES_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/yazi/flavors"
+    YAZI_THEMES_HOME="${XDG_CONFIG_HOME}/yazi/flavors"
     if [ ! -d "$YAZI_THEMES_HOME" ]; then
         mkdir -p "$YAZI_THEMES_HOME"
     fi
     
-    # Ensure nightfly theme is installed
-    if [ ! -d "$YAZI_THEMES_HOME/nightfly.yazi" ]; then
-        # Try to install, but if it fails because package exists, use install command instead
-        if ! ya pkg add tkapias/nightfly 2>/dev/null; then
-            ya pkg install 2>/dev/null || true  # Install all packages from registry
-        fi
-    fi
+    # Tokyo Night theme is now included in dotfiles at .config/yazi/flavors/tokyo-night/
+    # No need to install external themes
 
     function fm() {                                                      # Use yazi for file management
         local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd

@@ -1,7 +1,8 @@
 # .gitignore
 *.py[cod]
 __pycache__/
-.config/bat/themes/*
+.config/bat/themes/
+.config/btop/themes/
 .config/yazi/flavors/
 .config/yazi/package.toml
 .DS_Store
