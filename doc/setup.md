@@ -57,7 +57,7 @@ The setup process follows this dependency structure:
 setup.sh (master)
 ├── install-packages.sh
 │   ├── Platform detection (MacOS/Linux)
-│   ├── Package installation (brew/apt/yum/pacman)
+│   ├── Package installation (brew/apt)
 │   ├── Font installation
 │   └── Tool setup (Zinit, TPM, fzf-git)
 ├── stow . --target=$HOME
@@ -75,17 +75,11 @@ setup.sh (master)
 brew bundle
 ```
 
-##### Linux
+##### Linux (Debian/Ubuntu only)
 
-The `scripts/install-packages.sh` script handles Linux package installation automatically, but if you prefer manual installation, here are the main packages needed:
+The `scripts/install-packages.sh` script handles Linux package installation automatically for Debian/Ubuntu-based systems. For other distributions, manual installation is not supported by this repo.
 
-- **Core tools**: `curl git neovim stow tmux tree fzf bat fd-find htop imagemagick jq nmap ripgrep p7zip-full openssl`
-- **Version managers**: `asdf`
-- **Special installations**: `eza`, `zoxide`, `thefuck`, `gh`, `lazygit`, `git-delta`, `tlrc`, `tpm`, `yazi`, `wezterm`, `btop`, `yq`, `k9s`, `kubie`, `lazydocker`
-- **Fonts**: `MesloLG Nerd Font`, `Symbols Only Nerd Font` (installed to `~/.local/share/fonts`)
-- **GUI Applications**: `GitHub Desktop` (optional)
-
-Install with your distribution's package manager, then follow the script's logic for tools that need special installation methods.
+If you prefer manual installation on Debian/Ubuntu, see the script for the list of required packages and GitHub releases used.
 
 ### 3. Activate the configuration
 
@@ -149,14 +143,14 @@ The automated installation script (`./scripts/install-packages.sh`) will:
 - Use `brew bundle` to install packages from Brewfile
 - Install cask applications (fonts, GitHub Desktop, WezTerm)
 
-### On Linux:
-- Install packages via distribution package manager (apt/yum/pacman)
+### On Linux (Debian/Ubuntu only):
+- Install packages via apt
 - Install asdf via git clone from official repository
 - Download and install tools not available in repos (from GitHub releases)
 - Install Nerd Fonts to user font directory
 - Optionally install GitHub Desktop via third-party repository
 
-**Note**: Full automation is available for Debian/Ubuntu systems. RHEL/CentOS/Fedora and Arch Linux have basic support with core packages only.
+**Note**: Only MacOS and Debian/Ubuntu Linux are supported. Other distributions are not supported by this repo.
 
 ## 🔧 Maintenance and Troubleshooting
 

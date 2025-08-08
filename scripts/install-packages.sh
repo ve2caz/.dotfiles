@@ -16,12 +16,9 @@ if [[ "$OS" == "Linux" ]]; then
     # Detect Linux distribution
     if command -v apt >/dev/null 2>&1; then
         DISTRO="debian"
-    elif command -v yum >/dev/null 2>&1; then
-        DISTRO="rhel"
-    elif command -v pacman >/dev/null 2>&1; then
-        DISTRO="arch"
     else
-        echo "Unsupported Linux distribution"
+        echo "Unsupported Linux distribution. Only Debian/Ubuntu-based systems are supported."
+        echo "Please use a Debian/Ubuntu-based distribution or install packages manually."
         exit 1
     fi
 fi
@@ -43,12 +40,6 @@ if ! command -v zsh >/dev/null 2>&1; then
             case "$DISTRO" in
                 debian)
                     sudo apt update && sudo apt install -y zsh
-                    ;;
-                rhel)
-                    sudo yum install -y zsh
-                    ;;
-                arch)
-                    sudo pacman -S --noconfirm zsh
                     ;;
                 *)
                     echo "ERROR: Cannot install zsh automatically on this distribution."
@@ -236,7 +227,7 @@ case "$OS" in
                     YQ_VERSION=$(curl -s "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
                     curl -Lo yq "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64"
                     chmod +x yq
-                    sudo install yq /usr/local/bin/
+                    sudo install yq /usr/local/bin/yq
                     rm yq
                 fi
                 
@@ -245,7 +236,7 @@ case "$OS" in
                     K9S_VERSION=$(curl -s "https://api.github.com/repos/derailed/k9s/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
                     curl -Lo k9s.tar.gz "https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz"
                     tar xf k9s.tar.gz k9s
-                    sudo install k9s /usr/local/bin/
+                    sudo install k9s /usr/local/bin/k9s
                     rm k9s.tar.gz k9s
                 fi
                 
@@ -254,7 +245,7 @@ case "$OS" in
                     KUBIE_VERSION=$(curl -s "https://api.github.com/repos/sbstp/kubie/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
                     curl -Lo kubie "https://github.com/sbstp/kubie/releases/latest/download/kubie-linux-amd64"
                     chmod +x kubie
-                    sudo install kubie /usr/local/bin/
+                    sudo install kubie /usr/local/bin/kubie
                     rm kubie
                 fi
                 
@@ -276,40 +267,10 @@ case "$OS" in
                     sudo apt install -y github-desktop
                 fi
                 ;;
-            rhel)
-                echo "Installing packages with yum/dnf..."
-                # Detect if system uses dnf (newer) or yum (older)
-                if command -v dnf >/dev/null 2>&1; then
-                    PKG_MGR="dnf"
-                else
-                    PKG_MGR="yum"
-                fi
-                
-                # Install basic packages
-                sudo $PKG_MGR install -y curl git neovim stow tmux tree fzf bat htop ImageMagick jq nmap ripgrep p7zip openssl
-                
-                echo "RHEL/Fedora support is basic. Many tools will be installed from GitHub releases."
-                echo "Consider using the GitHub releases installation methods for better tool coverage."
-                
-                # Note: Most other tools would need to be installed via GitHub releases
-                # This is a minimal implementation for RHEL-based systems
-                ;;
-            arch)
-                echo "Installing packages with pacman..."
-                # Update package database
-                sudo pacman -Sy
-                
-                # Install basic packages
-                sudo pacman -S --noconfirm curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip openssl
-                
-                echo "Arch Linux support is basic. Many tools will be installed from AUR or GitHub releases."
-                echo "Consider using an AUR helper like 'yay' for better tool coverage."
-                
-                # Note: Many tools are available in AUR but this script doesn't use AUR helpers
-                ;;
             *)
                 echo "Package installation for $DISTRO not implemented yet"
-                echo "Please install packages manually or contribute to this script!"
+                echo "Only Debian/Ubuntu-based systems are supported."
+                echo "Please use a Debian/Ubuntu-based distribution or install packages manually."
                 echo ""
                 echo "Required packages for manual installation:"
                 echo "  curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip openssl"
