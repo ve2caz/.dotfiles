@@ -1,5 +1,5 @@
 # .dotfiles
-This directory contains the dotfiles for a development shell environment that works on both MacOS and Linux.
+This directory contains the dotfiles for a development shell environment that works on both MacOS and Debian/Ubuntu Linux.
 
 ## 🚀 Quick Setup
 

@@ -46,8 +46,8 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 | [**nmap**](https://nmap.org/) | Network discovery and security auditing utility |
 | [**ipcalc**](https://github.com/kjokjo/ipcalc) | Calculate various network masks from IP addresses |
 | [**imagemagick**](https://imagemagick.org/) | Tools and libraries to manipulate images |
-| [**sevenzip**](https://www.7-zip.org/) | File archiver with high compression ratio (p7zip-full on Linux) |
-| [**poppler-utils**](https://poppler.freedesktop.org/) | PDF rendering utilities (Linux) |
+| [**sevenzip**](https://www.7-zip.org/) | File archiver with high compression ratio (Debian/Ubuntu: p7zip-full) |
+| [**poppler-utils**](https://poppler.freedesktop.org/) | PDF rendering utilities (Debian/Ubuntu) |
 
 ## Terminal and Productivity
 | Tool | Description |

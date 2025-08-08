@@ -1,5 +1,8 @@
 #!/bin/bash
+
 # Check which tools from the dotfiles are installed and available
+# Only MacOS and Debian/Ubuntu Linux are supported by the install script.
+#
 
 echo "=== Dotfiles Tool Installation Check ==="
 echo ""
