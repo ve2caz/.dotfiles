@@ -1,0 +1,156 @@
+gui:
+  scrollHeight: 2
+  language: auto
+  theme:
+    # Tokyo Night theme colors for lazydocker
+    activeBorderColor: 
+      - '#7aa2f7'  # blue
+      - bold
+    inactiveBorderColor: 
+      - '#565f89'  # comment
+    optionsTextColor: 
+      - '#7aa2f7'  # blue
+    selectedLineBgColor: 
+      - '#283457'  # visual selection
+    selectedRangeBgColor: 
+      - '#283457'  # visual selection
+    menuBgColor: 
+      - '#1a1b26'  # background
+    menuFgColor: 
+      - '#c0caf5'  # foreground
+    defaultFgColor: 
+      - '#c0caf5'  # foreground
+    unstagedChangesColor: 
+      - '#f7768e'  # red
+    # Status colors
+    lightTheme: false
+  returnImmediately: false
+  wrapMainPanel: false
+  mouseclicks: true
+  sidePanelWidth: 0.3333
+  expandedSidePanel: false
+  screenMode: normal
+  splitMainPanel: false
+
+reporting: off
+
+commandTemplates:
+  dockerCompose: docker-compose
+  dockerComposeFile: docker-compose.yml
+  restartService: '{{ .DockerCompose }} restart {{ .Service.Name }}'
+  upService: '{{ .DockerCompose }} up -d {{ .Service.Name }}'
+  downService: '{{ .DockerCompose }} stop {{ .Service.Name }}'
+  serviceTop: '{{ .DockerCompose }} top {{ .Service.Name }}'
+  viewServiceLogs: '{{ .DockerCompose }} logs --follow {{ .Service.Name }}'
+  rebuildService: '{{ .DockerCompose }} up -d --build {{ .Service.Name }}'
+  recreateService: '{{ .DockerCompose }} up -d --force-recreate {{ .Service.Name }}'
+  allLogs: '{{ .DockerCompose }} logs --tail=300 --follow'
+  viewAlLogs: '{{ .DockerCompose }} logs'
+  dockerComposeConfig: '{{ .DockerCompose }} config'
+  checkDockerComposeConfig: '{{ .DockerCompose }} config --quiet'
+  serviceConfigFile: '{{ .DockerCompose }} config | grep -A 10 -B 10 {{ .Service.Name }}'
+
+logs:
+  timestamps: false
+  since: '60m'
+  tail: '300'
+
+refreshInterval: 2
+
+confirmOnQuit: false
+
+os:
+  openCommand: open {{filename}}
+  openLinkCommand: open {{link}}
+
+stats:
+  graphs:
+    - caption: CPU (%)
+      statPath: DerivedStats.CPUPercentage
+      color: '#7aa2f7'  # blue
+    - caption: Memory (%)
+      statPath: DerivedStats.MemoryPercentage  
+      color: '#bb9af7'  # purple
+  maxDuration: 24h
+
+# Update settings
+update:
+  method: prompt
+  days: 14
+
+# Custom commands
+customCommands:
+  containers:
+    - name: 'bash'
+      attach: true
+      command: 'docker exec -it {{ .Container.Name }} /bin/bash'
+      serviceNames: []
+    - name: 'sh (fallback)'
+      attach: true  
+      command: 'docker exec -it {{ .Container.Name }} /bin/sh'
+      serviceNames: []
+    - name: 'htop'
+      attach: true
+      command: 'docker exec -it {{ .Container.Name }} htop'
+      serviceNames: []
+  services:
+    - name: 'bash'
+      attach: true
+      command: 'docker-compose exec {{ .Service.Name }} /bin/bash'
+      serviceNames: []
+    - name: 'sh (fallback)'
+      attach: true
+      command: 'docker-compose exec {{ .Service.Name }} /bin/sh'
+      serviceNames: []
+  images:
+    - name: 'dive'
+      command: 'dive {{ .Image.ID }}'
+      serviceNames: []
+
+# Keybindings (similar to lazygit)
+keybinding:
+  quit: 'q'
+  quit2: '<c-c>'
+  return: '<esc>'
+  quitWithoutChangingDirectory: 'Q'
+  togglePanel: '<tab>'
+  prevItem: '<up>'
+  nextItem: '<down>'
+  prevItemAlt: 'k'
+  nextItemAlt: 'j'  
+  prevPage: ','
+  nextPage: '.'
+  gotoTop: '<'
+  gotoBottom: '>'
+  prevBlock: '<left>'
+  nextBlock: '<right>'
+  prevBlockAlt: 'h'
+  nextBlockAlt: 'l'
+  nextMatch: 'n'
+  prevMatch: 'N'
+  optionMenu: 'x'
+  select: '<space>'
+  goInto: '<enter>'
+  confirm: '<enter>'
+  confirmAlt: 'y'
+  remove: 'd'
+  edit: 'e'
+  openFile: 'o'
+  scrollUpMain: '<pgup>'
+  scrollDownMain: '<pgdown>'
+  scrollUpMainAlt1: 'K'
+  scrollDownMainAlt1: 'J'
+  scrollUpMainAlt2: '<c-u>'
+  scrollDownMainAlt2: '<c-d>'
+  executeShellCommand: ':'
+  createRebaseOptionsMenu: 'm'
+  pushFiles: 'P'
+  pullFiles: 'p'
+  refresh: 'R'
+  nextTab: ']'
+  prevTab: '['
+  nextScreenMode: '+'
+  prevScreenMode: '_'
+  copyToClipboard: '<c-o>'
+  submitEditorText: '<enter>'
+  extrasMenu: '@'
