@@ -1,5 +1,11 @@
 # .zprofile - Zsh profile configuration
 
+# Set up XDG Base Directory Specification
+# These environment variables should be available to all processes
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+
 # Locale Configuration
 # Ensure consistent locale settings for all applications including VS Code
 export LANG="en_US.UTF-8"

@@ -87,27 +87,27 @@ case "$OS" in
                 
                 # Install Nerd Fonts (equivalents of cask fonts from MacOS)
                 echo "Installing Nerd Fonts..."
-                if [ ! -d ~/.local/share/fonts ]; then
-                    mkdir -p ~/.local/share/fonts
+                if [ ! -d "${XDG_DATA_HOME:-${HOME}/.local/share}/fonts" ]; then
+                    mkdir -p "${XDG_DATA_HOME:-${HOME}/.local/share}/fonts"
                 fi
                 
                 # Install MesloLG Nerd Font
-                if [ ! -f ~/.local/share/fonts/MesloLGSNerdFontMono-Regular.ttf ]; then
+                if [ ! -f "${XDG_DATA_HOME:-${HOME}/.local/share}/fonts/MesloLGSNerdFontMono-Regular.ttf" ]; then
                     cd /tmp
                     wget -q https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip
                     unzip -q Meslo.zip -d meslo-font
-                    cp meslo-font/*.ttf ~/.local/share/fonts/
+                    cp meslo-font/*.ttf "${XDG_DATA_HOME:-${HOME}/.local/share}/fonts/"
                     rm -rf Meslo.zip meslo-font
                     fc-cache -fv >/dev/null 2>&1
                     echo "MesloLG Nerd Font installed"
                 fi
                 
                 # Install Symbols Only Nerd Font
-                if [ ! -f ~/.local/share/fonts/SymbolsNerdFontMono-Regular.ttf ]; then
+                if [ ! -f "${XDG_DATA_HOME:-${HOME}/.local/share}/fonts/SymbolsNerdFontMono-Regular.ttf" ]; then
                     cd /tmp
                     wget -q https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
                     unzip -q NerdFontsSymbolsOnly.zip -d symbols-font
-                    cp symbols-font/*.ttf ~/.local/share/fonts/
+                    cp symbols-font/*.ttf "${XDG_DATA_HOME:-${HOME}/.local/share}/fonts/"
                     rm -rf NerdFontsSymbolsOnly.zip symbols-font
                     fc-cache -fv >/dev/null 2>&1
                     echo "Symbols Only Nerd Font installed"

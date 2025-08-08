@@ -111,6 +111,20 @@ To apply the consistent Tokyo Night theme across all tools:
 - ✅ Color schemes and completions
 - ✅ Key bindings and aliases
 - ✅ Smart fallbacks for GNU/BSD tool differences
+- ✅ XDG Base Directory Specification compliance
+
+## XDG Base Directory Compliance
+
+This configuration follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) to keep your home directory clean:
+
+- **Config files**: `$XDG_CONFIG_HOME` (default: `~/.config`)
+- **Data files**: `$XDG_DATA_HOME` (default: `~/.local/share`)  
+- **Cache files**: `$XDG_CACHE_HOME` (default: `~/.cache`)
+
+Key XDG improvements:
+- Zsh history moved to `$XDG_DATA_HOME/zsh/history`
+- Powerlevel10k config in `$XDG_CONFIG_HOME/p10k/config.zsh`
+- All themes and data properly organized in XDG directories
 
 ## Included Tools
 

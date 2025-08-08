@@ -20,7 +20,7 @@
 | `:list-sessions` | List all sessions | ✅ |
 | `:kill-session -t <name>` | Kill specific session | ✅ |
 | `:kill-server` | Kill tmux server and all sessions | ✅ |
-| `:source-file ~/.tmux.conf` | Reload configuration file | ✅ |
+| `:source-file ${XDG_CONFIG_HOME}/tmux/tmux.conf` | Reload configuration file | ✅ |
 | `:show-options -g` | Show global options | ✅ |
 | `:list-keys` | List all key bindings | ✅ |
 
