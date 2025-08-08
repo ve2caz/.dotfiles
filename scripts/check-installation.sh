@@ -104,8 +104,49 @@ else
 fi
 echo ""
 
+# Check asdf plugins
+echo "--- asdf Plugins ---"
+# First check if asdf is available
+if command -v asdf >/dev/null 2>&1; then
+    # Define the list of expected plugins
+    ASDF_PLUGINS=(
+        "golang"
+        "gradle"
+        "java"
+        "kind"
+        "kotlin"
+        "krew"
+        "kubectl"
+        "maven"
+        "nodejs"
+        "python"
+        "rust"
+    )
+    
+    # Get installed plugins
+    INSTALLED_PLUGINS=$(asdf plugin list 2>/dev/null)
+    FOUND=0
+    TOTAL=${#ASDF_PLUGINS[@]}
+    
+    # Check each plugin
+    for plugin in "${ASDF_PLUGINS[@]}"; do
+        if echo "$INSTALLED_PLUGINS" | grep -q "^${plugin}$"; then
+            echo "✅ $plugin"
+            ((FOUND++))
+        else
+            echo "❌ $plugin"
+        fi
+    done
+    
+    echo "   ($FOUND/$TOTAL plugins installed)"
+else
+    echo "❌ asdf is not installed or not available in PATH"
+fi
+echo ""
+
 # Summary
 echo "=== Summary ==="
 echo "Run './scripts/install-packages.sh' to install missing tools"
+echo "Run './scripts/setup-asdf-plugins.sh' to install missing asdf plugins"
 echo "Run 'stow .' to activate dotfiles configuration"  
 echo "Run 'exec zsh' to reload shell environment"
