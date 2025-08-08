@@ -1,10 +1,23 @@
 # VS Code shell integration - Load early to avoid conflicts with prompt
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+    # Disable Powerlevel10k instant prompt in VS Code to prevent conflicts
+    POWERLEVEL9K_INSTANT_PROMPT=off
+    # Load VS Code shell integration
+    if command -v code >/dev/null 2>&1; then
+        local vscode_shell_integration="$(code --locate-shell-integration-path zsh 2>/dev/null)"
+        if [[ -r "$vscode_shell_integration" ]]; then
+            source "$vscode_shell_integration"
+        fi
+    fi
+    # Alternative: Set shell integration environment variables manually if automatic detection fails
+    export VSCODE_SHELL_INTEGRATION=1
+fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+# Disable instant prompt in VS Code to avoid shell integration conflicts
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] && [[ "$TERM_PROGRAM" != "vscode" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
