@@ -59,6 +59,22 @@ zinit light Aloxaf/fzf-tab
 #   - ddg <query> - Search DuckDuckGo
 zinit light sinetoami/web-search
 
+# asdf version manager - Setup completions before compinit
+# Installation is handled by install-packages.sh script
+if command -v asdf >/dev/null 2>&1; then
+    # Ensure completions directory exists (using XDG compliant path)
+    local asdf_completions_dir="${ASDF_DATA_DIR:-$HOME/.asdf}/completions"
+    [[ ! -d "$asdf_completions_dir" ]] && mkdir -p "$asdf_completions_dir"
+    
+    # Generate completion file if it doesn't exist or asdf has been updated
+    if [[ ! -f "$asdf_completions_dir/_asdf" ]] || [[ "$asdf_completions_dir/_asdf" -ot "$(command -v asdf)" ]]; then
+        asdf completion zsh > "$asdf_completions_dir/_asdf"
+    fi
+    
+    # Append completions to fpath
+    fpath=("$asdf_completions_dir" $fpath)
+fi
+
 # Load tab completions
 autoload -U compinit && compinit
 zinit cdreplay -q
