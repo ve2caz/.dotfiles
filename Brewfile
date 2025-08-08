@@ -1,3 +1,7 @@
+# Distributed revision control system
+brew "git"
+# Extendable version manager with support for Ruby, Node.js, Erlang & more
+brew "asdf"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -18,8 +22,6 @@ brew "ffmpegthumbnailer"
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
-# Distributed revision control system
-brew "git"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
 # Improved top (interactive process viewer)
