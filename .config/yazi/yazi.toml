@@ -12,6 +12,7 @@ sort_translit  = false
 linemode       = "none"
 show_hidden    = true
 show_symlink   = true
+show_ignore    = [".git/"]
 scrolloff      = 5
 mouse_events   = [ "click", "scroll" ]
 title_format   = "Yazi: {cwd}"
