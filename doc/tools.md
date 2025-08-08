@@ -3,6 +3,7 @@
 This dotfiles configuration includes a curated set of modern command-line tools:
 
 ## Core Development Tools
+- [**asdf**](https://github.com/asdf-vm/asdf) - Multi-language runtime version manager (manage Node.js, Python, Ruby, etc.)
 - [**git**](https://git-scm.com/) - Distributed version control system
 - [**git-delta**](https://github.com/dandavison/delta) - Syntax-highlighting pager for git and diff output (pre-configured in `.gitconfig`)
 - [**gh**](https://github.com/cli/cli) - GitHub command-line tool for repository management

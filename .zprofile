@@ -32,3 +32,9 @@ case "$(uname -s)" in
         done
         ;;
 esac
+
+# ASDF version manager - Add shims to PATH (cross-platform)
+# Only add to PATH if ASDF directory exists
+if [[ -d "${ASDF_DATA_DIR:-$HOME/.asdf}" ]]; then
+    export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+fi

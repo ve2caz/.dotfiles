@@ -80,6 +80,7 @@ brew bundle
 The `scripts/install-packages.sh` script handles Linux package installation automatically, but if you prefer manual installation, here are the main packages needed:
 
 - **Core tools**: `curl git neovim stow tmux tree fzf bat fd-find htop imagemagick jq nmap ripgrep p7zip-full openssl`
+- **Version managers**: `asdf`
 - **Special installations**: `eza`, `zoxide`, `thefuck`, `gh`, `lazygit`, `git-delta`, `tlrc`, `tpm`, `yazi`, `wezterm`, `btop`, `yq`, `k9s`, `kubie`, `lazydocker`
 - **Fonts**: `MesloLG Nerd Font`, `Symbols Only Nerd Font` (installed to `~/.local/share/fonts`)
 - **GUI Applications**: `GitHub Desktop` (optional)
@@ -136,6 +137,7 @@ The automated installation script (`./scripts/install-packages.sh`) will:
 
 ### On Linux:
 - Install packages via distribution package manager (apt/yum/pacman)
+- Install asdf via git clone from official repository
 - Download and install tools not available in repos (from GitHub releases)
 - Install Nerd Fonts to user font directory
 - Optionally install GitHub Desktop via third-party repository

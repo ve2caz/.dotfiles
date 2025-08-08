@@ -158,8 +158,15 @@ case "$OS" in
                     fi
                 fi
                 
+                # asdf (version manager)
+                if [ ! -d "${ASDF_DATA_DIR:-$HOME/.asdf}" ]; then
+                    echo "Installing asdf version manager..."
+                    git clone https://github.com/asdf-vm/asdf.git "${ASDF_DATA_DIR:-$HOME/.asdf}" --branch v0.14.0
+                    echo "asdf installed. You may need to restart your shell to use it."
+                fi
+                
                 # tpm (Tmux Plugin Manager)
-                if [ ! -d "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tpm" ]; then
+                if [ ! -d "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tmp" ]; then
                     mkdir -p "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins"
                     git clone https://github.com/tmux-plugins/tpm "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tpm"
                 fi
