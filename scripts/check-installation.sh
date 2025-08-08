@@ -37,7 +37,7 @@ check_category() {
 CORE_TOOLS=(
     "curl" "HTTP client"
     "git" "Version control" 
-    "neovim" "Text editor"
+    "nvim" "Text editor (neovim)"
     "stow" "Symlink manager"
     "tmux" "Terminal multiplexer"
     "tree" "Directory tree view"
@@ -46,7 +46,7 @@ CORE_TOOLS=(
     "htop" "Process monitor"
     "jq" "JSON processor"
     "nmap" "Network scanner"
-    "ripgrep" "Fast text search"
+    "rg" "Fast text search (ripgrep)"
 )
 
 MODERN_CLI=(
