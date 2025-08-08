@@ -36,7 +36,7 @@ wezterm.on('window-resized', function(window, pane)
     overrides.background = {
       {
         source = {
-          File = config_dir .. "/.wezterm/ai-generated-8136169_1280.png",
+          File = config_dir .. "/ai-generated-8136169_1280.png",
         },
         hsb = {
           hue = 1.0,
