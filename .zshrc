@@ -1,14 +1,8 @@
-# Set up XDG Base Directory Specification
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
-
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-
-if [[ -r "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Zinit is a flexible and fast Zshell plugin manager.
@@ -53,8 +47,8 @@ zinit light sinetoami/web-search
 autoload -U compinit && compinit
 zinit cdreplay -q
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# To customize prompt, run `p10k configure` or edit ~/.config/p10k/config.zsh.
+[[ ! -f "${XDG_CONFIG_HOME}/p10k/config.zsh" ]] || source "${XDG_CONFIG_HOME}/p10k/config.zsh"
 
 # Keybindings
 bindkey -e                                                               # Use Emacs-style key bindings
@@ -63,7 +57,7 @@ bindkey '^n' history-search-forward                                      # Ctrl+
 bindkey '^[w' kill-region                                                # Alt+W: Cut/kill selected region
 
 # History
-HISTFILE=~/.zsh_history                                                  # File to save command history
+HISTFILE="${XDG_DATA_HOME}/zsh/history"                                  # File to save command history (XDG compliant)
 HISTSIZE=5000                                                            # Number of commands to keep in memory
 SAVEHIST=$HISTSIZE                                                       # Number of commands to save to HISTFILE
 HISTDUP=erase                                                            # Remove older duplicate commands from history
