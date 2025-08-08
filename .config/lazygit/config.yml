@@ -1,0 +1,164 @@
+git:
+  paging:
+    colorArg: always
+  merging:
+    # only applicable to unix users
+    manualCommit: false
+  skipHookPrefix: WIP
+  mainBranches: [main, master]
+  autoFetch: true
+  autoRefresh: true
+  fetchAll: true
+  branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --
+  overrideGpg: false
+  disableForcePushing: false
+  commitPrefixes: {}
+  truncateCopiedCommitHashesTo: 12
+  allBranchesLogCmds:
+    - git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium
+gui:
+  # stuff relating to the UI
+  scrollHeight: 2
+  scrollPastBottom: true
+  sidePanelWidth: 0.3333
+  expandFocusedSidePanel: false
+  mainPanelSplitMode: flexible
+  enlargedSideViewLocation: left
+  border: rounded
+  showIcons: true
+  nerdFontsVersion: 3
+  showBranchCommitHash: false
+  showDivergenceFromBaseBranch: arrowAndNumber
+  commandLogSize: 8
+  splitDiff: auto
+  theme:
+    # Tokyo Night theme colors for lazygit
+    lightTheme: false
+    activeBorderColor:
+      - '#7aa2f7'  # blue
+      - bold
+    inactiveBorderColor:
+      - '#565f89'  # comment
+    searchingActiveBorderColor:
+      - '#ff9e64'  # orange
+    optionsTextColor:
+      - '#7aa2f7'  # blue
+    selectedLineBgColor:
+      - '#283457'  # visual selection
+    selectedRangeBgColor:
+      - '#283457'  # visual selection
+    cherryPickedCommitBgColor:
+      - '#414868'  # darker blue
+    cherryPickedCommitFgColor:
+      - '#7aa2f7'  # blue
+    markedBaseCommitBgColor:
+      - '#414868'  # darker blue
+    markedBaseCommitFgColor:
+      - '#7aa2f7'  # blue
+    unstagedChangesColor:
+      - '#f7768e'  # red
+    defaultFgColor:
+      - '#c0caf5'  # foreground
+    # Diff colors
+    diffAddedBgColor:
+      - '#20303b'  # dark green bg
+    diffAddedFgColor:
+      - '#73daca'  # teal
+    diffRemovedBgColor:
+      - '#37222c'  # dark red bg
+    diffRemovedFgColor:
+      - '#f7768e'  # red
+    diffModifiedBgColor:
+      - '#2d2a2e'  # neutral bg
+    diffModifiedFgColor:
+      - '#e0af68'  # yellow
+    # Status colors
+    conflictForegroundColor:
+      - '#f7768e'  # red
+    conflictBackgroundColor:
+      - '#37222c'  # dark red bg
+    # Branch colors
+    branchColor:
+      - '#9ece6a'  # green
+  commitLength:
+    show: true
+  mouseEvents: true
+  skipDiscardChangeWarning: false
+  skipStashWarning: false
+  showFileTree: true
+  showListFooter: true
+  showRandomTip: true
+  showCommandLog: false
+update:
+  method: prompt
+  days: 14
+refresher:
+  refreshInterval: 10
+  fetchInterval: 60
+confirmOnQuit: false
+quitOnTopLevelReturn: false
+keybinding:
+  universal:
+    quit: 'q'
+    quit-alt1: '<c-c>'
+    return: '<esc>'
+    quitWithoutChangingDirectory: 'Q'
+    togglePanel: '<tab>'
+    prevItem: '<up>'
+    nextItem: '<down>'
+    prevItem-alt: 'k'
+    nextItem-alt: 'j'
+    prevPage: ','
+    nextPage: '.'
+    gotoTop: '<'
+    gotoBottom: '>'
+    scrollLeft: 'H'
+    scrollRight: 'L'
+    prevBlock: '<left>'
+    nextBlock: '<right>'
+    prevBlock-alt: 'h'
+    nextBlock-alt: 'l'
+    jumpToBlock: ['1', '2', '3', '4', '5']
+    nextMatch: 'n'
+    prevMatch: 'N'
+    optionMenu: 'x'
+    optionMenu-alt1: '?'
+    select: '<space>'
+    goInto: '<enter>'
+    openRecentRepos: '<c-r>'
+    confirm: '<enter>'
+    confirm-alt1: 'y'
+    remove: 'd'
+    new: 'n'
+    edit: 'e'
+    openFile: 'o'
+    scrollUpMain: '<pgup>'
+    scrollDownMain: '<pgdown>'
+    scrollUpMain-alt1: 'K'
+    scrollDownMain-alt1: 'J'
+    scrollUpMain-alt2: '<c-u>'
+    scrollDownMain-alt2: '<c-d>'
+    executeShellCommand: ':'
+    createRebaseOptionsMenu: 'm'
+    pushFiles: 'P'
+    pullFiles: 'p'
+    refresh: 'R'
+    createPatchOptionsMenu: '<c-p>'
+    nextTab: ']'
+    prevTab: '['
+    nextScreenMode: '+'
+    prevScreenMode: '_'
+    undo: 'z'
+    redo: '<c-z>'
+    filteringMenu: '<c-s>'
+    diffingMenu: 'W'
+    diffingMenu-alt: '<c-e>'
+    copyToClipboard: '<c-o>'
+    submitEditorText: '<enter>'
+    appendNewline: '<a-enter>'
+    extrasMenu: '@'
+    toggleWhitespaceInDiffView: '<c-w>'
+    increaseContextInDiffView: '}'
+    decreaseContextInDiffView: '{'
+os:
+  editPreset: ''
