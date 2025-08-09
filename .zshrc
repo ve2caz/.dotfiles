@@ -134,7 +134,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"                  # Use L
 # System shortcuts
 alias cls='clear'                                                        # Clear screen shortcut
 
-# File listing with eza (modern ls replacement) - Only if eza is available
+# File listing with eza (modern ls replacement)
 if command -v eza >/dev/null 2>&1; then
     alias ls='eza --color=auto --group-directories-first'                # Basic listing with auto color, directories first
     alias l='eza -lh --color=auto --group-directories-first'             # Long format including hidden files
@@ -181,7 +181,7 @@ else
     alias diff='diff --color=auto'                                       # Use colored diff in interactive shells
 fi
 
-# Development tooling - Only alias if tools are available
+# Development tooling
 if command -v yazi >/dev/null 2>&1; then
     function fm() {                                                      # Use yazi for file management
         local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
