@@ -27,8 +27,9 @@ open -a "Safari" "https://brew.sh"
 Most distributions come with git pre-installed. If not:
 
 ```bash
+
 # Ubuntu/Debian
-sudo apt update && sudo apt install git
+sudo apt update && sudo apt install git direnv
 
 # RHEL/CentOS/Fedora
 sudo yum install git

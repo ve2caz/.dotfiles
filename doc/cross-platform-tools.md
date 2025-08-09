@@ -34,6 +34,7 @@ This document details how tools from the MacOS `Brewfile` are installed on Linux
 | `brew "ripgrep"` | `apt install ripgrep` | System package |
 | `brew "sevenzip"` | `apt install p7zip-full` | System package (different name) |
 | `brew "stow"` | `apt install stow` | System package |
+| `brew "direnv"` | `apt install direnv` | System package |
 | `brew "thefuck"` | `pip3 install --user thefuck` | Python package |
 | `brew "tlrc"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "tmux"` | `apt install tmux` | System package |

@@ -50,6 +50,7 @@ CORE_TOOLS=(
     "jq" "JSON processor"
     "nmap" "Network scanner"
     "rg" "Fast text search (ripgrep)"
+    "direnv" "Environment variable manager"
 )
 
 MODERN_CLI=(

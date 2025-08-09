@@ -54,6 +54,7 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 |------|-------------|
 | [**tmux**](https://github.com/tmux/tmux) | Terminal multiplexer for session management |
 | [**tpm**](https://github.com/tmux-plugins/tpm) | Plugin manager for tmux |
+| [**direnv**](https://direnv.net/) | Environment variable manager for project-specific environments |
 | [**thefuck**](https://github.com/nvbn/thefuck) | Corrects mistyped console commands |
 | [**wezterm**](https://github.com/wez/wezterm) | GPU-accelerated cross-platform terminal emulator |
 
