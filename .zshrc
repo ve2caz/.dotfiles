@@ -164,9 +164,17 @@ fi
 alias more='less -R'                                                     # Use less with color support instead of more
 
 # Text processing and search commands with color support  
-alias grep='grep --color=auto'                                           # Enable colored output for grep
-alias egrep='egrep --color=auto'                                         # Enable colored output for extended grep
-alias fgrep='fgrep --color=auto'                                         # Enable colored output for fixed string grep
+if command -v rg >/dev/null 2>&1; then
+    # Use ripgrep for fast, recursive, colorized searching
+    alias rg='rg --color=auto --line-number --hidden --smart-case'
+    alias grep='rg --color=auto --line-number --hidden --smart-case'
+    alias egrep='rg --color=auto --line-number --hidden --smart-case -E'
+    alias fgrep='rg --color=auto --line-number --hidden --smart-case -F'
+else
+    alias grep='grep --color=auto'                                       # Enable colored output for grep
+    alias egrep='egrep --color=auto'                                     # Enable colored output for extended grep
+    alias fgrep='fgrep --color=auto'                                     # Enable colored output for fixed string grep
+fi
 alias diff='diff --color=auto'                                           # Enable colored output for diff
 
 # Development tooling - Only alias if tools are available
