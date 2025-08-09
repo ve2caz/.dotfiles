@@ -175,7 +175,11 @@ else
     alias egrep='egrep --color=auto'                                     # Enable colored output for extended grep
     alias fgrep='fgrep --color=auto'                                     # Enable colored output for fixed string grep
 fi
-alias diff='diff --color=auto'                                           # Enable colored output for diff
+if command -v delta >/dev/null 2>&1; then
+    alias diff='delta'                                                   # Use delta for interactive diffs
+else
+    alias diff='diff --color=auto'                                       # Use colored diff in interactive shells
+fi
 
 # Development tooling - Only alias if tools are available
 if command -v yazi >/dev/null 2>&1; then
