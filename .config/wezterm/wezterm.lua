@@ -4,6 +4,21 @@ local wezterm = require("wezterm")
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
+-- Config choices
+
+-- Tokyo Night colorscheme for consistency across tools
+config.colors = {
+	foreground = "#c0caf5",
+	background = "#1a1b26",
+	cursor_bg = "#c0caf5",
+	cursor_border = "#c0caf5",
+	cursor_fg = "#1a1b26",
+	selection_bg = "#283457",
+	selection_fg = "#c0caf5",
+	ansi = { "#15161e", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6" },
+	brights = { "#414868", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5" },
+}
+
 -- Get the directory where this config file is located
 local config_dir = wezterm.config_dir
 
@@ -11,8 +26,6 @@ local config_dir = wezterm.config_dir
 local function is_fullscreen(window)
   return window:get_dimensions().is_full_screen
 end
-
--- Config choices
 
 config.font = wezterm.font("MesloLGS Nerd Font Mono")
 config.font_size = 15
@@ -59,18 +72,7 @@ wezterm.on('window-resized', function(window, pane)
   window:set_config_overrides(overrides)
 end)
 
--- Tokyo Night colorscheme for consistency across tools
-config.colors = {
-	foreground = "#c0caf5",
-	background = "#1a1b26",
-	cursor_bg = "#c0caf5",
-	cursor_border = "#c0caf5",
-	cursor_fg = "#1a1b26",
-	selection_bg = "#283457",
-	selection_fg = "#c0caf5",
-	ansi = { "#15161e", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6" },
-	brights = { "#414868", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5" },
-}
+
 
 -- and finally, return the configuration to wezterm
 return config
