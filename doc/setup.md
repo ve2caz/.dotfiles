@@ -100,7 +100,7 @@ To apply the consistent Tokyo Night theme across all tools:
 ## What works cross-platform
 
 - ✅ Zsh configuration with Zinit plugin manager
-- ✅ Powerlevel10k prompt
+- ✅ Starship prompt
 - ✅ Modern CLI tools (eza, fzf, bat, fd, zoxide, yazi, etc.)
 - ✅ Color schemes and completions
 - ✅ Key bindings and aliases
@@ -117,7 +117,7 @@ This configuration follows the [XDG Base Directory Specification](https://specif
 
 Key XDG improvements:
 - Zsh history moved to `$XDG_DATA_HOME/zsh/history`
-- Powerlevel10k config in `$XDG_CONFIG_HOME/p10k/config.zsh`
+- Starship config in `$XDG_CONFIG_HOME/starship.toml`
 - All themes and data properly organized in XDG directories
 
 ## Included Tools
