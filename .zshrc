@@ -1,7 +1,5 @@
 # VS Code shell integration - Load early to avoid conflicts with prompt
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-    # Disable Powerlevel10k instant prompt in VS Code to prevent conflicts
-    POWERLEVEL9K_INSTANT_PROMPT=off
     # Load VS Code shell integration
     if command -v code >/dev/null 2>&1; then
         local vscode_shell_integration="$(code --locate-shell-integration-path zsh 2>/dev/null)"
@@ -11,14 +9,6 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
     fi
     # Alternative: Set shell integration environment variables manually if automatic detection fails
     export VSCODE_SHELL_INTEGRATION=1
-fi
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# Disable instant prompt in VS Code to avoid shell integration conflicts
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] && [[ "$TERM_PROGRAM" != "vscode" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Zinit is a flexible and fast Zshell plugin manager.
@@ -37,11 +27,10 @@ TPM_HOME="${XDG_DATA_HOME}/tmux/plugins/tpm"
 # Set the directory to store fzf-git
 FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"
 
-# bat is a cat clone with syntax highlighting and Git integration.
-# Theme installation is handled by setup-tokyo-night-theme.sh script
-
-# Add Powerlevel10k prompts
-zinit ice depth=1; zinit light romkatv/powerlevel10k
+# Starship is a cross-shell, fast, and highly customizable prompt.
+# Installation is handled by install-packages.sh script
+# Initialize the Starship prompt
+eval "$(starship init zsh)"
 
 # Add zsh plugins
 zinit light zsh-users/zsh-completions
@@ -78,9 +67,6 @@ fi
 # Load tab completions
 autoload -U compinit && compinit
 zinit cdreplay -q
-
-# To customize prompt, run `p10k configure` or edit ~/.config/p10k/config.zsh.
-[[ ! -f "${XDG_CONFIG_HOME}/p10k/config.zsh" ]] || source "${XDG_CONFIG_HOME}/p10k/config.zsh"
 
 # Keybindings
 bindkey -e                                                               # Use Emacs-style key bindings

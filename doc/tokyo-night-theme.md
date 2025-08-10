@@ -26,7 +26,7 @@ All theme files and configurations are stored according to XDG standards:
 | **btop** | `tokyo-night` theme | ✅ Configured |
 | **yazi** | `tokyo-night` flavor | ✅ Configured |
 | **tmux** | Powerline blue (Tokyo Night compatible) | ✅ Configured |
-| **Powerlevel10k** | Custom Tokyo Night colors | ✅ Configured |
+| **Starship** | Tokyo Night theme | ✅ Configured |
 | **htop** | Color scheme 6 (compatible) | ✅ Configured |
 
 ## Setup
@@ -55,15 +55,13 @@ $XDG_CONFIG_HOME/
 ├── bat/themes/           # bat syntax highlighting themes
 ├── btop/                 # btop system monitor config
 ├── yazi/flavors/         # yazi file manager themes
-└── colors/               # central color definitions
+├── colors/               # central color definitions
+└── starship.toml         # stasrship config
 
 $XDG_DATA_HOME/
 ├── zinit/                # zsh plugin manager data
 ├── tmux/plugins/         # tmux plugins
 └── fzf-git/              # fzf-git integration
-
-$XDG_CACHE_HOME/
-└── p10k-instant-prompt-* # powerlevel10k cache files
 ```
 
 ## Customization

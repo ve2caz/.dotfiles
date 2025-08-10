@@ -71,7 +71,7 @@ case "$OS" in
                 sudo apt update
                 # Install packages that are available via apt (zsh handled separately above)
                 # Note: coreutils (GNU File, Shell, and Text utilities) are included by default on Linux
-                sudo apt install -y curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip-full openssl direnv
+                sudo apt install -y curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip-full openssl direnv starship
                 
                 # Install packages that need special handling
                 echo "Installing additional packages..."
