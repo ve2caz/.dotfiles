@@ -3,4 +3,5 @@
 __pycache__/
 .config/bat/themes/
 .config/btop/themes/
+.config/gh/hosts.yml
 .DS_Store
