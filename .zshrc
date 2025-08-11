@@ -26,6 +26,7 @@ FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"
 # Installation is handled by install-packages.sh script
 # Initialize the Starship prompt
 eval "$(starship init zsh)"
+export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
 
 # Add zsh plugins
 zinit light zsh-users/zsh-completions
