@@ -156,12 +156,6 @@ case "$OS" in
                     echo "asdf installed. You may need to restart your shell to use it."
                 fi
                 
-                # tpm (Tmux Plugin Manager)
-                if [ ! -d "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tmp" ]; then
-                    mkdir -p "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins"
-                    git clone https://github.com/tmux-plugins/tpm "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tpm"
-                fi
-                
                 # yazi (terminal file manager)
                 if ! command -v yazi >/dev/null 2>&1; then
                     # Install from GitHub releases
@@ -286,6 +280,13 @@ case "$OS" in
         exit 1
         ;;
 esac
+
+# Install tpm (Tmux Plugin Manager) for both macOS and Linux
+if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
+    echo "Installing tpm (Tmux Plugin Manager)..."
+    mkdir -p "${HOME}/.tmux/plugins"
+    git clone https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
+fi
 
 echo "Package installation completed!"
 echo ""

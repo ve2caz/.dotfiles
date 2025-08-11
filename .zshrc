@@ -17,11 +17,6 @@ fi
 ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
-# TPM (Tmux Plugin Manager) is a plugin manager for tmux.
-# Installation is handled by install-packages.sh script
-# Set the directory for tpm (tmux plugin manager)
-TPM_HOME="${XDG_DATA_HOME}/tmux/plugins/tpm"
-
 # fzf-git is a collection of bash/zsh key bindings for Git that use fzf.
 # Installation is handled by install-packages.sh script
 # Set the directory to store fzf-git
