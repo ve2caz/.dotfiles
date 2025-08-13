@@ -1,3 +1,6 @@
+# .zshrc - Login, and Interactive Shells
+# echo "SOURCED .zshrc"
+
 # VS Code shell integration - Load early to avoid conflicts with prompt
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
     # Load VS Code shell integration
