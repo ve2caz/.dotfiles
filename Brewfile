@@ -1,9 +1,11 @@
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
+# Download with resuming and segmented downloading
+brew "aria2"
 # Distributed revision control system
 brew "git"
 # Extendable version manager with support for Ruby, Node.js, Erlang & more
 brew "asdf"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
@@ -66,6 +68,8 @@ brew "tmux"
 brew "tpm"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Best command-line tool to install and switch between multiple versions of Xcode
+brew "xcodes"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
