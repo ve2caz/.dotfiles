@@ -108,29 +108,31 @@ else
 fi
 echo ""
 
-# Check Zinit (Zshell Plugin Manager)
-echo "--- Zinit (Zshell Plugin Manager) ---"
-if [ -d "${XDG_DATA_HOME}/zinit/zinit.git" ]; then
-    echo "✅ Zinit (Zshell Plugin Manager)"
+
+# --- asdf binary detection (matches setup-asdf-plugins.sh) ---
+echo "--- asdf Binary Detection ---"
+ASDF_BIN=""
+if [ -x "/opt/homebrew/bin/asdf" ]; then
+    ASDF_BIN="/opt/homebrew/bin/asdf"
+elif [ -x "/usr/local/bin/asdf" ]; then
+    ASDF_BIN="/usr/local/bin/asdf"
+elif [ -n "$XDG_DATA_HOME" ] && [ -x "${XDG_DATA_HOME}/asdf/bin/asdf" ]; then
+    ASDF_BIN="${XDG_DATA_HOME}/asdf/bin/asdf"
+elif [ -x "$HOME/.asdf/bin/asdf" ]; then
+    ASDF_BIN="$HOME/.asdf/bin/asdf"
+fi
+
+if [ -n "$ASDF_BIN" ]; then
+    PATH="$(dirname "$ASDF_BIN"):$PATH"
+    echo "✅ asdf binary found at $ASDF_BIN"
 else
-    echo "❌ Zinit (Zshell Plugin Manager)"
+    echo "❌ asdf is not installed or not available in a known location."
 fi
 echo ""
 
-# Check tmux plugin manager
-echo "--- Tmux Plugin Manager ---"
-if [ -d "${HOME}/.tmux/plugins/tpm" ]; then
-    echo "✅ TPM (Tmux Plugin Manager)"
-else
-    echo "❌ TPM (Tmux Plugin Manager)"
-fi
-echo ""
-
-# Check asdf plugins
+# Check asdf plugins (if asdf is available)
 echo "--- asdf Plugins ---"
-# First check if asdf is available
 if command -v asdf >/dev/null 2>&1; then
-    # Define the list of expected plugins
     ASDF_PLUGINS=(
         "ctlptl"
         "golang"
@@ -151,13 +153,9 @@ if command -v asdf >/dev/null 2>&1; then
         "step"
         "tilt"
     )
-    
-    # Get installed plugins
     INSTALLED_PLUGINS=$(asdf plugin list 2>/dev/null)
     FOUND=0
     TOTAL=${#ASDF_PLUGINS[@]}
-    
-    # Check each plugin
     for plugin in "${ASDF_PLUGINS[@]}"; do
         if echo "$INSTALLED_PLUGINS" | grep -q "^${plugin}$"; then
             echo "✅ $plugin"
@@ -166,7 +164,6 @@ if command -v asdf >/dev/null 2>&1; then
             echo "❌ $plugin"
         fi
     done
-    
     echo "   ($FOUND/$TOTAL plugins installed)"
 else
     echo "❌ asdf is not installed or not available in PATH"

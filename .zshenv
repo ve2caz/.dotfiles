@@ -41,9 +41,10 @@ if [ -z "$__ZSHENV_SOURCED" ]; then
     esac
 
     # ASDF version manager - Add shims to PATH (cross-platform)
-    # Only add to PATH if ASDF directory exists
-    if [[ -d "${ASDF_DATA_DIR:-$HOME/.asdf}" ]]; then
-        export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+    # Default to ~/.asdf if ASDF_DATA_DIR is not set
+    _ASDF_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
+    if [[ -d "$_ASDF_DIR" ]]; then
+        export PATH="$_ASDF_DIR/shims:$PATH"
     fi
 
     # Enable direnv integration with zsh (cross-platform)
