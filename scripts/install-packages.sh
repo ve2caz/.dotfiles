@@ -304,6 +304,15 @@ if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
     git clone https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
 fi
 
+# Install fzf-git (fzf-git.sh) for all platforms
+FZFGIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/fzf-git"
+if [ ! -d "$FZFGIT_HOME" ]; then
+    echo "Installing fzf-git to $FZFGIT_HOME..."
+    git clone https://github.com/junegunn/fzf-git.sh.git "$FZFGIT_HOME"
+else
+    echo "fzf-git already installed at $FZFGIT_HOME."
+fi
+
 echo "Package installation completed!"
 echo ""
 echo "Installed tools are now available:"
