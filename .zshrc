@@ -38,9 +38,9 @@ zinit light sinetoami/web-search
 eval "$(starship init zsh)"
 
 # --- Completions ---
- # asdf version manager - Setup completions before compinit (XDG compliant)
+ # asdf version manager - Setup completions before compinit
 if command -v asdf >/dev/null 2>&1; then
-    ASDF_COMPLETIONS="${XDG_DATA_HOME}/asdf/completions"
+    ASDF_COMPLETIONS="$HOME/.asdf/completions"
     [[ ! -d "$ASDF_COMPLETIONS" ]] && mkdir -p "$ASDF_COMPLETIONS"
     if [[ ! -f "$ASDF_COMPLETIONS/_asdf" ]] || [[ "$ASDF_COMPLETIONS/_asdf" -ot "$(command -v asdf)" ]]; then
         asdf completion zsh > "$ASDF_COMPLETIONS/_asdf"
