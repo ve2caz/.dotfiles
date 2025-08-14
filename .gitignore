@@ -1,7 +1,7 @@
 # .gitignore
 __pycache__/
 .config/bat/themes/
-.config/btop/themes/
+
 .config/gh/hosts.yml
 .config/helm/repositories.lock
 .config/helm/repositories.yaml

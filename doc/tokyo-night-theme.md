@@ -23,7 +23,7 @@ All theme files and configurations are stored according to XDG standards:
 |------|-------------------|---------|
 | **WezTerm** | Custom Tokyo Night colorscheme | ✅ Configured |
 | **bat** | `tokyonight_night.tmTheme` | ✅ Auto-downloads |
-| **btop** | `tokyo-night` theme | ✅ Configured |
+| **btop** | `tokyo-night` theme (from local dotfiles) | ✅ Configured |
 | **yazi** | `tokyo-night` flavor | ✅ Configured |
 | **tmux** | Powerline blue (Tokyo Night compatible) | ✅ Configured |
 | **Starship** | Tokyo Night theme | ✅ Configured |

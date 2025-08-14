@@ -1,0 +1,52 @@
+# Tokyo Night theme for btop
+# https://github.com/catppuccin/btop or https://github.com/folke/tokyonight.nvim for reference
+
+# Main colors
+main_bg="#1a1b26"
+main_fg="#c0caf5"
+
+# Title and highlight
+hi_fg="#7aa2f7"
+hi_bg="#24283b"
+
+# Graphs
+graph_bg="#24283b"
+graph_fg="#7dcfff"
+
+# Meters
+meter_bg="#24283b"
+meter_fg="#bb9af7"
+
+# CPU
+cpu_fg="#7aa2f7"
+cpu_bg="#24283b"
+
+# Mem
+mem_fg="#9ece6a"
+mem_bg="#24283b"
+
+# Net
+net_fg="#7dcfff"
+net_bg="#24283b"
+
+# Proc
+proc_fg="#f7768e"
+proc_bg="#24283b"
+
+# Disk
+disk_fg="#e0af68"
+disk_bg="#24283b"
+
+# Temp
+temp_fg="#ff9e64"
+temp_bg="#24283b"
+
+# Borders
+border_fg="#565f89"
+border_bg="#1a1b26"
+
+# Misc
+accent="#7aa2f7"
+warning="#e0af68"
+critical="#f7768e"
+404: Not Found
