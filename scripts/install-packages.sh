@@ -156,13 +156,13 @@ case "$OS" in
                     fi
                 fi
                 
-                # asdf (version manager) - XDG compliant install
-                ASDF_XDG_DATA_HOME="${XDG_DATA_HOME}/asdf"
-                if [ ! -d "$ASDF_XDG_DATA_HOME" ]; then
-                    echo "Installing asdf (XDG compliant) to $ASDF_XDG_DATA_HOME..."
-                    git clone https://github.com/asdf-vm/asdf.git "$ASDF_XDG_DATA_HOME" --branch v0.18.0
+                # asdf (version manager) - official recommended install
+                ASDF_HOME="$HOME/.asdf"
+                if [ ! -d "$ASDF_HOME" ]; then
+                    echo "Installing asdf to $ASDF_HOME..."
+                    git clone https://github.com/asdf-vm/asdf.git "$ASDF_HOME" --branch v0.18.0
                 else
-                    echo "asdf already installed at $ASDF_XDG_DATA_HOME."
+                    echo "asdf already installed at $ASDF_HOME."
                 fi
                 
                 # yazi (terminal file manager)

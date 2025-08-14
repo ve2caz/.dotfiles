@@ -102,18 +102,19 @@ To apply the consistent Tokyo Night theme across all tools:
 - ✅ Zsh configuration with Zinit plugin manager
 - ✅ Starship prompt
 - ✅ Modern CLI tools (eza, fzf, bat, fd, zoxide, yazi, etc.)
-- ✅ Color schemes and completions
+- ✅ Color schemes and completions (asdf completions in `~/.asdf/completions`)
 - ✅ Key bindings and aliases
 - ✅ Smart fallbacks for GNU/BSD tool differences
 - ✅ XDG Base Directory Specification compliance
 
 ## XDG Base Directory Compliance
 
-This configuration follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) to keep your home directory clean:
+This configuration follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) to keep your home directory clean, with the exception of asdf, which is installed to `~/.asdf` as per official recommendations:
 
 - **Config files**: `$XDG_CONFIG_HOME` (default: `~/.config`)
-- **Data files**: `$XDG_DATA_HOME` (default: `~/.local/share`)  
+- **Data files**: `$XDG_DATA_HOME` (default: `~/.local/share`)
 - **Cache files**: `$XDG_CACHE_HOME` (default: `~/.cache`)
+- **asdf**: installed to `~/.asdf` and completions in `~/.asdf/completions` (official method)
 
 Key XDG improvements:
 - Zsh history moved to `$XDG_DATA_HOME/zsh/history`
@@ -145,7 +146,7 @@ The automated installation script (`./scripts/install-packages.sh`) will:
 
 ### On Linux (Debian/Ubuntu only):
 - Install packages via apt
-- Install asdf via git clone from official repository
+- Install asdf via git clone to `~/.asdf` (official method)
 - Download and install tools not available in repos (from GitHub releases)
 - Install Nerd Fonts to user font directory
 - Optionally install GitHub Desktop via third-party repository
