@@ -6,7 +6,14 @@
 # on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
 # to be available on MacOS and virtually all Linux distributions out of the box.
 
+# Ensure script exits on error
 set -e
+
+# XDG Base Directory Specification (externalized)
+_XDG_BASE_DIRS_FILE="$HOME/.zsh-xdg-base-dirs"
+if [ -f "$_XDG_BASE_DIRS_FILE" ]; then
+    source "$_XDG_BASE_DIRS_FILE"
+fi
 
 # Detect operating system
 OS="$(uname -s)"
@@ -281,6 +288,13 @@ case "$OS" in
         ;;
 esac
 
+# Install Zinit (Zsh plugin manager) if not already installed
+ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
+if [ ! -d "$ZINIT_HOME" ]; then
+	mkdir -p "$(dirname $ZINIT_HOME)"
+	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
 # Install tpm (Tmux Plugin Manager) for both macOS and Linux
 if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
     echo "Installing tpm (Tmux Plugin Manager)..."
@@ -291,13 +305,48 @@ fi
 echo "Package installation completed!"
 echo ""
 echo "Installed tools are now available:"
-echo "  Core tools: curl, git, neovim, stow, tmux, tree, fzf, bat, htop"
-echo "  Modern CLI: eza, fd, ripgrep, zoxide, yazi, thefuck, tldr"
-echo "  Development: gh, lazygit, git-delta, k9s, kubie, lazydocker"
-echo "  System: btop, imagemagick, jq, yq, nmap, ipcalc"
-echo "  Fonts: MesloLG Nerd Font, Symbols Only Nerd Font"
-echo "  GUI: WezTerm terminal, GitHub Desktop (optional)"
 echo ""
-echo "Next steps:"
-echo "  1. Run 'stow .' from the .dotfiles directory to activate configuration"
-echo "  2. Restart your shell or run 'exec zsh' to load the new environment"
+echo "  Core tools:"
+echo "    • bat"
+echo "    • curl"
+echo "    • fzf"
+echo "    • git"
+echo "    • htop"
+echo "    • neovim"
+echo "    • stow"
+echo "    • tmux"
+echo "    • tree"
+echo ""
+echo "  Modern CLI:"
+echo "    • eza"
+echo "    • fd"
+echo "    • ripgrep"
+echo "    • thefuck"
+echo "    • tldr"
+echo "    • yazi"
+echo "    • zoxide"
+echo ""
+echo "  Development:"
+echo "    • gh (GitHub CLI)"
+echo "    • git-delta"
+echo "    • k9s"
+echo "    • kubie"
+echo "    • lazydocker"
+echo "    • lazygit"
+echo ""
+echo "  System:"
+echo "    • btop"
+echo "    • imagemagick"
+echo "    • ipcalc"
+echo "    • jq"
+echo "    • nmap"
+echo "    • yq"
+echo ""
+echo "  Fonts:"
+echo "    • MesloLG Nerd Font"
+echo "    • Symbols Only Nerd Font"
+echo ""
+echo "  GUI:"
+echo "    • WezTerm terminal"
+echo "    • GitHub Desktop (optional)"
+echo ""

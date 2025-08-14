@@ -1,8 +1,17 @@
 #!/bin/bash
-
 # Check which tools from the dotfiles are installed and available
 # Only MacOS and Debian/Ubuntu Linux are supported by the install script.
 #
+# Note: Using bash instead of zsh for maximum compatibility during initial setup.
+# This script runs before zsh configuration is deployed, so bash ensures it works
+# on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
+# to be available on MacOS and virtually all Linux distributions out of the box.
+
+# XDG Base Directory Specification (externalized)
+_XDG_BASE_DIRS_FILE="$HOME/.zsh-xdg-base-dirs"
+if [ -f "$_XDG_BASE_DIRS_FILE" ]; then
+    source "$_XDG_BASE_DIRS_FILE"
+fi
 
 echo "=== Dotfiles Tool Installation Check ==="
 echo ""
@@ -38,44 +47,44 @@ check_category() {
 
 # Define tool lists (tool, description pairs)
 CORE_TOOLS=(
-    "curl" "HTTP client"
-    "git" "Version control" 
-    "nvim" "Text editor (neovim)"
-    "stow" "Symlink manager"
-    "tmux" "Terminal multiplexer"
-    "tree" "Directory tree view"
-    "fzf" "Fuzzy finder"
     "bat" "Syntax highlighting cat"
+    "curl" "HTTP client"
+    "direnv" "Environment variable manager"
+    "fzf" "Fuzzy finder"
+    "git" "Version control" 
     "htop" "Process monitor"
     "jq" "JSON processor"
     "nmap" "Network scanner"
+    "nvim" "Text editor (neovim)"
     "rg" "Fast text search (ripgrep)"
-    "direnv" "Environment variable manager"
+    "stow" "Symlink manager"
+    "tmux" "Terminal multiplexer"
+    "tree" "Directory tree view"
 )
 
 MODERN_CLI=(
     "eza" "Modern ls replacement"
     "fd" "Fast find alternative" 
-    "zoxide" "Smart cd command"
-    "yazi" "Terminal file manager"
     "thefuck" "Command corrector"
     "tldr" "Simplified man pages"
+    "yazi" "Terminal file manager"
+    "zoxide" "Smart cd command"
 )
 
 DEVELOPMENT=(
-    "gh" "GitHub CLI"
-    "lazygit" "Git terminal UI"
     "delta" "Git diff pager"
+    "gh" "GitHub CLI"
     "k9s" "Kubernetes CLI"
     "kubie" "Kubernetes context"
     "lazydocker" "Docker terminal UI"
+    "lazygit" "Git terminal UI"
 )
 
 SYSTEM_TOOLS=(
     "btop" "System monitor"
-    "yq" "YAML/JSON processor"
     "ipcalc" "IP calculator"
     "wezterm" "Terminal emulator"
+    "yq" "YAML/JSON processor"
 )
 
 # Check all categories
@@ -99,9 +108,18 @@ else
 fi
 echo ""
 
+# Check Zinit (Zshell Plugin Manager)
+echo "--- Zinit (Zshell Plugin Manager) ---"
+if [ -d "${XDG_DATA_HOME}/zinit/zinit.git" ]; then
+    echo "✅ Zinit (Zshell Plugin Manager)"
+else
+    echo "❌ Zinit (Zshell Plugin Manager)"
+fi
+echo ""
+
 # Check tmux plugin manager
-echo "--- Tmux Plugins ---"
-if [ -d "${XDG_DATA_HOME:-${HOME}/.local/share}/tmux/plugins/tpm" ]; then
+echo "--- Tmux Plugin Manager ---"
+if [ -d "${HOME}/.tmux/plugins/tpm" ]; then
     echo "✅ TPM (Tmux Plugin Manager)"
 else
     echo "❌ TPM (Tmux Plugin Manager)"
@@ -114,17 +132,24 @@ echo "--- asdf Plugins ---"
 if command -v asdf >/dev/null 2>&1; then
     # Define the list of expected plugins
     ASDF_PLUGINS=(
+        "ctlptl"
         "golang"
         "gradle"
+        "helm"
         "java"
         "kind"
         "kotlin"
         "krew"
+        "kubebuilder"
         "kubectl"
         "maven"
+        "mockery"
         "nodejs"
         "python"
+        "rancher"
         "rust"
+        "step"
+        "tilt"
     )
     
     # Get installed plugins

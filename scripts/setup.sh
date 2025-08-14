@@ -1,10 +1,15 @@
 #!/bin/bash
-# Master Dotfiles Setup Script
-# Orchestrates complete dotfiles installation
+# Orchestrates complete .dotfiles installation
+#
+# Note: Using bash instead of zsh for maximum compatibility during initial setup.
+# This script runs before zsh configuration is deployed, so bash ensures it works
+# on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
+# to be available on MacOS and virtually all Linux distributions out of the box.
 
+# Ensure script exits on error
 set -e
 
-echo "🎛️  Dotfiles Master Setup"
+echo "🎛️  .dotfiles Master Setup"
 echo "======================="
 echo ""
 
@@ -28,6 +33,8 @@ fi
 
 # Step 3: Stow dotfiles
 echo "📂 Step 2: Installing dotfiles with stow..."
+echo "  1. Running 'stow . --target="$HOME"' from the .dotfiles directory to activate configuration"
+echo "  2. Restart your shell or run 'exec zsh' to load the new environment once setup completes"
 stow . --target="$HOME"
 echo "✅ Dotfiles stowed successfully"
 echo ""
