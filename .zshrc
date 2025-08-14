@@ -15,21 +15,17 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
 fi
 
 # Zinit is a flexible and fast Zshell plugin manager.
-# Installation is handled by install-packages.sh script
 # Set the directory to store zinit and plugins
-ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
-source "${ZINIT_HOME}/zinit.zsh"
-
-# fzf-git is a collection of bash/zsh key bindings for Git that use fzf.
-# Installation is handled by install-packages.sh script
-# Set the directory to store fzf-git
-FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"
+source "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
 
 # Starship is a cross-shell, fast, and highly customizable prompt.
-# Installation is handled by install-packages.sh script
 # Initialize the Starship prompt
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
+
+# fzf-git is a collection of bash/zsh key bindings for Git that use fzf.
+# Set the directory to store fzf-git
+FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"
 
 # Add zsh plugins
 zinit light zsh-users/zsh-completions

@@ -1,18 +1,22 @@
 #!/bin/bash
 # Tokyo Night Theme Setup Script
 # Ensures all tools use consistent Tokyo Night theming
+#
+# Note: Using bash instead of zsh for maximum compatibility during initial setup.
+# This script runs before zsh configuration is deployed, so bash ensures it works
+# on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
+# to be available on MacOS and virtually all Linux distributions out of the box.
 
+# Ensure script exits on error
 set -e
 
+# XDG Base Directory Specification (externalized)
+_XDG_BASE_DIRS_FILE="$HOME/.zsh-xdg-base-dirs"
+if [ -f "$_XDG_BASE_DIRS_FILE" ]; then
+    source "$_XDG_BASE_DIRS_FILE"
+fi
+
 echo "🎨 Setting up Tokyo Night theme across all tools..."
-
-# Use XDG Base Directory Specification
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
-XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
-XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
-
-# Export XDG variables for consistency
-export XDG_CONFIG_HOME XDG_DATA_HOME XDG_CACHE_HOME
 
 # Create config and data directories if they don't exist
 mkdir -p "${XDG_CONFIG_HOME}/bat/themes"

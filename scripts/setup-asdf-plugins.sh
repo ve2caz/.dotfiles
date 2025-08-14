@@ -1,7 +1,12 @@
 #!/bin/bash
-# Setup asdf plugins
 # This script installs asdf plugins if they have not yet been installed
+#
+# Note: Using bash instead of zsh for maximum compatibility during initial setup.
+# This script runs before zsh configuration is deployed, so bash ensures it works
+# on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
+# to be available on MacOS and virtually all Linux distributions out of the box.
 
+# Ensure script exits on error
 set -e
 
 echo "🔌 Setting up asdf plugins..."
@@ -32,17 +37,31 @@ add_plugin_if_missing() {
     fi
 }
 
-# Add required plugins
-add_plugin_if_missing "golang"
-add_plugin_if_missing "gradle"
-add_plugin_if_missing "java"
-add_plugin_if_missing "kind"
-add_plugin_if_missing "kotlin"
-add_plugin_if_missing "krew"
-add_plugin_if_missing "kubectl"
-add_plugin_if_missing "maven"
-add_plugin_if_missing "nodejs"
-add_plugin_if_missing "python"
-add_plugin_if_missing "rust"
+# Define the list of expected plugins
+ASDF_PLUGINS=(
+    "ctlptl"
+    "golang"
+    "gradle"
+    "helm"
+    "java"
+    "kind"
+    "kotlin"
+    "krew"
+    "kubebuilder"
+    "kubectl"
+    "maven"
+    "mockery"
+    "nodejs"
+    "python"
+    "rancher"
+    "rust"
+    "step"
+    "tilt"
+)
+
+# Loop over the list of plugins and add each if missing
+for plugin in "${ASDF_PLUGINS[@]}"; do
+    add_plugin_if_missing "$plugin"
+done
 
 echo "✅ asdf plugins setup complete"
