@@ -43,18 +43,6 @@ else
     echo "    Make sure dotfiles are properly stowed/linked"
 fi
 
-# Download and install Tokyo Night theme for btop
-echo "📊 Setting up btop theme..."
-BTOP_THEMES_DIR="${XDG_CONFIG_HOME}/btop/themes"
-mkdir -p "$BTOP_THEMES_DIR"
-if [ ! -f "$BTOP_THEMES_DIR/tokyo-night.theme" ]; then
-    curl -L -o "$BTOP_THEMES_DIR/tokyo-night.theme" \
-        "https://raw.githubusercontent.com/rxyhn/tokyo-night-btop/main/tokyo-night.theme"
-    echo "✅ btop theme installed"
-else
-    echo "✅ btop theme already installed"
-fi
-
 echo ""
 echo "🎉 Tokyo Night theme setup complete!"
 echo ""
