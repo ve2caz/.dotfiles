@@ -9,19 +9,32 @@
 # Ensure script exits on error
 set -e
 
+# XDG Base Directory Specification (externalized)
+_XDG_BASE_DIRS_FILE="$HOME/.zsh-xdg-base-dirs"
+if [ -f "$_XDG_BASE_DIRS_FILE" ]; then
+    source "$_XDG_BASE_DIRS_FILE"
+fi
+
 echo "🔌 Setting up asdf plugins..."
 
-# Ensure asdf is available
-if ! command -v asdf >/dev/null 2>&1; then
-    # Try to load asdf if it's installed but not in PATH
-    if [ -f "$HOME/.asdf/asdf.sh" ]; then
-        . "$HOME/.asdf/asdf.sh"
-    elif [ -f "${ASDF_DATA_DIR:-$HOME/.asdf}/asdf.sh" ]; then
-        . "${ASDF_DATA_DIR:-$HOME/.asdf}/asdf.sh"
-    else
-        echo "❌ asdf is not installed. Please install asdf first."
-        exit 1
-    fi
+# --- Generalized asdf detection and PATH setup ---
+ASDF_BIN=""
+# Check common Homebrew and manual install locations
+if [ -x "/opt/homebrew/bin/asdf" ]; then
+    ASDF_BIN="/opt/homebrew/bin/asdf"
+elif [ -x "/usr/local/bin/asdf" ]; then
+    ASDF_BIN="/usr/local/bin/asdf"
+elif [ -x "${XDG_DATA_HOME}/asdf/bin/asdf" ]; then
+    ASDF_BIN="${XDG_DATA_HOME}/asdf/bin/asdf"
+elif [ -x "$HOME/.asdf/bin/asdf" ]; then
+    ASDF_BIN="$HOME/.asdf/bin/asdf"
+fi
+
+if [ -n "$ASDF_BIN" ]; then
+    PATH="$(dirname "$ASDF_BIN"):$PATH"
+else
+    echo "❌ asdf is not installed or not available in a known location. Please install asdf using brew (macOS) or clone to ~/.asdf or ${XDG_DATA_HOME:-$HOME/.local/share}/asdf (Linux)."
+    exit 1
 fi
 
 # Function to add plugin if not already added
