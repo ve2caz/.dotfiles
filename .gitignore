@@ -1,6 +1,10 @@
 # .gitignore
 
 __pycache__/
+.config/atlassian-cli/admin_config.yaml
+.config/atlassian-cli/global_config.yaml
+.config/atlassian-cli/jira_config.yaml
+.config/atlassian-cli/rovodev_config.yaml
 .config/bat/themes/
 .config/gh/hosts.yml
 .config/helm/repositories.lock
