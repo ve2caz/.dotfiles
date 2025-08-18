@@ -18,22 +18,19 @@ if [ -z "$__ZSHENV_SOURCED" ]; then
 
     # Detect operating system
     case "$(uname -s)" in
+        # Set up Homebrew
         Darwin)
-            # MacOS - Set up Homebrew
             # Apple Silicon (M1/M2/M3)
             if [[ -f "/opt/homebrew/bin/brew" ]]; then
-                eval "$(/opt/homebrew/bin/brew shellenv)"
-                # Add Homebrew curl to PATH (newer version instead of Apple's curl)
+                eval "$('/opt/homebrew/bin/brew' shellenv)"
                 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
             # Intel Macs
             elif [[ -f "/usr/local/Homebrew/bin/brew" ]]; then
-                eval "$(/usr/local/Homebrew/bin/brew shellenv)"
-                # Add Homebrew curl to PATH (newer version instead of Apple's curl)
+                eval "$('/usr/local/Homebrew/bin/brew' shellenv)"
                 export PATH="/usr/local/opt/curl/bin:$PATH"
             fi
             ;;
         Linux)
-            # Linux - Add common binary paths if they exist
             for path in "/usr/local/bin" "/opt/bin" "$HOME/.local/bin" "$HOME/bin"; do
                 [[ -d "$path" ]] && export PATH="$path:$PATH"
             done
