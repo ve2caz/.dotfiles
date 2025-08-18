@@ -290,27 +290,25 @@ case "$OS" in
         ;;
 esac
 
-# Install Zinit (Zsh plugin manager) if not already installed
+# Install Zinit (Zsh plugin manager)
 ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
 if [ ! -d "$ZINIT_HOME" ]; then
 	mkdir -p "$(dirname $ZINIT_HOME)"
 	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
-# Install tpm (Tmux Plugin Manager) for both macOS and Linux
+# Install tpm (Tmux Plugin Manager)
 if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
     echo "Installing tpm (Tmux Plugin Manager)..."
     mkdir -p "${HOME}/.tmux/plugins"
     git clone https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
 fi
 
-# Install fzf-git (fzf-git.sh) for all platforms
+# Install fzf-git (fzf-git.sh)
 FZFGIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/fzf-git"
 if [ ! -d "$FZFGIT_HOME" ]; then
     echo "Installing fzf-git to $FZFGIT_HOME..."
     git clone https://github.com/junegunn/fzf-git.sh.git "$FZFGIT_HOME"
-else
-    echo "fzf-git already installed at $FZFGIT_HOME."
 fi
 
 echo "Package installation completed!"
