@@ -5,6 +5,12 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 -- Config choices
+config.enable_tab_bar = false
+config.window_decorations = "RESIZE"
+
+-- Font choices
+config.font = wezterm.font("MesloLGS Nerd Font Mono")
+config.font_size = 15
 
 -- Tokyo Night colorscheme for consistency across tools
 config.colors = {
@@ -27,52 +33,37 @@ local function is_fullscreen(window)
   return window:get_dimensions().is_full_screen
 end
 
-config.font = wezterm.font("MesloLGS Nerd Font Mono")
-config.font_size = 15
-
-config.enable_tab_bar = false
-
-config.window_decorations = "RESIZE"
-config.window_background_opacity = 0.8
-config.macos_window_background_blur = 10
-
--- Window sizing options
-config.initial_cols = 125  -- Width in characters
-config.initial_rows = 45   -- Height in characters
-
--- Event handler for window state changes
-wezterm.on('window-resized', function(window, pane)
+-- Helper to set background and opacity overrides based on fullscreen state
+local function apply_background_overrides(window)
   local overrides = window:get_config_overrides() or {}
-  
-  if window:get_dimensions().is_full_screen then
-    -- Fullscreen: show background image with same transparency as windowed mode
+  if is_fullscreen(window) then
     overrides.background = {
       {
-        source = {
-          File = config_dir .. "/ai-generated-8136169_1280.png",
-        },
-        hsb = {
-          hue = 1.0,
-          saturation = 1.0,
-          brightness = 0.2,  -- Increased brightness for lighter image
-        },
+        source = { File = config_dir .. "/ai-generated-8136169_1280.png" },
+        hsb = { hue = 1.0, saturation = 1.0, brightness = 0.2 },
         width = "100%",
         height = "100%",
-        opacity = 0.3,  -- Much lower opacity for more transparency
-      },
+        opacity = 0.3
+      }
     }
-    -- Keep the same window opacity and blur settings
-    overrides.window_background_opacity = 0.8
+    overrides.window_background_opacity = 1
     overrides.macos_window_background_blur = 10
   else
-    -- Windowed mode: no background image
     overrides.background = nil
+    overrides.window_background_opacity = 0.8
+    overrides.macos_window_background_blur = 10
   end
-  
   window:set_config_overrides(overrides)
+end
+
+-- Handle window events
+wezterm.on('window-resized', function(window, pane)
+  apply_background_overrides(window)
 end)
 
-
+wezterm.on('window-focus-changed', function(window, pane)
+  apply_background_overrides(window)
+end)
 
 -- and finally, return the configuration to wezterm
 return config
