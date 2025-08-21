@@ -50,6 +50,8 @@ brew "neovim"
 brew "nmap"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
+# Docker and OCI Registry Client in Go and tooling using those libraries
+brew "regclient"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # 7-Zip is a file archiver with a high compression ratio
