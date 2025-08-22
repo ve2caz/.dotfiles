@@ -6,6 +6,8 @@ local config = wezterm.config_builder()
 
 -- Config choices
 config.enable_tab_bar = false
+config.automatically_reload_config = true
+config.scrollback_lines = 5000
 config.window_decorations = "RESIZE"
 
 -- Font choices
@@ -35,7 +37,8 @@ end
 
 -- Helper to set background and opacity overrides based on fullscreen state
 local function apply_background_overrides(window)
-  local overrides = window:get_config_overrides() or {}
+  local overrides = {}
+  overrides.macos_window_background_blur = 10
   if is_fullscreen(window) then
     overrides.background = {
       {
@@ -47,21 +50,22 @@ local function apply_background_overrides(window)
       }
     }
     overrides.window_background_opacity = 1
-    overrides.macos_window_background_blur = 10
   else
-    overrides.background = nil
     overrides.window_background_opacity = 0.8
-    overrides.macos_window_background_blur = 10
   end
   window:set_config_overrides(overrides)
 end
 
 -- Handle window events
-wezterm.on('window-resized', function(window, pane)
+wezterm.on('window-config-reloaded', function(window, pane)
   apply_background_overrides(window)
 end)
 
 wezterm.on('window-focus-changed', function(window, pane)
+  apply_background_overrides(window)
+end)
+
+wezterm.on('window-resized', function(window, pane)
   apply_background_overrides(window)
 end)
 
