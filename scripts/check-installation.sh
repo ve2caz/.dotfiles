@@ -19,13 +19,29 @@ echo ""
 check_tool() {
     local tool="$1"
     local description="$2"
+    local os_name="$(uname -s)"
+    local found_path=""
+    # Check with command -v first
     if command -v "$tool" >/dev/null 2>&1; then
-        echo "✅ $tool - $description"
+        found_path="$(command -v "$tool")"
+        echo "✅ $tool (found at $found_path) - $description"
         return 0
-    else
-        echo "❌ $tool - $description"
-        return 1
     fi
+    # Check common Homebrew and Linux install locations
+    local search_paths=(
+        "/opt/homebrew/bin/$tool"
+        "/usr/local/bin/$tool"
+        "/usr/bin/$tool"
+        "$HOME/.local/bin/$tool"
+    )
+    for p in "${search_paths[@]}"; do
+        if [ -x "$p" ]; then
+            echo "✅ $tool (found at $p) - $description"
+            return 0
+        fi
+    done
+    echo "❌ $tool - $description"
+    return 1
 }
 
 check_category() {
@@ -76,6 +92,7 @@ DEVELOPMENT=(
     "gh" "GitHub CLI"
     "k9s" "Kubernetes CLI"
     "kubie" "Kubernetes context"
+    "regctl" "regclient/regctl is Docker/OCI registry client"
     "lazydocker" "Docker terminal UI"
     "lazygit" "Git terminal UI"
 )

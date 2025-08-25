@@ -18,6 +18,7 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 | [**k9s**](https://github.com/derailed/k9s) | Kubernetes CLI to manage clusters in style |
 | [**kubie**](https://github.com/sbstp/kubie) | Powerful alternative to kubectx and kubens |
 | [**lazydocker**](https://github.com/jesseduffield/lazydocker) | Simple terminal UI for Docker management |
+| [**regclient**](https://github.com/regclient/regclient) | Docker and OCI Registry Client and tooling |
 
 ## File and Directory Navigation
 | Tool | Description |

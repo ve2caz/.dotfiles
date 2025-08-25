@@ -8,11 +8,13 @@ This document details how tools from the MacOS `Brewfile` are installed on Linux
 
 | MacOS (Homebrew) | Linux Installation Method | Notes |
 |------------------|---------------------------|--------|
-| `brew "openssl@3"` | `apt install openssl` | System package (usually pre-installed) |
+| `brew "aria2"` |  |  |
+| `brew "asdf"` |  |  |
 | `brew "bat"` | `apt install bat` | System package |
 | `brew "btop"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "coreutils"` | Native | GNU coreutils included by default on Linux |
 | `brew "curl"` | `apt install curl` | System package |
+| `brew "direnv"` | `apt install direnv` | System package |
 | `brew "eza"` | Custom repo | Added via third-party deb repository |
 | `brew "fd"` | `apt install fd-find` | System package (symlinked to `fd`) |
 | `brew "ffmpegthumbnailer"` | `apt install ffmpegthumbnailer` | System package |
@@ -30,16 +32,18 @@ This document details how tools from the MacOS `Brewfile` are installed on Linux
 | `brew "lazygit"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "neovim"` | `apt install neovim` | System package |
 | `brew "nmap"` | `apt install nmap` | System package |
+| `brew "openssl@3"` | `apt install openssl` | System package (usually pre-installed) |
 | `brew "poppler"` | `apt install poppler-utils` | System package (utilities only) |
+| `brew "regclient"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "ripgrep"` | `apt install ripgrep` | System package |
 | `brew "sevenzip"` | `apt install p7zip-full` | System package (different name) |
 | `brew "stow"` | `apt install stow` | System package |
-| `brew "direnv"` | `apt install direnv` | System package |
 | `brew "thefuck"` | `pip3 install --user thefuck` | Python package |
 | `brew "tlrc"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "tmux"` | `apt install tmux` | System package |
 | `brew "tpm"` | Git clone | Cloned to tmux plugins directory |
 | `brew "tree"` | `apt install tree` | System package |
+| `brew "xcodes"` |  |  |
 | `brew "yazi"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "yq"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "zoxide"` | Install script | Installed via official install script |
