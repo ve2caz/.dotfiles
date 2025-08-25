@@ -260,6 +260,15 @@ case "$OS" in
                     sudo install lazydocker /usr/local/bin/
                     rm lazydocker.tar.gz lazydocker
                 fi
+
+                # regclient (Docker and OCI Registry Client)
+                if ! command -v regclient >/dev/null 2>&1; then
+                    REGCLIENT_VERSION=$(curl -s "https://api.github.com/repos/regclient/regclient/releases/latest" | grep -Po '"tag_name": "v\\K[^"]*')
+                    curl -Lo regclient.tar.gz "https://github.com/regclient/regclient/releases/latest/download/regclient-linux-amd64.tar.gz"
+                    tar xf regclient.tar.gz regclient
+                    sudo install regclient /usr/local/bin/
+                    rm regclient.tar.gz regclient
+                fi
                 
                 # GitHub Desktop (optional GUI application)
                 if ! command -v github-desktop >/dev/null 2>&1; then
@@ -280,6 +289,7 @@ case "$OS" in
                 echo ""
                 echo "Additional tools can be installed from their respective GitHub releases:"
                 echo "  eza, zoxide, thefuck, gh, lazygit, git-delta, tlrc, yazi, wezterm, btop, yq, k9s, kubie, lazydocker"
+                echo "  eza, zoxide, thefuck, gh, lazygit, git-delta, tlrc, yazi, wezterm, btop, yq, k9s, kubie, lazydocker, regclient"
                 exit 1
                 ;;
         esac
@@ -341,6 +351,7 @@ echo "    • git-delta"
 echo "    • k9s"
 echo "    • kubie"
 echo "    • lazydocker"
+echo "    • regclient"
 echo "    • lazygit"
 echo ""
 echo "  System:"
