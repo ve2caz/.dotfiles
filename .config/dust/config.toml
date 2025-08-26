@@ -1,0 +1,37 @@
+# Dust configuration file (TOML format)
+# Place in either:
+#   ~/.config/dust/config.toml
+#   ~/.dust.toml
+
+# Print tree upside down (biggest directories at the top)
+# Default: true
+reverse = true
+
+# Show full paths for subdirectories
+# Default: false
+display-full-paths = false
+
+# Use file length instead of disk blocks
+# Default: true
+display-apparent-size = true
+
+# Disable colored output
+# Default: false
+no-colors = false
+
+# Do not show percent bars or percentages
+# Default: false
+no-bars = false
+
+# Do not display the total row
+# Default: true
+skip-total = true
+
+# Do not display hidden files
+# Default: false
+ignore-hidden = false
+
+# Print sizes in powers of 1000 (e.g., 1.1G)
+# Options: "si", "b", "kb", "kib", "mb", "mib", "gb", "gib"
+# Default: "si"
+output-format = "si"

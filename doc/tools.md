@@ -24,6 +24,7 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 | Tool | Description |
 |------|-------------|
 | [**eza**](https://github.com/eza-community/eza) | Modern replacement for `ls` with colors and icons |
+| [**dust**](https://github.com/bootandy/dust) | More intuitive version of `du` in Rust for disk usage visualization |
 | [**fd**](https://github.com/sharkdp/fd) | Simple, fast alternative to `find` |
 | [**tree**](https://github.com/Old-Man-Programmer/tree) | Display directories as trees |
 | [**yazi**](https://github.com/sxyazi/yazi) | Blazing fast terminal file manager written in Rust |

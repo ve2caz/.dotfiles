@@ -175,6 +175,15 @@ case "$OS" in
                     sudo install yazi-x86_64-unknown-linux-gnu/ya /usr/local/bin/
                     rm -rf yazi.zip yazi-x86_64-unknown-linux-gnu
                 fi
+
+                # dust (more intuitive du alternative)
+                if ! command -v dust >/dev/null 2>&1; then
+                    DUST_VERSION=$(curl -s "https://api.github.com/repos/bootandy/dust/releases/latest" | grep -Po '"tag_name": "v\\K[^"]*')
+                    curl -Lo dust.tar.gz "https://github.com/bootandy/dust/releases/latest/download/dust-v${DUST_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+                    tar xf dust.tar.gz dust-v${DUST_VERSION}-x86_64-unknown-linux-gnu/dust
+                    sudo install dust-v${DUST_VERSION}-x86_64-unknown-linux-gnu/dust /usr/local/bin/
+                    rm -rf dust.tar.gz dust-v${DUST_VERSION}-x86_64-unknown-linux-gnu
+                fi
                 
                 # git-delta (syntax-highlighting pager for git and diff output)
                 if ! command -v delta >/dev/null 2>&1; then
