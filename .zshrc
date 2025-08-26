@@ -3,11 +3,16 @@
 #  .zshrc - Login and Interactive Shells
 # ============================================================================
 
+# --- Zsh Key Timeout ---
+# The time (in hundredths of a second) that Zsh waits for a key sequence to complete.
+# Increase if you use slow key chords or custom keybindings. Default is 40 (0.4s).
+KEYTIMEOUT=50
+
 # --- Environment Variables ---
-export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"       # Starship prompt configuration
-export LESS='-R'                                                         # Display colors correctly
-export PAGER='less -R'                                                   # Set less as default pager with color support
-FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                                   # FZF Git integration
+STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"       # Starship prompt configuration
+LESS='-R'                                                         # Display colors correctly
+PAGER='less -R'                                                   # Set less as default pager with color support
+FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                            # FZF Git integration
 
 # --- VS Code Shell Integration ---
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
@@ -17,7 +22,6 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
             source "$vscode_shell_integration"
         fi
     fi
-    export VSCODE_SHELL_INTEGRATION=1
 fi
 
 # --- Plugin Manager ---
@@ -67,15 +71,15 @@ setopt hist_find_no_dups
 
 # --- Pager & Colors ---
 if command -v bat >/dev/null 2>&1; then
-    export BAT_THEME=tokyonight_night
-    export LESSOPEN='|bat --color=always %s'
+    BAT_THEME=tokyonight_night
+    LESSOPEN='|bat --color=always %s'
 fi
 if command -v dircolors >/dev/null 2>&1; then
     eval "$(dircolors -b)"
 elif command -v gdircolors >/dev/null 2>&1; then
     eval "$(gdircolors -b)"
 else
-    export LS_COLORS='di=1;34:ln=1;36:so=1;35:pi=1;33:ex=1;32:bd=1;33:cd=1;33:su=1;31:sg=1;31:tw=1;34:ow=1;34:*.tar=1;31:*.tgz=1;31:*.zip=1;31:*.gz=1;31:*.bz2=1;31:*.xz=1;31:*.lz=1;31:*.jpg=1;35:*.jpeg=1;35:*.png=1;35:*.gif=1;35:*.svg=1;35:*.pdf=1;31:*.doc=1;31:*.docx=1;31:*.xls=1;31:*.xlsx=1;31:*.ppt=1;31:*.pptx=1;31:*.mp3=1;36:*.mp4=1;36:*.avi=1;36:*.mkv=1;36:*.mov=1;36:*.js=1;33:*.ts=1;33:*.py=1;33:*.rb=1;33:*.go=1;33:*.rs=1;33:*.cpp=1;33:*.c=1;33:*.h=1;33:*.css=1;33:*.html=1;33:*.json=1;33:*.xml=1;33:*.yml=1;33:*.yaml=1;33'
+    LS_COLORS='di=1;34:ln=1;36:so=1;35:pi=1;33:ex=1;32:bd=1;33:cd=1;33:su=1;31:sg=1;31:tw=1;34:ow=1;34:*.tar=1;31:*.tgz=1;31:*.zip=1;31:*.gz=1;31:*.bz2=1;31:*.xz=1;31:*.lz=1;31:*.jpg=1;35:*.jpeg=1;35:*.png=1;35:*.gif=1;35:*.svg=1;35:*.pdf=1;31:*.doc=1;31:*.docx=1;31:*.xls=1;31:*.xlsx=1;31:*.ppt=1;31:*.pptx=1;31:*.mp3=1;36:*.mp4=1;36:*.avi=1;36:*.mkv=1;36:*.mov=1;36:*.js=1;33:*.ts=1;33:*.py=1;33:*.rb=1;33:*.go=1;33:*.rs=1;33:*.cpp=1;33:*.c=1;33:*.h=1;33:*.css=1;33:*.html=1;33:*.json=1;33:*.xml=1;33:*.yml=1;33:*.yaml=1;33'
 fi
 export EZA_COLORS=$LS_COLORS
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -192,7 +196,14 @@ if command -v fzf >/dev/null 2>&1; then
     zstyle ':fzf-tab:*' accept-line enter
     zstyle ':fzf-tab:*' fzf-flags '--preview-window=right:50%:wrap'
     if [[ -f "$FZFGIT_HOME/fzf-git.sh" ]]; then
-        source "$FZFGIT_HOME/fzf-git.sh"
+        # Function to source fzf-git with grep unaliased for its duration
+        _fzf_git_wrapper() {
+            unalias grep 2>/dev/null
+            source "$FZFGIT_HOME/fzf-git.sh"
+            # Optionally, re-alias grep after, but in zsh, aliases are not global, so this is safe
+        }
+        # Use the wrapper instead of direct source
+        _fzf_git_wrapper
     fi
     bindkey '^[c' fzf-cd-widget
 fi
