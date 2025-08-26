@@ -15,6 +15,7 @@ This document details how tools from the MacOS `Brewfile` are installed on Linux
 | `brew "coreutils"` | Native | GNU coreutils included by default on Linux |
 | `brew "curl"` | `apt install curl` | System package |
 | `brew "direnv"` | `apt install direnv` | System package |
+| `brew "dust"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "eza"` | Custom repo | Added via third-party deb repository |
 | `brew "fd"` | `apt install fd-find` | System package (symlinked to `fd`) |
 | `brew "ffmpegthumbnailer"` | `apt install ffmpegthumbnailer` | System package |

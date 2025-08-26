@@ -79,6 +79,7 @@ CORE_TOOLS=(
 )
 
 MODERN_CLI=(
+    "dust" "Intuitive disk usage (du)"
     "eza" "Modern ls replacement"
     "fd" "Fast find alternative" 
     "thefuck" "Command corrector"

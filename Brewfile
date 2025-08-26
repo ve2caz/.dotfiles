@@ -18,6 +18,8 @@ brew "coreutils"
 brew "curl"
 # Load/unload environment variables based on $PWD
 brew "direnv"
+# More intuitive version of du in rust
+brew "dust"
 # Modern, maintained replacement for ls
 brew "eza"
 # Simple, fast and user-friendly alternative to find
