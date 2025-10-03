@@ -2,6 +2,7 @@
 # ============================================================================
 #  .zshrc - Login and Interactive Shells
 # ============================================================================
+echo "SOURCED .zshrc (PID: $$)"
 
 # --- Zsh Key Timeout ---
 # The time (in hundredths of a second) that Zsh waits for a key sequence to complete.
@@ -9,20 +10,23 @@
 KEYTIMEOUT=50
 
 # --- Environment Variables ---
-STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"       # Starship prompt configuration
+export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"       # Starship prompt configuration
 LESS='-R'                                                         # Display colors correctly
 PAGER='less -R'                                                   # Set less as default pager with color support
 FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                            # FZF Git integration
 
 # --- VS Code Shell Integration ---
-if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-    if command -v code >/dev/null 2>&1; then
-        vscode_shell_integration="$(code --locate-shell-integration-path zsh 2>/dev/null)"
-        if [[ -r "$vscode_shell_integration" ]]; then
-            source "$vscode_shell_integration"
-        fi
-    fi
-fi
+# if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+#   echo "[.zshrc] Loading VS Code shell integration"
+#   if command -v code >/dev/null 2>&1; then
+#       echo "[.zshrc] Locating VS Code shell integration for zsh"
+#       vscode_shell_integration="$(code --locate-shell-integration-path zsh 2>/dev/null)"
+#       if [[ -r "$vscode_shell_integration" ]]; then
+#           echo "[.zshrc] Sourcing VS Code shell integration from $vscode_shell_integration"
+#           source "$vscode_shell_integration"
+#       fi
+#   fi
+# fi
 
 # --- Plugin Manager ---
 if [[ -r "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh" ]]; then
