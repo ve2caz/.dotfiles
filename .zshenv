@@ -1,4 +1,4 @@
-# .zshenv - Login, Interactive, and Non-Interactive Shells
+# .zshenv - ALL shells (Login, Non-login, Interactive, Non-interactive)
 
 # XDG Base Directory Specification (externalized)
 _XDG_BASE_DIRS_FILE="$HOME/.zsh-xdg-base-dirs"
@@ -9,7 +9,7 @@ fi
 # Prevent double sourcing
 if [ -z "$__ZSHENV_SOURCED" ]; then
     export __ZSHENV_SOURCED=1
-    # echo "SOURCED .zshenv"
+    echo "SOURCED .zshenv (PID: $$)"
 
     # Locale Configuration
     # Ensure consistent locale settings
