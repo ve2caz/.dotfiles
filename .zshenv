@@ -44,6 +44,11 @@ if [ -z "$__ZSHENV_SOURCED" ]; then
         export PATH="$_ASDF_DIR/shims:$PATH"
     fi
 
+    # Source Java set-java-home script if it exists
+    if [ -f "$HOME/.asdf/plugins/java/set-java-home.zsh" ]; then
+        source "$HOME/.asdf/plugins/java/set-java-home.zsh"
+    fi
+
     # Enable direnv integration with zsh (cross-platform)
     if command -v direnv >/dev/null 2>&1; then
         eval "$(direnv hook zsh)"
