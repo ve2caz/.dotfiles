@@ -9,7 +9,7 @@ fi
 # Prevent double sourcing
 if [ -z "$__ZSHENV_SOURCED" ]; then
     export __ZSHENV_SOURCED=1
-    echo "SOURCED .zshenv (PID: $$)"
+    # echo "SOURCED .zshenv (PID: $$)"
 
     # Locale Configuration
     # Ensure consistent locale settings

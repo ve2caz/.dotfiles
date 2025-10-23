@@ -2,7 +2,7 @@
 # ============================================================================
 #  .zshrc - Login and Interactive Shells
 # ============================================================================
-echo "SOURCED .zshrc (PID: $$)"
+# echo "SOURCED .zshrc (PID: $$)"
 
 # --- Zsh Key Timeout ---
 # The time (in hundredths of a second) that Zsh waits for a key sequence to complete.
