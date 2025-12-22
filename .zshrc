@@ -56,9 +56,8 @@ if command -v asdf >/dev/null 2>&1; then
     fpath=("$ASDF_COMPLETIONS" $fpath)
 fi
 # docker CLI completions
-fpath=(/Users/pierre.archambault/.docker/completions $fpath)
 if command -v docker >/dev/null 2>&1; then
-    fpath=(/Users/pierre.archambault/.docker/completions $fpath)
+    fpath=($HOME/.docker/completions $fpath)
 fi
 # Initialize completions
 autoload -U compinit && compinit -C
