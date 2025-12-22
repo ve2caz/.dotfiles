@@ -117,9 +117,41 @@ This configuration follows the [XDG Base Directory Specification](https://specif
 - **asdf**: installed to `~/.asdf` and completions in `~/.asdf/completions` (official method)
 
 Key XDG improvements:
-- Zsh history moved to `$XDG_DATA_HOME/zsh/history`
-- Starship config in `$XDG_CONFIG_HOME/starship/starship.toml`
 - All themes and data properly organized in XDG directories
+- Starship config in `$XDG_CONFIG_HOME/starship.toml`
+- Zsh history moved to `$XDG_STATE_HOME/zsh/history`
+
+### Directory Organization
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `$XDG_CACHE_HOME` | `~/.cache` | Temporary cache files |
+| `$XDG_CONFIG_HOME` | `~/.config` | User configuration files |
+| `$XDG_DATA_HOME` | `~/.local/share` | Application data, plugins, fonts |
+| `$XDG_STATE_HOME` | `~/.local/state` | State files, logs, history |
+
+### Lifecycle & Fallbacks
+
+This project is designed to run in two phases:
+
+1. **First Run (Bootstrap)** — Before environment is configured
+   - Scripts source `~/.zsh-xdg-base-dirs` if it exists
+   - If unavailable, scripts use inline fallbacks: `${XDG_VAR:-default}`
+   - Ensures scripts work on fresh systems without pre-existing configuration
+   - The `.zsh-xdg-base-dirs` file is created by `install-packages.sh`
+
+2. **Subsequent Runs (Maintenance)** — After environment setup
+   - `.zshenv` sources `~/.zsh-xdg-base-dirs` early, exporting all XDG variables
+   - All shell configuration and scripts see properly set XDG paths
+   - Scripts remain idempotent and can re-run safely at any time
+
+### Fallback Policy
+
+- **Shell configuration** (`.zshenv`, `.zshrc`) — Assumes XDG variables are set (post-setup)
+- **Installation scripts** (`install-packages.sh`, etc.) — Use `${XDG_VAR:-fallback}` for robustness
+- **Setup & configuration scripts** (`setup-*.sh`) — Define XDG variables explicitly to work pre- and post-setup
+
+This dual-phase approach allows the dotfiles to work cleanly from a fresh clone while remaining maintainable and idempotent on configured systems.
 
 ## Included Tools
 
