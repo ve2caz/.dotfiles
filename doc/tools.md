@@ -23,8 +23,8 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 ## File and Directory Navigation
 | Tool | Description |
 |------|-------------|
-| [**eza**](https://github.com/eza-community/eza) | Modern replacement for `ls` with colors and icons |
 | [**dust**](https://github.com/bootandy/dust) | More intuitive version of `du` in Rust for disk usage visualization |
+| [**eza**](https://github.com/eza-community/eza) | Modern replacement for `ls` with colors and icons |
 | [**fd**](https://github.com/sharkdp/fd) | Simple, fast alternative to `find` |
 | [**tree**](https://github.com/Old-Man-Programmer/tree) | Display directories as trees |
 | [**yazi**](https://github.com/sxyazi/yazi) | Blazing fast terminal file manager written in Rust |
@@ -42,21 +42,24 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 ## System Monitoring and Utilities
 | Tool | Description |
 |------|-------------|
+| [**aria2**](https://aria2.github.io/) | Download utility with resuming and segmented downloading |
 | [**btop**](https://github.com/aristocratos/btop) | Resource monitor (modern alternative to htop) |
+| [**ffmpegthumbnailer**](https://github.com/dirkvdb/ffmpegthumbnailer) | Create thumbnails for video files |
 | [**htop**](https://github.com/htop-dev/htop) | Interactive process viewer |
-| [**nmap**](https://nmap.org/) | Network discovery and security auditing utility |
-| [**ipcalc**](https://github.com/kjokjo/ipcalc) | Calculate various network masks from IP addresses |
 | [**imagemagick**](https://imagemagick.org/) | Tools and libraries to manipulate images |
-| [**sevenzip**](https://www.7-zip.org/) | File archiver with high compression ratio (Debian/Ubuntu: p7zip-full) |
+| [**ipcalc**](https://github.com/kjokjo/ipcalc) | Calculate various network masks from IP addresses |
+| [**nmap**](https://nmap.org/) | Network discovery and security auditing utility |
 | [**poppler-utils**](https://poppler.freedesktop.org/) | PDF rendering utilities (Debian/Ubuntu) |
+| [**sevenzip**](https://www.7-zip.org/) | File archiver with high compression ratio (Debian/Ubuntu: p7zip-full) |
 
 ## Terminal and Productivity
 | Tool | Description |
 |------|-------------|
-| [**tmux**](https://github.com/tmux/tmux) | Terminal multiplexer for session management |
-| [**tpm**](https://github.com/tmux-plugins/tpm) | Plugin manager for tmux |
+| [**bash**](https://www.gnu.org/software/bash/) | Bourne-Again SHell, a UNIX command interpreter |
 | [**direnv**](https://direnv.net/) | Environment variable manager for project-specific environments |
 | [**thefuck**](https://github.com/nvbn/thefuck) | Corrects mistyped console commands |
+| [**tmux**](https://github.com/tmux/tmux) | Terminal multiplexer for session management |
+| [**tpm**](https://github.com/tmux-plugins/tpm) | Plugin manager for tmux |
 | [**wezterm**](https://github.com/wez/wezterm) | GPU-accelerated cross-platform terminal emulator |
 
 ## Fonts and Typography
@@ -73,7 +76,8 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 ## System Utilities
 | Tool | Description |
 |------|-------------|
-| [**curl**](https://curl.se/) | Tool for transferring data from servers |
-| [**stow**](https://www.gnu.org/software/stow/) | Symlink farm manager for organizing dotfiles |
-| [**openssl**](https://www.openssl.org/) | Cryptography and SSL/TLS toolkit |
 | [**coreutils**](https://www.gnu.org/software/coreutils/) | GNU File, Shell, and Text utilities (MacOS via Homebrew) |
+| [**curl**](https://curl.se/) | Tool for transferring data from servers |
+| [**openssl**](https://www.openssl.org/) | Cryptography and SSL/TLS toolkit |
+| [**stow**](https://www.gnu.org/software/stow/) | Symlink farm manager for organizing dotfiles |
+| [**xcodes**](https://github.com/RobotsAndPencils/xcodes) | Command-line tool to install and switch between multiple versions of Xcode (MacOS only) |

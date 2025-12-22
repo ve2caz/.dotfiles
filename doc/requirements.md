@@ -24,18 +24,13 @@ open -a "Safari" "https://brew.sh"
 
 ## Linux
 
+Only Debian/Ubuntu-based systems are fully supported by this repository.
+
 Most distributions come with git pre-installed. If not:
 
 ```bash
-
 # Ubuntu/Debian
 sudo apt update && sudo apt install git direnv
-
-# RHEL/CentOS/Fedora
-sudo yum install git
-# or
-sudo dnf install git
-
-# Arch Linux
-sudo pacman -S git
 ```
+
+Note: For other Linux distributions, refer to `scripts/install-packages.sh` for package guidance or install equivalents manually.
