@@ -330,6 +330,13 @@ if [ ! -d "$FZFGIT_HOME" ]; then
     git clone https://github.com/junegunn/fzf-git.sh.git "$FZFGIT_HOME"
 fi
 
+# Install lnav formats if not present or update them
+if [ ! -d "${XDG_CONFIG_HOME:-${HOME}/.config}/lnav/formats" ]; then
+    lnav -i https://github.com/shoffmeister/lnav-formats.git
+else
+    lnav -u https://github.com/shoffmeister/lnav-formats.git
+fi
+
 echo "Package installation completed!"
 echo ""
 echo "Installed tools are now available:"
@@ -368,6 +375,7 @@ echo "    • btop"
 echo "    • imagemagick"
 echo "    • ipcalc"
 echo "    • jq"
+echo "    • lnav"
 echo "    • nmap"
 echo "    • yq"
 echo ""
