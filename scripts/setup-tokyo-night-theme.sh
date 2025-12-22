@@ -17,9 +17,9 @@ if [ -f "$_XDG_BASE_DIRS_FILE" ]; then
 fi
 
 # Ensure XDG defaults are available (fallback for first-run or direct script execution)
+: "${XDG_CACHE_HOME:=${HOME}/.cache}"
 : "${XDG_CONFIG_HOME:=${HOME}/.config}"
 : "${XDG_DATA_HOME:=${HOME}/.local/share}"
-: "${XDG_CACHE_HOME:=${HOME}/.cache}"
 : "${XDG_STATE_HOME:=${HOME}/.local/state}"
 export XDG_CONFIG_HOME XDG_DATA_HOME XDG_CACHE_HOME XDG_STATE_HOME
 
