@@ -8,5 +8,7 @@ __pycache__/
 .config/github-copilot/apps.json
 .config/helm/repositories.lock
 .config/helm/repositories.yaml
+.config/lnav/*
+!.config/lnav/.gitkeep
 .DS_Store
 *.py[cod]

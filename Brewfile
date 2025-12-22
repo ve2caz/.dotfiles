@@ -48,6 +48,8 @@ brew "kubie"
 brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Curses-based tool for viewing and analyzing log files
+brew "lnav"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Port scanning utility for large networks
