@@ -61,10 +61,12 @@ setup.sh (master)
 │   ├── Font installation
 │   └── Tool setup (Zinit, TPM, fzf-git)
 ├── stow . --target=$HOME
-└── setup-tokyo-night-theme.sh
+├── setup-tokyo-night-theme.sh
     ├── Bat theme download
     ├── Yazi flavor verification
     └── Theme consistency checks
+└── setup-asdf-plugins.sh
+    └── Install asdf plugins
 ```
 
 #### Manual installation
@@ -183,7 +185,31 @@ The automated installation script (`./scripts/install-packages.sh`) will:
 - Install Nerd Fonts to user font directory
 - Optionally install GitHub Desktop via third-party repository
 
-**Note**: Only MacOS and Debian/Ubuntu Linux are supported. Other distributions are not supported by this repo.
+**Note**:
+- Completions: Generated to `~/.asdf/completions/_asdf` (both platforms)
+
+### asdf plugins installed by setup-asdf-plugins.sh
+
+The setup process installs the following `asdf` plugins:
+
+- ctlptl
+- golang
+- gradle
+- helm
+- java
+- kind
+- kotlin
+- krew
+- kubebuilder
+- kubectl
+- maven
+- mockery
+- nodejs
+- python
+- rancher
+- rust
+- step
+- tilt
 
 ## 🔧 Maintenance and Troubleshooting
 
