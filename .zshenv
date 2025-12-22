@@ -44,10 +44,19 @@ if [ -z "$__ZSHENV_SOURCED" ]; then
         export PATH="$_ASDF_DIR/shims:$PATH"
     fi
 
+    # Plugins that require explicit environment variable setup
+    # These use zsh precmd hooks to dynamically update env vars based on the active version
+    
+    # Source Go set-env script if it exists
+    _ASDF_GO_SCRIPT="$_ASDF_DIR/plugins/golang/set-env.zsh"
+    if [[ -f "$_ASDF_GO_SCRIPT" ]]; then
+        source "$_ASDF_GO_SCRIPT"
+    fi
+
     # Source Java set-java-home script if it exists
-    _ASDF_JAVA_PLUGIN_DIR="$_ASDF_DIR/plugins/java"
-    if [ -f "$_ASDF_JAVA_PLUGIN_DIR/set-java-home.zsh" ]; then
-        source "$_ASDF_JAVA_PLUGIN_DIR/set-java-home.zsh"
+    _ASDF_JAVA_SCRIPT="$_ASDF_DIR/plugins/java/set-java-home.zsh"
+    if [[ -f "$_ASDF_JAVA_SCRIPT" ]]; then
+        source "$_ASDF_JAVA_SCRIPT"
     fi
 
     # Enable direnv integration with zsh (cross-platform)
