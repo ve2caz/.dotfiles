@@ -45,8 +45,9 @@ if [ -z "$__ZSHENV_SOURCED" ]; then
     fi
 
     # Source Java set-java-home script if it exists
-    if [ -f "$HOME/.asdf/plugins/java/set-java-home.zsh" ]; then
-        source "$HOME/.asdf/plugins/java/set-java-home.zsh"
+    _ASDF_JAVA_PLUGIN_DIR="$_ASDF_DIR/plugins/java"
+    if [ -f "$_ASDF_JAVA_PLUGIN_DIR/set-java-home.zsh" ]; then
+        source "$_ASDF_JAVA_PLUGIN_DIR/set-java-home.zsh"
     fi
 
     # Enable direnv integration with zsh (cross-platform)
