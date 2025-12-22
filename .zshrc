@@ -56,7 +56,6 @@ if command -v asdf >/dev/null 2>&1; then
     fpath=("$ASDF_COMPLETIONS" $fpath)
 fi
 # docker CLI completions
-fpath=($HOME/.docker/completions $fpath)
 if command -v docker >/dev/null 2>&1; then
     fpath=($HOME/.docker/completions $fpath)
 fi
