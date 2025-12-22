@@ -51,6 +51,25 @@ if [ -z "$__ZSHENV_SOURCED" ]; then
     _ASDF_GO_SCRIPT="$_ASDF_DIR/plugins/golang/set-env.zsh"
     if [[ -f "$_ASDF_GO_SCRIPT" ]]; then
         source "$_ASDF_GO_SCRIPT"
+        
+        # Override the buggy asdf_update_golang_env function with a safer version
+        asdf_update_golang_env() {
+            # Only proceed if go command is actually available
+            if ! command -v go >/dev/null 2>&1; then
+                return 0
+            fi
+            
+            local go_root
+            go_root="$(go env GOROOT 2>/dev/null)"
+            
+            # Only set environment variables if GOROOT is valid and points to an existing directory
+            if [[ -n "${go_root}" && -d "${go_root}" ]]; then
+                export GOROOT="${go_root}"
+                # Use standard Go workspace location for GOPATH (Go 1.8+ supports this)
+                export GOPATH="${HOME}/go"
+                export GOBIN="${GOPATH}/bin"
+            fi
+        }
     fi
 
     # Source Java set-java-home script if it exists
