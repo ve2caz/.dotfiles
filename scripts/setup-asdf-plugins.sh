@@ -15,6 +15,13 @@ if [ -f "$_XDG_BASE_DIRS_FILE" ]; then
     source "$_XDG_BASE_DIRS_FILE"
 fi
 
+# Ensure XDG defaults are available (fallback for first-run or direct script execution)
+: "${XDG_CONFIG_HOME:=${HOME}/.config}"
+: "${XDG_DATA_HOME:=${HOME}/.local/share}"
+: "${XDG_CACHE_HOME:=${HOME}/.cache}"
+: "${XDG_STATE_HOME:=${HOME}/.local/state}"
+export XDG_CONFIG_HOME XDG_DATA_HOME XDG_CACHE_HOME XDG_STATE_HOME
+
 echo "🔌 Setting up asdf plugins..."
 
 # --- Generalized asdf detection and PATH setup ---
