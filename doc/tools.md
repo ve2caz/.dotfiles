@@ -35,9 +35,8 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 |------|-------------|
 | [**bat**](https://github.com/sharkdp/bat) | Clone of `cat` with syntax highlighting and Git integration |
 | [**fzf**](https://github.com/junegunn/fzf) | Command-line fuzzy finder for files, directories, and history |
+| [**lnav**](https://lnav.org/) | The Logfile Navigator - browse and tail log files in the terminal |
 | [**ripgrep**](https://github.com/BurntSushi/ripgrep) | Extremely fast text search tool |
-| [**jq**](https://github.com/jqlang/jq) | Lightweight JSON processor |
-| [**yq**](https://github.com/mikefarah/yq) | Process YAML, JSON, XML, CSV and properties documents |
 | [**tlrc**](https://github.com/tldr-pages/tlrc) | Official tldr client for community-maintained help pages (use `tldr <command>`) |
 
 ## System Monitoring and Utilities
