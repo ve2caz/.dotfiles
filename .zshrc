@@ -46,7 +46,7 @@ zinit light sinetoami/web-search
 eval "$(starship init zsh)"
 
 # --- Completions ---
- # asdf version manager - Setup completions before compinit
+# asdf version manager completions
 if command -v asdf >/dev/null 2>&1; then
     ASDF_COMPLETIONS="$HOME/.asdf/completions"
     [[ ! -d "$ASDF_COMPLETIONS" ]] && mkdir -p "$ASDF_COMPLETIONS"
@@ -55,6 +55,12 @@ if command -v asdf >/dev/null 2>&1; then
     fi
     fpath=("$ASDF_COMPLETIONS" $fpath)
 fi
+# docker CLI completions
+fpath=(/Users/pierre.archambault/.docker/completions $fpath)
+if command -v docker >/dev/null 2>&1; then
+    fpath=(/Users/pierre.archambault/.docker/completions $fpath)
+fi
+# Initialize completions
 autoload -U compinit && compinit -C
 
 # --- Plugin Post-Init ---
