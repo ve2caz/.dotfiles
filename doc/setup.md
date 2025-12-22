@@ -118,7 +118,7 @@ This configuration follows the [XDG Base Directory Specification](https://specif
 
 Key XDG improvements:
 - Zsh history moved to `$XDG_DATA_HOME/zsh/history`
-- Starship config in `$XDG_CONFIG_HOME/starship.toml`
+- Starship config in `$XDG_CONFIG_HOME/starship/starship.toml`
 - All themes and data properly organized in XDG directories
 
 ## Included Tools

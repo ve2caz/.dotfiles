@@ -10,10 +10,10 @@
 KEYTIMEOUT=50
 
 # --- Environment Variables ---
-export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"       # Starship prompt configuration
-LESS='-R'                                                         # Display colors correctly
-PAGER='less -R'                                                   # Set less as default pager with color support
-FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                            # FZF Git integration
+export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"  # Starship prompt configuration
+LESS='-R'                                                           # Display colors correctly
+PAGER='less -R'                                                     # Set less as default pager with color support
+FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                              # FZF Git integration
 
 # --- VS Code Shell Integration ---
 # if [[ "$TERM_PROGRAM" == "vscode" ]]; then
