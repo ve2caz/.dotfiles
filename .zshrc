@@ -130,16 +130,29 @@ if command -v eza >/dev/null 2>&1; then
     alias lt='eza --tree --color=auto --group-directories-first'
     alias lta='eza --tree -a --color=auto --group-directories-first'
 else
-    alias ls='ls --color=auto'
-    alias l='ls -lh --color=auto'
-    alias la='ls -lah --color=auto'
-    alias ll='ls -laah --color=auto'
+    # BSD ls (macOS) uses -G; GNU ls uses --color=auto.
+    if [[ "$OSTYPE" == darwin* ]]; then
+        alias ls='ls -G'
+        alias l='ls -lhG'
+        alias la='ls -lahG'
+        alias ll='ls -laahG'
+    else
+        alias ls='ls --color=auto'
+        alias l='ls -lh --color=auto'
+        alias la='ls -lah --color=auto'
+        alias ll='ls -laah --color=auto'
+    fi
 fi
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias mkdir='mkdir -p'
-alias rmdir='rmdir --ignore-fail-on-non-empty'
+# GNU rmdir supports --ignore-fail-on-non-empty; BSD rmdir (macOS) does not.
+if [[ "$OSTYPE" == darwin* ]]; then
+    alias rmdir='rmdir'
+else
+    alias rmdir='rmdir --ignore-fail-on-non-empty'
+fi
 if command -v bat >/dev/null 2>&1; then
     alias cat='bat --style=plain --color=auto'
 fi
@@ -150,14 +163,32 @@ if command -v rg >/dev/null 2>&1; then
     alias egrep='rg --color=auto --line-number --hidden --smart-case -E'
     alias fgrep='rg --color=auto --line-number --hidden --smart-case -F'
 else
-    alias grep='grep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias fgrep='fgrep --color=auto'
+    # Prefer GNU grep if installed via Homebrew (ggrep). Otherwise keep BSD defaults.
+    if command -v ggrep >/dev/null 2>&1; then
+        alias grep='ggrep --color=auto'
+        alias egrep='ggrep --color=auto -E'
+        alias fgrep='ggrep --color=auto -F'
+    elif [[ "$OSTYPE" == darwin* ]]; then
+        alias grep='grep'
+        alias egrep='egrep'
+        alias fgrep='fgrep'
+    else
+        alias grep='grep --color=auto'
+        alias egrep='egrep --color=auto'
+        alias fgrep='fgrep --color=auto'
+    fi
 fi
 if command -v delta >/dev/null 2>&1; then
     alias diff='delta'
 else
-    alias diff='diff --color=auto'
+    # GNU diff supports --color; BSD diff (macOS) does not.
+    if command -v gdiff >/dev/null 2>&1; then
+        alias diff='gdiff --color=auto'
+    elif [[ "$OSTYPE" == darwin* ]]; then
+        alias diff='diff'
+    else
+        alias diff='diff --color=auto'
+    fi
 fi
 if command -v yazi >/dev/null 2>&1; then
     fm() {
