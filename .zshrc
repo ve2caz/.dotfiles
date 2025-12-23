@@ -60,7 +60,27 @@ if command -v docker >/dev/null 2>&1; then
     fpath=($HOME/.docker/completions $fpath)
 fi
 # Initialize completions
-autoload -U compinit && compinit -C
+# Keep compdump in XDG cache (avoids ~/.zcompdump clutter) and rebuild it when fpath changes.
+ZSH_COMPDUMP_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+ZSH_COMPDUMP="${ZSH_COMPDUMP_DIR}/zcompdump-${HOST:-unknown}"
+_ZSH_FPATH_FINGERPRINT_FILE="${ZSH_COMPDUMP}.fpath"
+
+[[ -d "$ZSH_COMPDUMP_DIR" ]] || mkdir -p "$ZSH_COMPDUMP_DIR"
+
+_zsh_current_fpath_fingerprint="${(j:|:)fpath}"
+_zsh_saved_fpath_fingerprint=""
+if [[ -f "$_ZSH_FPATH_FINGERPRINT_FILE" ]]; then
+    _zsh_saved_fpath_fingerprint="$(<"$_ZSH_FPATH_FINGERPRINT_FILE")"
+fi
+
+if [[ "$_zsh_saved_fpath_fingerprint" != "$_zsh_current_fpath_fingerprint" ]]; then
+    rm -f "${ZSH_COMPDUMP}"* 2>/dev/null
+    print -r -- "$_zsh_current_fpath_fingerprint" >| "$_ZSH_FPATH_FINGERPRINT_FILE"
+fi
+
+autoload -U compinit && compinit -d "$ZSH_COMPDUMP"
+
+unset _zsh_current_fpath_fingerprint _zsh_saved_fpath_fingerprint _ZSH_FPATH_FINGERPRINT_FILE
 
 # --- Plugin Post-Init ---
 zinit cdreplay -q
