@@ -167,6 +167,11 @@ if command -v nvim >/dev/null 2>&1; then
 fi
 
 # --- Tool Integrations ---
+# zoxide should not depend on fzf/fzf-tab; initialize it unconditionally (when installed).
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init --cmd cd zsh)"
+fi
+
 if command -v fzf >/dev/null 2>&1; then
     eval "$(fzf --zsh)"
     fg="#CBE0F0"
@@ -190,17 +195,21 @@ if command -v fzf >/dev/null 2>&1; then
     show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {} 2>/dev/null || cat {}; fi"
     export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview' --preview-window='right:50%:wrap'"
     export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --level=2 {} 2>/dev/null || ls -la {}' --preview-window='right:50%:wrap'"
+
     _fzf_comprun() {
       local command=$1
       shift
       case "$command" in
-        cd)           fzf --preview 'eza --tree --color=always --level=2 {} 2>/dev/null || ls -la {}' "$@" ;;
+        cd|__zoxide_z) fzf --preview 'eza --tree --color=always --level=2 {} 2>/dev/null || ls -la {}' "$@" ;;
         export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
         ssh)          fzf --preview 'dig {}'                   "$@" ;;
         *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
       esac
     }
+    # fzf-tab previews for directory completion
+    # Keep the original `cd` context (what you type) and also support zoxide's internal function.
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'
+    zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'
     zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
     zstyle ':fzf-tab:*' accept-line enter
     zstyle ':fzf-tab:*' fzf-flags '--preview-window=right:50%:wrap'
@@ -218,7 +227,4 @@ if command -v fzf >/dev/null 2>&1; then
 fi
 if command -v thefuck >/dev/null 2>&1; then
     eval $(thefuck --alias tf)
-fi
-if command -v zoxide >/dev/null 2>&1; then
-    eval "$(zoxide init --cmd cd zsh)"
 fi
