@@ -76,8 +76,8 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 ## System Utilities
 | Tool | Description |
 |------|-------------|
-| [**coreutils**](https://www.gnu.org/software/coreutils/) | GNU File, Shell, and Text utilities (MacOS via Homebrew) |
+| [**coreutils**](https://www.gnu.org/software/coreutils/) | GNU File, Shell, and Text utilities (macOS via Homebrew) |
 | [**curl**](https://curl.se/) | Tool for transferring data from servers |
 | [**openssl**](https://www.openssl.org/) | Cryptography and SSL/TLS toolkit |
 | [**stow**](https://www.gnu.org/software/stow/) | Symlink farm manager for organizing dotfiles |
-| [**xcodes**](https://github.com/RobotsAndPencils/xcodes) | Command-line tool to install and switch between multiple versions of Xcode (MacOS only) |
+| [**xcodes**](https://github.com/RobotsAndPencils/xcodes) | Command-line tool to install and switch between multiple versions of Xcode (macOS only) |

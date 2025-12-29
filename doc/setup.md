@@ -56,7 +56,7 @@ The setup process follows this dependency structure:
 ```
 setup.sh (master)
 ├── install-packages.sh
-│   ├── Platform detection (MacOS/Linux)
+│   ├── Platform detection (macOS/Linux)
 │   ├── Package installation (brew/apt)
 │   ├── Font installation
 │   └── Tool setup (Zinit, TPM, fzf-git)
@@ -71,7 +71,7 @@ setup.sh (master)
 
 #### Manual installation
 
-##### MacOS with Homebrew
+##### macOS with Homebrew
 
 ```bash
 brew bundle
@@ -161,7 +161,7 @@ For a complete list of all the modern command-line tools included in this config
 
 ## Platform-specific features
 
-- **MacOS**: Homebrew integration, newer curl from Homebrew, MacOS-specific fonts via casks
+- **macOS**: Homebrew integration, newer curl from Homebrew, macOS-specific fonts via casks
 - **Linux**: Uses distribution package managers, native GNU tools, automatic Nerd Font installation to `~/.local/share/fonts`
 
 ## Automatic vs Manual Installation
@@ -174,7 +174,7 @@ The automated installation script (`./scripts/install-packages.sh`) will:
 - Set up tmux plugin manager (tpm)
 - Create necessary directories and symlinks
 
-### On MacOS:
+### On macOS:
 - Use `brew bundle` to install packages from Brewfile
 - Install cask applications (fonts, GitHub Desktop, WezTerm)
 

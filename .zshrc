@@ -1,8 +1,18 @@
+#  ~/.zshrc - Interactive Shells
+# echo "SOURCED ~/.zshrc (PID: $$)"
 
-# ============================================================================
-#  .zshrc - Login and Interactive Shells
-# ============================================================================
-# echo "SOURCED .zshrc (PID: $$)"
+if [[ "$OSTYPE" == darwin* ]]; then
+    # Because of 'unsetopt GLOBAL_RCS' in .zshenv on macOS,
+    # we need to manually source /etc/zshrc to get system-wide settings.
+    if [[ -f /etc/zshrc ]]; then
+        source /etc/zshrc
+    fi
+fi
+
+# Apply user locale after user's ~/.zprofile has run
+if declare -f ensure_utf8_locale >/dev/null 2>&1; then
+    ensure_utf8_locale
+fi
 
 # --- Zsh Key Timeout ---
 # The time (in hundredths of a second) that Zsh waits for a key sequence to complete.
