@@ -1,12 +1,12 @@
 # Cross-Platform Tool Installation
 
-This document details how tools from the MacOS `Brewfile` are installed on Linux systems.
+This document details how tools from the macOS `Brewfile` are installed on Linux systems.
 
 ## Package Installation Methods
 
 ### Brewfile Tools → Linux Installation
 
-| MacOS (Homebrew) | Linux Installation Method | Notes |
+| macOS (Homebrew) | Linux Installation Method | Notes |
 |------------------|---------------------------|--------|
 | `brew "aria2"` |  |  |
 | `brew "asdf"` |  |  |
@@ -51,7 +51,7 @@ This document details how tools from the MacOS `Brewfile` are installed on Linux
 
 ### Cask Applications → Linux Alternatives
 
-| MacOS (Homebrew Cask) | Linux Installation | Notes |
+| macOS (Homebrew Cask) | Linux Installation | Notes |
 |------------------------|-------------------|--------|
 | `cask "font-meslo-lg-nerd-font"` | Download from Nerd Fonts | Installed to `~/.local/share/fonts` |
 | `cask "font-symbols-only-nerd-font"` | Download from Nerd Fonts | Installed to `~/.local/share/fonts` |

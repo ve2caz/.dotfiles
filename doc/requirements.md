@@ -1,6 +1,6 @@
 # Requirements
 
-## MacOS
+## macOS
 
 ### XCode CLI tools
 
@@ -14,7 +14,7 @@ xcode-select --install
 
 ### Homebrew
 
-This is a popular package manager for MacOS.
+This is a popular package manager for macOS.
 The following command will open a browser to this site.
 Follow the instructions to install homebrew.
 

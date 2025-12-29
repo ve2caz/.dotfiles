@@ -1,5 +1,5 @@
 # .dotfiles
-This directory contains the dotfiles for a development shell environment that works on both MacOS and Debian/Ubuntu Linux.
+This directory contains the dotfiles for a development shell environment that works on both macOS and Debian/Ubuntu Linux.
 
 ## 🚀 Quick Setup
 
@@ -28,9 +28,10 @@ See **[Included Tools](doc/tools.md)** for the complete list of modern command-l
 
 ## 📚 Documentation
 
+- **[ZSH Shell Primer](doc/zsh-shell-primer.md)** - Introduction to ZSH shell fundamentals and best practices
 - **[Requirements](doc/requirements.md)** - Platform-specific prerequisites and dependencies
 - **[Setup Guide](doc/setup.md)** - Complete installation, configuration, maintenance, and troubleshooting instructions
-- **[Cross-Platform Tools](doc/cross-platform-tools.md)** - How MacOS Brewfile tools are installed on Linux
+- **[Cross-Platform Tools](doc/cross-platform-tools.md)** - How macOS Brewfile tools are installed on Linux
 - **[Tokyo Night Theme](doc/tokyo-night-theme.md)** - Unified dark theme configuration across all tools
 
 ## ⌨️ Key Bindings

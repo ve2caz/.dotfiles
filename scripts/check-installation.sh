@@ -1,14 +1,14 @@
 #!/bin/bash
 # Check which tools from the dotfiles are installed and available
-# Only MacOS and Debian/Ubuntu Linux are supported by the install script.
+# Only macOS and Debian/Ubuntu Linux are supported by the install script.
 #
 # Note: Using bash instead of zsh for maximum compatibility during initial setup.
 # This script runs before zsh configuration is deployed, so bash ensures it works
 # on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
-# to be available on MacOS and virtually all Linux distributions out of the box.
+# to be available on macOS and virtually all Linux distributions out of the box.
 
 # XDG Base Directory Specification (externalized)
-_XDG_BASE_DIRS_FILE="$HOME/.zsh-xdg-base-dirs"
+_XDG_BASE_DIRS_FILE="$HOME/.zsh/.zsh-xdg-base-dirs"
 if [ -f "$_XDG_BASE_DIRS_FILE" ]; then
     source "$_XDG_BASE_DIRS_FILE"
 fi

@@ -4,7 +4,7 @@
 # Note: Using bash instead of zsh for maximum compatibility during initial setup.
 # This script runs before zsh configuration is deployed, so bash ensures it works
 # on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
-# to be available on MacOS and virtually all Linux distributions out of the box.
+# to be available on macOS and virtually all Linux distributions out of the box.
 
 # Ensure script exits on error
 set -e
@@ -27,7 +27,7 @@ echo ""
 # Step 2: Check if stow is available (should be installed by step 1)
 if ! command -v stow >/dev/null 2>&1; then
     echo "❌ GNU Stow is required but not installed."
-    echo "   Install with: brew install stow (MacOS) or sudo apt install stow (Linux)"
+    echo "   Install with: brew install stow (macOS) or sudo apt install stow (Linux)"
     exit 1
 fi
 
