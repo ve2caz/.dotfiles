@@ -4,8 +4,6 @@ brew "openssl@3"
 brew "aria2"
 # Distributed revision control system
 brew "git"
-# Extendable version manager with support for Ruby, Node.js, Erlang & more
-brew "asdf"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -32,9 +30,11 @@ brew "fzf"
 brew "gh"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
+# GNU Privacy Guard (OpenPGP)
+brew "gnupg"
 # Improved top (interactive process viewer)
 brew "htop"
-# Tools and libraries to manipulate images in many formats
+# Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Calculate various network masks, etc. from a given IP address
 brew "ipcalc"
@@ -50,6 +50,10 @@ brew "lazydocker"
 brew "lazygit"
 # Curses-based tool for viewing and analyzing log files
 brew "lnav"
+# Polyglot runtime manager with support for multiple languages and tools
+brew "mise"
+# 'traceroute' and 'ping' in a single tool
+brew "mtr"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Port scanning utility for large networks
@@ -88,5 +92,7 @@ cask "font-meslo-lg-nerd-font"
 cask "font-symbols-only-nerd-font"
 # Desktop client for GitHub repositories
 cask "github"
+# Intercept, modify, replay, save HTTP/S traffic
+cask "mitmproxy"
 # GPU-accelerated cross-platform terminal emulator and multiplexer
 cask "wezterm"

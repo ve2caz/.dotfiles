@@ -44,12 +44,7 @@ echo "🎨 Step 3: Setting up Tokyo Night theme..."
 ./scripts/setup-tokyo-night-theme.sh
 echo ""
 
-# Step 5: Setup asdf plugins
-echo "🧩 Step 4: Setting up asdf plugins..."
-./scripts/setup-asdf-plugins.sh
-echo ""
-
-# Step 6: Final instructions
+# Step 5: Final instructions
 echo "🎉 Setup Complete!"
 echo "================="
 echo ""
@@ -70,6 +65,5 @@ echo "• Tmux with plugins (blue theme)"
 echo "• Bat (Tokyo Night syntax highlighting)"
 echo "• Yazi (Tokyo Night file manager)"
 echo "• btop (Tokyo Night system monitor)"
-echo "• asdf with plugins (gradle, golang, java, kotlin, maven, nodejs, python, rust, kubectl, krew, kind)"
 echo ""
 echo "Enjoy your new development environment! ✨"

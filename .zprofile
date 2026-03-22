@@ -17,3 +17,6 @@ export LANG="en_US"
 if [ -z "$SSH_AUTH_SOCK" ]; then
   eval "$(ssh-agent -s)"
 fi
+
+# Activate the mise shims for the current shell session (e.g., for Node.js, Python, etc.)
+eval "$(mise activate zsh --shims)"

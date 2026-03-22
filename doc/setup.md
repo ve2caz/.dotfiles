@@ -4,7 +4,7 @@
 
 For a complete automated installation, use the master setup script:
 
-```bash
+```zsh
 # Clone the repository
 git clone https://github.com/ve2caz/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
@@ -27,7 +27,7 @@ If you prefer to control each step individually, follow these manual instruction
 
 First, check out the .dotfiles repo in your $HOME directory using git
 
-```bash
+```zsh
 cd ~
 git clone git@github.com/ve2caz/.dotfiles.git
 cd .dotfiles
@@ -39,13 +39,13 @@ cd .dotfiles
 
 Use the cross-platform installer script:
 
-```bash
+```zsh
 ./scripts/install-packages.sh
 ```
 
 To verify what's installed, you can run:
 
-```bash
+```zsh
 ./scripts/check-installation.sh
 ```
 
@@ -65,15 +65,13 @@ setup.sh (master)
     ├── Bat theme download
     ├── Yazi flavor verification
     └── Theme consistency checks
-└── setup-asdf-plugins.sh
-    └── Install asdf plugins
 ```
 
 #### Manual installation
 
 ##### macOS with Homebrew
 
-```bash
+```zsh
 brew bundle
 ```
 
@@ -87,7 +85,7 @@ If you prefer manual installation on Debian/Ubuntu, see the script for the list 
 
 From the .dotfiles folder, use GNU stow to create symlinks activating the configuration:
 
-```bash
+```zsh
 stow .
 ```
 
@@ -95,28 +93,51 @@ stow .
 
 To apply the consistent Tokyo Night theme across all tools:
 
-```bash
+```zsh
 ./scripts/setup-tokyo-night-theme.sh
 ```
+
+### 5. Configure Mise (Optional but Recommended)
+
+[Mise](https://mise.jdx.dev/) is a polyglot version manager installed as part of the setup. It allows you to manage multiple runtime versions (Node.js, Python, Ruby, Go, etc.) per project.
+
+**Initial Setup:**
+```zsh
+# Initialize mise in your shell
+mise activate
+
+# Install tools for a specific project
+cd ~/my-project
+mise install  # Installs versions specified in .mise.toml
+
+# Or manually install a runtime
+mise install node@20
+mise use node@20  # Set as current version
+```
+
+**Configuration:**
+- Create a `.mise.toml` file in your project to specify required tool versions
+- Mise automatically switches versions when entering directories with `.mise.toml`
+- Use `mise settings` to configure behavior (see [Mise Documentation](https://mise.jdx.dev/settings.html))
 
 ## What works cross-platform
 
 - ✅ Zsh configuration with Zinit plugin manager
 - ✅ Starship prompt
+- ✅ Mise version manager for polyglot runtime management
 - ✅ Modern CLI tools (eza, fzf, bat, fd, zoxide, yazi, etc.)
-- ✅ Color schemes and completions (asdf completions in `~/.asdf/completions`)
+- ✅ Color schemes and completions
 - ✅ Key bindings and aliases
 - ✅ Smart fallbacks for GNU/BSD tool differences
 - ✅ XDG Base Directory Specification compliance
 
 ## XDG Base Directory Compliance
 
-This configuration follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) to keep your home directory clean, with the exception of asdf, which is installed to `~/.asdf` as per official recommendations:
+This configuration follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) to keep your home directory clean:
 
 - **Config files**: `$XDG_CONFIG_HOME` (default: `~/.config`)
 - **Data files**: `$XDG_DATA_HOME` (default: `~/.local/share`)
 - **Cache files**: `$XDG_CACHE_HOME` (default: `~/.cache`)
-- **asdf**: installed to `~/.asdf` and completions in `~/.asdf/completions` (official method)
 
 Key XDG improvements:
 - All themes and data properly organized in XDG directories
@@ -180,36 +201,9 @@ The automated installation script (`./scripts/install-packages.sh`) will:
 
 ### On Linux (Debian/Ubuntu only):
 - Install packages via apt
-- Install asdf via git clone to `~/.asdf` (official method)
 - Download and install tools not available in repos (from GitHub releases)
 - Install Nerd Fonts to user font directory
 - Optionally install GitHub Desktop via third-party repository
-
-**Note**:
-- Completions: Generated to `~/.asdf/completions/_asdf` (both platforms)
-
-### asdf plugins installed by setup-asdf-plugins.sh
-
-The setup process installs the following `asdf` plugins:
-
-- ctlptl
-- golang
-- gradle
-- helm
-- java
-- kind
-- kotlin
-- krew
-- kubebuilder
-- kubectl
-- maven
-- mockery
-- nodejs
-- python
-- rancher
-- rust
-- step
-- tilt
 
 ## 🔧 Maintenance and Troubleshooting
 
@@ -228,7 +222,7 @@ The setup process installs the following `asdf` plugins:
 
 Use the verification script to check your installation status:
 
-```bash
+```zsh
 ./scripts/check-installation.sh
 ```
 

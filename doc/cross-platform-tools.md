@@ -8,8 +8,8 @@ This document details how tools from the macOS `Brewfile` are installed on Linux
 
 | macOS (Homebrew) | Linux Installation Method | Notes |
 |------------------|---------------------------|--------|
-| `brew "aria2"` |  |  |
-| `brew "asdf"` |  |  |
+| `brew "aria2"` | `apt install aria2` | System package |
+| `brew "bash"` | Native | Already included in all Linux distributions |
 | `brew "bat"` | `apt install bat` | System package |
 | `brew "btop"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "coreutils"` | Native | GNU coreutils included by default on Linux |
@@ -23,6 +23,7 @@ This document details how tools from the macOS `Brewfile` are installed on Linux
 | `brew "gh"` | GitHub official repo | Added via official GitHub CLI repository |
 | `brew "git"` | `apt install git` | System package |
 | `brew "git-delta"` | GitHub Releases | Downloaded as deb package |
+| `brew "gnupg"` | `apt install gnupg` | System package |
 | `brew "htop"` | `apt install htop` | System package |
 | `brew "imagemagick"` | `apt install imagemagick` | System package |
 | `brew "ipcalc"` | `apt install ipcalc` | System package |
@@ -31,6 +32,9 @@ This document details how tools from the macOS `Brewfile` are installed on Linux
 | `brew "kubie"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "lazydocker"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "lazygit"` | GitHub Releases | Downloaded as pre-compiled binary |
+| `brew "lnav"` | `apt install lnav` | System package |
+| `brew "mise"` | Official installer | Installed via `curl https://mise.jdx.dev/install.sh \| sh` |
+| `brew "mtr"` | `apt install mtr` | System package (traceroute + ping utility) |
 | `brew "neovim"` | `apt install neovim` | System package |
 | `brew "nmap"` | `apt install nmap` | System package |
 | `brew "openssl@3"` | `apt install openssl` | System package (usually pre-installed) |
@@ -38,16 +42,18 @@ This document details how tools from the macOS `Brewfile` are installed on Linux
 | `brew "regclient"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "ripgrep"` | `apt install ripgrep` | System package |
 | `brew "sevenzip"` | `apt install p7zip-full` | System package (different name) |
+| `brew "starship"` | `apt install starship` | System package (or official installer if repo version too old) |
 | `brew "stow"` | `apt install stow` | System package |
 | `brew "thefuck"` | `pip3 install --user thefuck` | Python package |
 | `brew "tlrc"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "tmux"` | `apt install tmux` | System package |
 | `brew "tpm"` | Git clone | Cloned to tmux plugins directory |
 | `brew "tree"` | `apt install tree` | System package |
-| `brew "xcodes"` |  |  |
+| `brew "wezterm"` | Official repo | Added via official WezTerm repository |
+| `brew "xcodes"` | N/A | macOS only (Xcode version manager) |
 | `brew "yazi"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "yq"` | GitHub Releases | Downloaded as pre-compiled binary |
-| `brew "zoxide"` | Install script | Installed via official install script |
+| `brew "zoxide"` | Official install script | Installed via `curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh \| bash` |
 
 ### Cask Applications → Linux Alternatives
 

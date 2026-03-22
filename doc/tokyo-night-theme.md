@@ -32,7 +32,7 @@ All theme files and configurations are stored according to XDG standards:
 
 Run the theme setup script to ensure all themes are properly installed with XDG compliance:
 
-```bash
+```zsh
 ./scripts/setup-tokyo-night-theme.sh
 ```
 
