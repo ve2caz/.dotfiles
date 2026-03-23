@@ -80,6 +80,13 @@ export PATH
 # Plugins that require explicit environment variable setup
 # These use zsh precmd hooks to dynamically update env vars based on the active version
 
+# --- Runtime Version Manager (mise) ---
+# Initialize shims for all shell types (login, non-login, interactive, non-interactive)
+# This ensures version-managed tools are available everywhere
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh --shims)"
+fi
+
 # Enable direnv integration with zsh (cross-platform)
 if command -v direnv >/dev/null 2>&1; then
     eval "$(direnv hook zsh)"

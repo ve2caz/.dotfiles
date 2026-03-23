@@ -281,5 +281,8 @@ if command -v thefuck >/dev/null 2>&1; then
     eval $(thefuck --alias tf)
 fi
 
-# --- Version Managers ---
-eval "$(mise activate zsh)"
+# --- Version Manager Hook Integration ---
+# Enable dynamic version switching on directory change (interactive shells only)
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"  # Without --shims
+fi
