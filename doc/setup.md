@@ -228,8 +228,80 @@ Use the verification script to check your installation status:
 
 This script verifies that all tools are properly installed and checks:
 - Core tools availability (git, neovim, stow, tmux, etc.)
-- Modern CLI tools installation (eza, fzf, bat, fd, etc.) 
+- Modern CLI tools installation (eza, fzf, bat, fd, etc.)
 - Development tools functionality (gh, lazygit, delta, etc.)
 - System tools (btop, yq, k9s, etc.)
 - Font installation status (MesloLG Nerd Font, Symbols Only)
 - Tmux plugin manager (TPM) setup
+
+### Utility Scripts
+
+Additional scripts are available for specific maintenance tasks:
+
+#### `brew-dump-clean.sh`
+Utility script for managing and cleaning the Brewfile. Useful when you want to:
+- Update the Brewfile with currently installed packages
+- Clean up duplicate or obsolete entries
+- Export a fresh Brewfile from your current installation
+
+```zsh
+./scripts/brew-dump-clean.sh
+```
+
+#### `check-locale.sh`
+Verifies locale configuration and UTF-8 support on your system. Run this to:
+- Check if your system locale is properly set up
+- Diagnose locale-related issues
+- Verify UTF-8 support for terminal display
+
+```zsh
+./scripts/check-locale.sh
+```
+
+## 🧪 Testing
+
+This project includes comprehensive tests to verify shell environment setup and tool integration:
+
+### Shell Environment Tests
+Located in `scripts/test/`, these scripts verify proper initialization across different shell types:
+
+```
+scripts/test/
+├── interactive-login.sh           # Interactive login shell (e.g., SSH)
+├── interactive-non-login.sh       # Interactive non-login shell (new tab in GUI terminal)
+├── non-interactive-login.sh       # Non-interactive login shell (cron, remote scripts)
+└── non-interactive-non-login.sh   # Non-interactive non-login shell (shell scripts)
+```
+
+Each test validates that environment variables, XDG paths, and shell configuration are properly loaded in different contexts.
+
+### Mise Integration Tests
+Located in `scripts/test/test-mise-shims-path.zsh`, this test verifies:
+- Mise shims are properly in PATH
+- Version managers (Node.js, Python, Ruby, etc.) are accessible
+- Runtime switching works correctly
+
+Run the mise test with:
+
+```zsh
+zsh ./scripts/test/test-mise-shims-path.zsh
+```
+
+### Running Tests
+To verify your shell configuration works correctly in all contexts:
+
+```zsh
+# Test interactive login shell (default)
+bash ./scripts/test/interactive-login.sh
+
+# Test other shell types as needed
+bash ./scripts/test/interactive-non-login.sh
+bash ./scripts/test/non-interactive-login.sh
+bash ./scripts/test/non-interactive-non-login.sh
+```
+
+These tests are idempotent and safe to run multiple times. They help diagnose issues with:
+- Missing environment variables
+- Incorrect PATH configuration
+- Shell sourcing problems
+- Plugin manager initialization failures

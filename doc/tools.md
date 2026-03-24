@@ -35,9 +35,11 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 |------|-------------|
 | [**bat**](https://github.com/sharkdp/bat) | Clone of `cat` with syntax highlighting and Git integration |
 | [**fzf**](https://github.com/junegunn/fzf) | Command-line fuzzy finder for files, directories, and history |
+| [**jq**](https://github.com/jqlang/jq) | Lightweight and flexible command-line JSON processor |
 | [**lnav**](https://lnav.org/) | The Logfile Navigator - browse and tail log files in the terminal |
 | [**ripgrep**](https://github.com/BurntSushi/ripgrep) | Extremely fast text search tool |
 | [**tlrc**](https://github.com/tldr-pages/tlrc) | Official tldr client for community-maintained help pages (use `tldr <command>`) |
+| [**yq**](https://github.com/mikefarah/yq) | Process YAML, JSON, XML, CSV and properties documents from the CLI |
 
 ## System Monitoring and Utilities
 | Tool | Description |
@@ -48,8 +50,9 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 | [**htop**](https://github.com/htop-dev/htop) | Interactive process viewer |
 | [**imagemagick**](https://imagemagick.org/) | Tools and libraries to manipulate images |
 | [**ipcalc**](https://github.com/kjokjo/ipcalc) | Calculate various network masks from IP addresses |
+| [**mtr**](https://github.com/traviscross/mtr) | Network diagnostic tool combining traceroute and ping in one utility |
 | [**nmap**](https://nmap.org/) | Network discovery and security auditing utility |
-| [**poppler-utils**](https://poppler.freedesktop.org/) | PDF rendering utilities (Debian/Ubuntu) |
+| [**poppler-utils**](https://poppler.freedesktop.org/) | PDF rendering utilities (Debian/Ubuntu); on macOS installed as `poppler` |
 | [**sevenzip**](https://www.7-zip.org/) | File archiver with high compression ratio (Debian/Ubuntu: p7zip-full) |
 
 ## Terminal and Productivity
@@ -57,6 +60,7 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 |------|-------------|
 | [**bash**](https://www.gnu.org/software/bash/) | Bourne-Again SHell, a UNIX command interpreter |
 | [**direnv**](https://direnv.net/) | Environment variable manager for project-specific environments |
+| [**starship**](https://starship.rs/) | Cross-shell prompt with minimal, blazing-fast rendering and context awareness |
 | [**thefuck**](https://github.com/nvbn/thefuck) | Corrects mistyped console commands |
 | [**tmux**](https://github.com/tmux/tmux) | Terminal multiplexer for session management |
 | [**tpm**](https://github.com/tmux-plugins/tpm) | Plugin manager for tmux |
@@ -78,6 +82,7 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 |------|-------------|
 | [**coreutils**](https://www.gnu.org/software/coreutils/) | GNU File, Shell, and Text utilities (macOS via Homebrew) |
 | [**curl**](https://curl.se/) | Tool for transferring data from servers |
-| [**openssl**](https://www.openssl.org/) | Cryptography and SSL/TLS toolkit |
+| [**gnupg**](https://gnupg.org/) | GNU Privacy Guard (OpenPGP) for encryption, decryption, and signing |
+| [**openssl@3**](https://www.openssl.org/) | Cryptography and SSL/TLS toolkit (version 3.x for modern security) |
 | [**stow**](https://www.gnu.org/software/stow/) | Symlink farm manager for organizing dotfiles |
 | [**xcodes**](https://github.com/RobotsAndPencils/xcodes) | Command-line tool to install and switch between multiple versions of Xcode (macOS only) |
