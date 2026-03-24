@@ -3,7 +3,7 @@ This directory contains the dotfiles for a development shell environment that wo
 
 ## 🚀 Quick Setup
 
-```bash
+```zsh
 # Clone the repository
 git clone https://github.com/ve2caz/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles

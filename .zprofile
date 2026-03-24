@@ -9,10 +9,6 @@ if [ -f "$__ZSH_ENV" ]; then
   source "$__ZSH_ENV"
 fi
 
-# User's preferred language/region (after system defaults from env.zsh)
-# This will be enhanced to UTF-8 by .zshrc later
-export LANG="en_US"
-
 # SSH Agent
 if [ -z "$SSH_AUTH_SOCK" ]; then
   eval "$(ssh-agent -s)"

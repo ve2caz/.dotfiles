@@ -56,15 +56,6 @@ zinit light sinetoami/web-search
 eval "$(starship init zsh)"
 
 # --- Completions ---
-# asdf version manager completions
-if command -v asdf >/dev/null 2>&1; then
-    ASDF_COMPLETIONS="$HOME/.asdf/completions"
-    [[ ! -d "$ASDF_COMPLETIONS" ]] && mkdir -p "$ASDF_COMPLETIONS"
-    if [[ ! -f "$ASDF_COMPLETIONS/_asdf" ]] || [[ "$ASDF_COMPLETIONS/_asdf" -ot "$(command -v asdf)" ]]; then
-        asdf completion zsh > "$ASDF_COMPLETIONS/_asdf"
-    fi
-    fpath=("$ASDF_COMPLETIONS" $fpath)
-fi
 # docker CLI completions
 if command -v docker >/dev/null 2>&1; then
     fpath=($HOME/.docker/completions $fpath)
@@ -288,4 +279,10 @@ if command -v fzf >/dev/null 2>&1; then
 fi
 if command -v thefuck >/dev/null 2>&1; then
     eval $(thefuck --alias tf)
+fi
+
+# --- Version Manager Hook Integration ---
+# Enable dynamic version switching on directory change (interactive shells only)
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"  # Without --shims
 fi
