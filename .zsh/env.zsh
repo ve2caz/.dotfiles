@@ -67,15 +67,8 @@ if [[ -n "$_BREW_PREFIX" ]]; then
     [[ -d "$_BREW_PREFIX/opt/curl/bin" ]] && path=( "$_BREW_PREFIX/opt/curl/bin" $path )
 fi
 
-# ASDF version manager - Add shims to PATH (cross-platform)
-# Default to ~/.asdf if ASDF_DATA_DIR is not set
-_ASDF_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
-if [[ -d "$_ASDF_DIR" ]]; then
-    path=( "$_ASDF_DIR/shims" $path )
-fi
-
 # Additional high-priority developer paths (append if present)
-# Append as a security measure to avoid shadowing ASDF, Brew, and system binaries
+# Append as a security measure to avoid shadowing Brew, and system binaries
 [[ -d "$HOME/.local/bin" ]] && path=( $path "$HOME/.local/bin" )
 [[ -d "$HOME/bin" ]] && path=( $path "$HOME/bin" )
 
@@ -87,35 +80,11 @@ export PATH
 # Plugins that require explicit environment variable setup
 # These use zsh precmd hooks to dynamically update env vars based on the active version
 
-# Source Go set-env script if it exists
-_ASDF_GO_SCRIPT="$_ASDF_DIR/plugins/golang/set-env.zsh"
-if [[ -f "$_ASDF_GO_SCRIPT" ]]; then
-    source "$_ASDF_GO_SCRIPT"
-    
-    # # Override the asdf_update_golang_env function with a safer version
-    # asdf_update_golang_env() {
-    #     # Only proceed if go command is actually available
-    #     if ! command -v go >/dev/null 2>&1; then
-    #         return 0
-    #     fi
-        
-    #     local go_root
-    #     go_root="$(go env GOROOT 2>/dev/null)"
-        
-    #     # Only set environment variables if GOROOT is valid and points to an existing directory
-    #     if [[ -n "${go_root}" && -d "${go_root}" ]]; then
-    #         export GOROOT="${go_root}"
-    #         # Use standard Go workspace location for GOPATH (Go 1.8+ supports this)
-    #         export GOPATH="${HOME}/go"
-    #         export GOBIN="${GOPATH}/bin"
-    #     fi
-    # }
-fi
-
-# Source Java set-java-home script if it exists
-_ASDF_JAVA_SCRIPT="$_ASDF_DIR/plugins/java/set-java-home.zsh"
-if [[ -f "$_ASDF_JAVA_SCRIPT" ]]; then
-    source "$_ASDF_JAVA_SCRIPT"
+# --- Runtime Version Manager (mise) ---
+# Initialize shims for all shell types (login, non-login, interactive, non-interactive)
+# This ensures version-managed tools are available everywhere
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh --shims)"
 fi
 
 # Enable direnv integration with zsh (cross-platform)

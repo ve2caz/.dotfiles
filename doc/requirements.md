@@ -28,7 +28,7 @@ Only Debian/Ubuntu-based systems are fully supported by this repository.
 
 Most distributions come with git pre-installed. If not:
 
-```bash
+```zsh
 # Ubuntu/Debian
 sudo apt update && sudo apt install git direnv
 ```

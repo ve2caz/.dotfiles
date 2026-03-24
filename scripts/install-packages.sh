@@ -85,7 +85,7 @@ case "$OS" in
                 sudo apt update
                 # Install packages that are available via apt (zsh handled separately above)
                 # Note: coreutils (GNU File, Shell, and Text utilities) are included by default on Linux
-                sudo apt install -y curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip-full openssl direnv starship
+                sudo apt install -y curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip-full openssl direnv starship gnupg mtr aria2 lnav
                 
                 # Install packages that need special handling
                 echo "Installing additional packages..."
@@ -131,6 +131,11 @@ case "$OS" in
                     curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
                 fi
                 
+                # mise (polyglot version manager)
+                if ! command -v mise >/dev/null 2>&1; then
+                    curl https://mise.jdx.dev/install.sh | sh
+                fi
+                
                 # thefuck
                 if ! command -v thefuck >/dev/null 2>&1; then
                     pip3 install --user thefuck
@@ -161,15 +166,6 @@ case "$OS" in
                         mkdir -p ~/.local/bin
                         ln -s $(which fdfind) ~/.local/bin/fd
                     fi
-                fi
-                
-                # asdf (version manager) - official recommended install
-                ASDF_HOME="$HOME/.asdf"
-                if [ ! -d "$ASDF_HOME" ]; then
-                    echo "Installing asdf to $ASDF_HOME..."
-                    git clone https://github.com/asdf-vm/asdf.git "$ASDF_HOME" --branch v0.18.0
-                else
-                    echo "asdf already installed at $ASDF_HOME."
                 fi
                 
                 # yazi (terminal file manager)
@@ -353,7 +349,9 @@ echo "    • bat"
 echo "    • curl"
 echo "    • fzf"
 echo "    • git"
+echo "    • gnupg"
 echo "    • htop"
+echo "    • mise"
 echo "    • neovim"
 echo "    • stow"
 echo "    • tmux"
@@ -378,11 +376,13 @@ echo "    • regclient"
 echo "    • lazygit"
 echo ""
 echo "  System:"
+echo "    • aria2"
 echo "    • btop"
 echo "    • imagemagick"
 echo "    • ipcalc"
 echo "    • jq"
 echo "    • lnav"
+echo "    • mtr"
 echo "    • nmap"
 echo "    • yq"
 echo ""

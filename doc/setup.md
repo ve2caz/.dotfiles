@@ -4,7 +4,7 @@
 
 For a complete automated installation, use the master setup script:
 
-```bash
+```zsh
 # Clone the repository
 git clone https://github.com/ve2caz/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
@@ -27,7 +27,7 @@ If you prefer to control each step individually, follow these manual instruction
 
 First, check out the .dotfiles repo in your $HOME directory using git
 
-```bash
+```zsh
 cd ~
 git clone git@github.com/ve2caz/.dotfiles.git
 cd .dotfiles
@@ -39,13 +39,13 @@ cd .dotfiles
 
 Use the cross-platform installer script:
 
-```bash
+```zsh
 ./scripts/install-packages.sh
 ```
 
 To verify what's installed, you can run:
 
-```bash
+```zsh
 ./scripts/check-installation.sh
 ```
 
@@ -65,15 +65,13 @@ setup.sh (master)
     ├── Bat theme download
     ├── Yazi flavor verification
     └── Theme consistency checks
-└── setup-asdf-plugins.sh
-    └── Install asdf plugins
 ```
 
 #### Manual installation
 
 ##### macOS with Homebrew
 
-```bash
+```zsh
 brew bundle
 ```
 
@@ -87,7 +85,7 @@ If you prefer manual installation on Debian/Ubuntu, see the script for the list 
 
 From the .dotfiles folder, use GNU stow to create symlinks activating the configuration:
 
-```bash
+```zsh
 stow .
 ```
 
@@ -95,28 +93,51 @@ stow .
 
 To apply the consistent Tokyo Night theme across all tools:
 
-```bash
+```zsh
 ./scripts/setup-tokyo-night-theme.sh
 ```
+
+### 5. Configure Mise (Optional but Recommended)
+
+[Mise](https://mise.jdx.dev/) is a polyglot version manager installed as part of the setup. It allows you to manage multiple runtime versions (Node.js, Python, Ruby, Go, etc.) per project.
+
+**Initial Setup:**
+```zsh
+# Initialize mise in your shell
+mise activate
+
+# Install tools for a specific project
+cd ~/my-project
+mise install  # Installs versions specified in .mise.toml
+
+# Or manually install a runtime
+mise install node@20
+mise use node@20  # Set as current version
+```
+
+**Configuration:**
+- Create a `.mise.toml` file in your project to specify required tool versions
+- Mise automatically switches versions when entering directories with `.mise.toml`
+- Use `mise settings` to configure behavior (see [Mise Documentation](https://mise.jdx.dev/settings.html))
 
 ## What works cross-platform
 
 - ✅ Zsh configuration with Zinit plugin manager
 - ✅ Starship prompt
+- ✅ Mise version manager for polyglot runtime management
 - ✅ Modern CLI tools (eza, fzf, bat, fd, zoxide, yazi, etc.)
-- ✅ Color schemes and completions (asdf completions in `~/.asdf/completions`)
+- ✅ Color schemes and completions
 - ✅ Key bindings and aliases
 - ✅ Smart fallbacks for GNU/BSD tool differences
 - ✅ XDG Base Directory Specification compliance
 
 ## XDG Base Directory Compliance
 
-This configuration follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) to keep your home directory clean, with the exception of asdf, which is installed to `~/.asdf` as per official recommendations:
+This configuration follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) to keep your home directory clean:
 
 - **Config files**: `$XDG_CONFIG_HOME` (default: `~/.config`)
 - **Data files**: `$XDG_DATA_HOME` (default: `~/.local/share`)
 - **Cache files**: `$XDG_CACHE_HOME` (default: `~/.cache`)
-- **asdf**: installed to `~/.asdf` and completions in `~/.asdf/completions` (official method)
 
 Key XDG improvements:
 - All themes and data properly organized in XDG directories
@@ -180,36 +201,9 @@ The automated installation script (`./scripts/install-packages.sh`) will:
 
 ### On Linux (Debian/Ubuntu only):
 - Install packages via apt
-- Install asdf via git clone to `~/.asdf` (official method)
 - Download and install tools not available in repos (from GitHub releases)
 - Install Nerd Fonts to user font directory
 - Optionally install GitHub Desktop via third-party repository
-
-**Note**:
-- Completions: Generated to `~/.asdf/completions/_asdf` (both platforms)
-
-### asdf plugins installed by setup-asdf-plugins.sh
-
-The setup process installs the following `asdf` plugins:
-
-- ctlptl
-- golang
-- gradle
-- helm
-- java
-- kind
-- kotlin
-- krew
-- kubebuilder
-- kubectl
-- maven
-- mockery
-- nodejs
-- python
-- rancher
-- rust
-- step
-- tilt
 
 ## 🔧 Maintenance and Troubleshooting
 
@@ -228,14 +222,86 @@ The setup process installs the following `asdf` plugins:
 
 Use the verification script to check your installation status:
 
-```bash
+```zsh
 ./scripts/check-installation.sh
 ```
 
 This script verifies that all tools are properly installed and checks:
 - Core tools availability (git, neovim, stow, tmux, etc.)
-- Modern CLI tools installation (eza, fzf, bat, fd, etc.) 
+- Modern CLI tools installation (eza, fzf, bat, fd, etc.)
 - Development tools functionality (gh, lazygit, delta, etc.)
 - System tools (btop, yq, k9s, etc.)
 - Font installation status (MesloLG Nerd Font, Symbols Only)
 - Tmux plugin manager (TPM) setup
+
+### Utility Scripts
+
+Additional scripts are available for specific maintenance tasks:
+
+#### `brew-dump-clean.sh`
+Utility script for managing and cleaning the Brewfile. Useful when you want to:
+- Update the Brewfile with currently installed packages
+- Clean up duplicate or obsolete entries
+- Export a fresh Brewfile from your current installation
+
+```zsh
+./scripts/brew-dump-clean.sh
+```
+
+#### `check-locale.sh`
+Verifies locale configuration and UTF-8 support on your system. Run this to:
+- Check if your system locale is properly set up
+- Diagnose locale-related issues
+- Verify UTF-8 support for terminal display
+
+```zsh
+./scripts/check-locale.sh
+```
+
+## 🧪 Testing
+
+This project includes comprehensive tests to verify shell environment setup and tool integration:
+
+### Shell Environment Tests
+Located in `scripts/test/`, these scripts verify proper initialization across different shell types:
+
+```
+scripts/test/
+├── interactive-login.sh           # Interactive login shell (e.g., SSH)
+├── interactive-non-login.sh       # Interactive non-login shell (new tab in GUI terminal)
+├── non-interactive-login.sh       # Non-interactive login shell (cron, remote scripts)
+└── non-interactive-non-login.sh   # Non-interactive non-login shell (shell scripts)
+```
+
+Each test validates that environment variables, XDG paths, and shell configuration are properly loaded in different contexts.
+
+### Mise Integration Tests
+Located in `scripts/test/test-mise-shims-path.zsh`, this test verifies:
+- Mise shims are properly in PATH
+- Version managers (Node.js, Python, Ruby, etc.) are accessible
+- Runtime switching works correctly
+
+Run the mise test with:
+
+```zsh
+zsh ./scripts/test/test-mise-shims-path.zsh
+```
+
+### Running Tests
+To verify your shell configuration works correctly in all contexts:
+
+```zsh
+# Test interactive login shell (default)
+bash ./scripts/test/interactive-login.sh
+
+# Test other shell types as needed
+bash ./scripts/test/interactive-non-login.sh
+bash ./scripts/test/non-interactive-login.sh
+bash ./scripts/test/non-interactive-non-login.sh
+```
+
+These tests are idempotent and safe to run multiple times. They help diagnose issues with:
+- Missing environment variables
+- Incorrect PATH configuration
+- Shell sourcing problems
+- Plugin manager initialization failures

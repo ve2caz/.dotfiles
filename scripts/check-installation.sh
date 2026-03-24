@@ -100,6 +100,7 @@ DEVELOPMENT=(
     "gh" "GitHub CLI"
     "k9s" "Kubernetes CLI"
     "kubie" "Kubernetes context"
+    "mise" "Polyglot version manager"
     "regctl" "regclient/regctl is Docker/OCI registry client"
     "lazydocker" "Docker terminal UI"
     "lazygit" "Git terminal UI"
@@ -133,71 +134,8 @@ else
 fi
 echo ""
 
-
-# --- asdf binary detection (matches setup-asdf-plugins.sh) ---
-echo "--- asdf Binary Detection ---"
-ASDF_BIN=""
-if [ -x "/opt/homebrew/bin/asdf" ]; then
-    ASDF_BIN="/opt/homebrew/bin/asdf"
-elif [ -x "/usr/local/bin/asdf" ]; then
-    ASDF_BIN="/usr/local/bin/asdf"
-elif [ -n "$XDG_DATA_HOME" ] && [ -x "${XDG_DATA_HOME}/asdf/bin/asdf" ]; then
-    ASDF_BIN="${XDG_DATA_HOME}/asdf/bin/asdf"
-elif [ -x "$HOME/.asdf/bin/asdf" ]; then
-    ASDF_BIN="$HOME/.asdf/bin/asdf"
-fi
-
-if [ -n "$ASDF_BIN" ]; then
-    PATH="$(dirname "$ASDF_BIN"):$PATH"
-    echo "✅ asdf binary found at $ASDF_BIN"
-else
-    echo "❌ asdf is not installed or not available in a known location."
-fi
-echo ""
-
-# Check asdf plugins (if asdf is available)
-echo "--- asdf Plugins ---"
-if command -v asdf >/dev/null 2>&1; then
-    ASDF_PLUGINS=(
-        "ctlptl"
-        "golang"
-        "gradle"
-        "helm"
-        "java"
-        "kind"
-        "kotlin"
-        "krew"
-        "kubebuilder"
-        "kubectl"
-        "maven"
-        "mockery"
-        "nodejs"
-        "python"
-        "rancher"
-        "rust"
-        "step"
-        "tilt"
-    )
-    INSTALLED_PLUGINS=$(asdf plugin list 2>/dev/null)
-    FOUND=0
-    TOTAL=${#ASDF_PLUGINS[@]}
-    for plugin in "${ASDF_PLUGINS[@]}"; do
-        if echo "$INSTALLED_PLUGINS" | grep -q "^${plugin}$"; then
-            echo "✅ $plugin"
-            ((FOUND++))
-        else
-            echo "❌ $plugin"
-        fi
-    done
-    echo "   ($FOUND/$TOTAL plugins installed)"
-else
-    echo "❌ asdf is not installed or not available in PATH"
-fi
-echo ""
-
 # Summary
 echo "=== Summary ==="
 echo "Run './scripts/install-packages.sh' to install missing tools"
-echo "Run './scripts/setup-asdf-plugins.sh' to install missing asdf plugins"
 echo "Run 'stow .' to activate dotfiles configuration"  
 echo "Run 'exec zsh' to reload shell environment"
