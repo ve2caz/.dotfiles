@@ -15,6 +15,7 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 ## Container and Kubernetes Management
 | Tool | Description |
 |------|-------------|
+| [**dive**](https://github.com/wagoodman/dive) | Analyze Docker and OCI image layers to explore composition and identify wasted space |
 | [**k9s**](https://github.com/derailed/k9s) | Kubernetes CLI to manage clusters in style |
 | [**kubie**](https://github.com/sbstp/kubie) | Powerful alternative to kubectx and kubens |
 | [**lazydocker**](https://github.com/jesseduffield/lazydocker) | Simple terminal UI for Docker management |
@@ -34,6 +35,7 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 | Tool | Description |
 |------|-------------|
 | [**bat**](https://github.com/sharkdp/bat) | Clone of `cat` with syntax highlighting and Git integration |
+| [**csvlens**](https://github.com/YS-L/csvlens) | Command-line CSV viewer with regex search, filtering, and column freezing |
 | [**fzf**](https://github.com/junegunn/fzf) | Command-line fuzzy finder for files, directories, and history |
 | [**jq**](https://github.com/jqlang/jq) | Lightweight and flexible command-line JSON processor |
 | [**lnav**](https://lnav.org/) | The Logfile Navigator - browse and tail log files in the terminal |
@@ -48,6 +50,7 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 | [**btop**](https://github.com/aristocratos/btop) | Resource monitor (modern alternative to htop) |
 | [**ffmpegthumbnailer**](https://github.com/dirkvdb/ffmpegthumbnailer) | Create thumbnails for video files |
 | [**htop**](https://github.com/htop-dev/htop) | Interactive process viewer |
+| [**mactop**](https://github.com/0xfe/mactop) | Go-based terminal UI for real-time macOS resource monitoring (optimized for Apple Silicon) |
 | [**imagemagick**](https://imagemagick.org/) | Tools and libraries to manipulate images |
 | [**ipcalc**](https://github.com/kjokjo/ipcalc) | Calculate various network masks from IP addresses |
 | [**mtr**](https://github.com/traviscross/mtr) | Network diagnostic tool combining traceroute and ping in one utility |
@@ -61,6 +64,7 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 | [**bash**](https://www.gnu.org/software/bash/) | Bourne-Again SHell, a UNIX command interpreter |
 | [**direnv**](https://direnv.net/) | Environment variable manager for project-specific environments |
 | [**starship**](https://starship.rs/) | Cross-shell prompt with minimal, blazing-fast rendering and context awareness |
+| [**taproom**](https://github.com/gromgit/homebrew-brewtils) | Interactive TUI for browsing and managing Homebrew packages (alternative to `brew search`) |
 | [**thefuck**](https://github.com/nvbn/thefuck) | Corrects mistyped console commands |
 | [**tmux**](https://github.com/tmux/tmux) | Terminal multiplexer for session management |
 | [**tpm**](https://github.com/tmux-plugins/tpm) | Plugin manager for tmux |
