@@ -14,7 +14,9 @@ This document details how tools from the macOS `Brewfile` are installed on Linux
 | `brew "btop"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "coreutils"` | Native | GNU coreutils included by default on Linux |
 | `brew "curl"` | `apt install curl` | System package |
+| `brew "csvlens"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "direnv"` | `apt install direnv` | System package |
+| `brew "dive"` | `apt install dive` | System package (or GitHub Releases for manual install) |
 | `brew "dust"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "eza"` | Custom repo | Added via third-party deb repository |
 | `brew "fd"` | `apt install fd-find` | System package (symlinked to `fd`) |
@@ -33,6 +35,7 @@ This document details how tools from the macOS `Brewfile` are installed on Linux
 | `brew "lazydocker"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "lazygit"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "lnav"` | `apt install lnav` | System package |
+| `brew "mactop"` | GitHub Releases | macOS only; Apple Silicon optimized resource monitor |
 | `brew "mise"` | Official installer | Installed via `curl https://mise.jdx.dev/install.sh \| sh` |
 | `brew "mtr"` | `apt install mtr` | System package (traceroute + ping utility) |
 | `brew "neovim"` | `apt install neovim` | System package |
@@ -44,6 +47,7 @@ This document details how tools from the macOS `Brewfile` are installed on Linux
 | `brew "sevenzip"` | `apt install p7zip-full` | System package (different name) |
 | `brew "starship"` | `apt install starship` | System package (or official installer if repo version too old) |
 | `brew "stow"` | `apt install stow` | System package |
+| `brew "taproom"` (gromgit/brewtils) | N/A | macOS/Homebrew specific; no Linux equivalent |
 | `brew "thefuck"` | `pip3 install --user thefuck` | Python package |
 | `brew "tlrc"` | GitHub Releases | Downloaded as pre-compiled binary |
 | `brew "tmux"` | `apt install tmux` | System package |

@@ -1,6 +1,6 @@
 git:
-  paging:
-    colorArg: always
+  pagers:
+    - colorArg: always
   merging:
     # only applicable to unix users
     manualCommit: false
@@ -35,51 +35,51 @@ gui:
     # Tokyo Night theme colors for lazygit
     lightTheme: false
     activeBorderColor:
-      - '#7aa2f7'  # blue
+      - '#7aa2f7' # blue
       - bold
     inactiveBorderColor:
-      - '#565f89'  # comment
+      - '#565f89' # comment
     searchingActiveBorderColor:
-      - '#ff9e64'  # orange
+      - '#ff9e64' # orange
     optionsTextColor:
-      - '#7aa2f7'  # blue
+      - '#7aa2f7' # blue
     selectedLineBgColor:
-      - '#283457'  # visual selection
+      - '#283457' # visual selection
     selectedRangeBgColor:
-      - '#283457'  # visual selection
+      - '#283457' # visual selection
     cherryPickedCommitBgColor:
-      - '#414868'  # darker blue
+      - '#414868' # darker blue
     cherryPickedCommitFgColor:
-      - '#7aa2f7'  # blue
+      - '#7aa2f7' # blue
     markedBaseCommitBgColor:
-      - '#414868'  # darker blue
+      - '#414868' # darker blue
     markedBaseCommitFgColor:
-      - '#7aa2f7'  # blue
+      - '#7aa2f7' # blue
     unstagedChangesColor:
-      - '#f7768e'  # red
+      - '#f7768e' # red
     defaultFgColor:
-      - '#c0caf5'  # foreground
+      - '#c0caf5' # foreground
     # Diff colors
     diffAddedBgColor:
-      - '#20303b'  # dark green bg
+      - '#20303b' # dark green bg
     diffAddedFgColor:
-      - '#73daca'  # teal
+      - '#73daca' # teal
     diffRemovedBgColor:
-      - '#37222c'  # dark red bg
+      - '#37222c' # dark red bg
     diffRemovedFgColor:
-      - '#f7768e'  # red
+      - '#f7768e' # red
     diffModifiedBgColor:
-      - '#2d2a2e'  # neutral bg
+      - '#2d2a2e' # neutral bg
     diffModifiedFgColor:
-      - '#e0af68'  # yellow
+      - '#e0af68' # yellow
     # Status colors
     conflictForegroundColor:
-      - '#f7768e'  # red
+      - '#f7768e' # red
     conflictBackgroundColor:
-      - '#37222c'  # dark red bg
+      - '#37222c' # dark red bg
     # Branch colors
     branchColor:
-      - '#9ece6a'  # green
+      - '#9ece6a' # green
   commitLength:
     show: true
   mouseEvents: true
