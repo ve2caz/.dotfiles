@@ -1,9 +1,8 @@
+tap "gromgit/brewtils"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
 # Download with resuming and segmented downloading
 brew "aria2"
-# Distributed revision control system
-brew "git"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -12,10 +11,14 @@ brew "bat"
 brew "btop"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
+# Command-line csv viewer
+brew "csvlens"
 # Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
 # Load/unload environment variables based on $PWD
 brew "direnv"
+# Tool for exploring each layer in a docker image
+brew "dive"
 # More intuitive version of du in rust
 brew "dust"
 # Modern, maintained replacement for ls
@@ -28,6 +31,8 @@ brew "ffmpegthumbnailer"
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
+# Distributed revision control system
+brew "git"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
 # GNU Privacy Guard (OpenPGP)
@@ -50,7 +55,9 @@ brew "lazydocker"
 brew "lazygit"
 # Curses-based tool for viewing and analyzing log files
 brew "lnav"
-# Polyglot runtime manager with support for multiple languages and tools
+# Apple Silicon Monitor Top written in Go Lang
+brew "mactop"
+# Polyglot runtime manager (asdf rust clone)
 brew "mise"
 # 'traceroute' and 'ping' in a single tool
 brew "mtr"
@@ -88,6 +95,8 @@ brew "yazi"
 brew "yq"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Interactive TUI for Homebrew
+brew "gromgit/brewtils/taproom"
 cask "font-meslo-lg-nerd-font"
 cask "font-symbols-only-nerd-font"
 # Desktop client for GitHub repositories
