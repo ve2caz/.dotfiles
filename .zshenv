@@ -33,8 +33,8 @@ if [[ "$OSTYPE" == darwin* ]]; then
   # Only source /etc/zprofile for login shells
   if [[ -o login ]]; then
     if [ -f /etc/zprofile ]; then
-      # Login Interactive Shell: ~/.zsh/env.zsh ran from .zprofile
-      # Login Non-Interactive Shell: ~/.zsh/env.zsh ran from .zprofile
+      # System-wide login profile (e.g. path defaults). User ~/.zprofile runs later in startup.
+      # Same ordering for interactive and non-interactive login shells.
       source /etc/zprofile
     fi
   fi
