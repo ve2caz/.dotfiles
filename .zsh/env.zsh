@@ -2,11 +2,17 @@
 # echo "SOURCED ~/.zsh/env.zsh (PID: $$)"
 
 # --- Idempotency Guard ---
-# If this variable is already set, we've already run. Do nothing.
+# Login shells source both ~/.zshenv and ~/.zprofile; each sources this file. The guard runs this
+# script at most once per zsh process so PATH and the rest are not applied twice in the same shell.
 if [ -n "$__UNIFIED_ENVIRONMENT_LOADER" ]; then
     return
 fi
-export __UNIFIED_ENVIRONMENT_LOADER=1
+# Do not export this flag. Each new zsh child starts fresh and must run this file once: exported
+# variables (e.g. PATH) inherit, but eval "$(mise …)" / eval "$(direnv hook zsh)" define functions
+# and hooks that do not inherit—skipping the whole file (if the guard were exported) would leave
+# those undefined. This runs on every new zsh, so keep the rest of this file fast (builds and tools
+# that spawn many shells pay this cost repeatedly).
+__UNIFIED_ENVIRONMENT_LOADER=1
 
 # XDG Base Directory Specification (externalized)
 _XDG_BASE_DIRS_FILE="$HOME/.zsh/.zsh-xdg-base-dirs"

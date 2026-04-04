@@ -5,6 +5,8 @@ __pycache__/
 .config/atlassian-cli/jira_config.yaml
 .config/atlassian-cli/rovodev_config.yaml
 .config/bat/themes/
+.config/cursor/cli-config.json
+.config/cursor/statsig-cache.json
 .config/gh/hosts.yml
 .config/github-copilot/apps.json
 .config/helm/repositories.lock
