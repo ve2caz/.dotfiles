@@ -1,4 +1,5 @@
 __pycache__/
+!.config/lnav/.gitkeep
 .config/atlassian-cli/admin_config.yaml
 .config/atlassian-cli/global_config.yaml
 .config/atlassian-cli/jira_config.yaml
@@ -9,6 +10,6 @@ __pycache__/
 .config/helm/repositories.lock
 .config/helm/repositories.yaml
 .config/lnav/*
-!.config/lnav/.gitkeep
+.config/nx/ide.json
 .DS_Store
 *.py[cod]
