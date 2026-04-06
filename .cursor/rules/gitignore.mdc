@@ -13,6 +13,7 @@ This repo uses [`.gitignore`](mdc:.gitignore) to keep **machine-local** and **se
 - **Default deny**: `.config/*` ignores every first-level entry under `.config`.
 - **Explicit allow**: Use `!.config/<name>/` and `!.config/<name>/**` (or a single file like `!.config/starship.toml`) for paths that **should** be versioned.
 - **Last match wins**: Put broad ignore rules first, then negations (`!`). Re-order carefully when debugging.
+- **Globals after allowlist**: A later `!.config/foo/**` overrides earlier lines for paths under that tree. Put repo-wide patterns such as `__pycache__/`, `.DS_Store`, and `*.py[cod]` **after** every `!.config/...` rule (single block at the end of `.gitignore`), or repeat only tool-specific paths there—do not duplicate with `**/` variants unless you have a separate reason.
 - **Narrow trees**: Some tools need only a stub—for example `lnav` may allow only `.gitkeep` by un-ignoring `!.config/lnav/`, then `.config/lnav/*`, then `!.config/lnav/.gitkeep`.
 
 ### ✅ Good: add a new tracked tool directory
