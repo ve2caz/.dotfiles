@@ -1,0 +1,62 @@
+---
+description: What belongs in .stow-local-ignore and how to write GNU Stow ignore patterns (Perl regex)
+globs: "**/.stow-local-ignore"
+alwaysApply: false
+---
+# `.stow-local-ignore` (GNU Stow)
+
+[`stow . --target="$HOME"`](mdc:.agents/setup-and-scripts.md) treats the repo root as a Stow **package**: every top-level file and directory can become a symlink under `$HOME` unless it is listed here. This file is **[`.stow-local-ignore`](mdc:.stow-local-ignore)** at the package root.
+
+## What to include
+
+Add **repo-only** top-level names that must **not** be deployed to `$HOME`:
+
+- **Documentation and agents:** `doc`, `.agents`, [`AGENTS.md`](mdc:AGENTS.md), `README.md`, `LICENSE`
+- **Tooling / package lists:** `scripts`, [`Brewfile`](mdc:Brewfile), [`.brewignore`](mdc:.brewignore)
+- **VCS / editor / OS noise:** `.git`, `.gitignore`, `.cursor`, `.DS_Store`, `.gitkeep`
+
+Do **not** list real dotfiles meant for the home tree (e.g. `.zshrc`, `.config`, `.zsh`, `.tmux.conf`)—those should be stowed.
+
+Stow also **hard-ignores** [`.stow-local-ignore`](mdc:.stow-local-ignore) itself so it is not symlinked; you do not need to add that entry.
+
+## How to enter values
+
+GNU Stow parses this file as **Perl regular expressions**, one per line (see **Ignore Lists** in `info stow` or the [Stow manual](https://www.gnu.org/software/stow/manual/html_node/Ignore-Lists.html)).
+
+| Input shape | Meaning |
+|---------------|---------|
+| **No `/` in the pattern** | Matched against the **whole basename** (one segment at the top level of the package). |
+| **`/` in the pattern** | Treated as a **path** pattern (subpaths; use when you need to ignore a path that contains `/`). |
+| **`#`** | Comment: empty lines and lines whose first non-whitespace character is `#` are skipped. Inline `#` after a pattern is stripped. |
+| **`.` (dot)** | In regex, `.` matches **any** character. For a literal dot in a name (e.g. `.zshrc`, `AGENTS.md`), use **`\.`**. |
+
+After edits, verify with a dry run (no writes):
+
+```bash
+rm -rf /tmp/stow-home-test && mkdir -p /tmp/stow-home-test
+stow -n -v . --target=/tmp/stow-home-test
+```
+
+Only intended dotfiles and dirs (e.g. `.config`, `.zsh`, `.zshrc`) should appear under `LINK:`.
+
+### Examples
+
+```text
+# ✅ Good: literal dots escaped; plain names need no escape unless regex-special
+\.agents
+\.cursor
+\.gitignore
+AGENTS\.md
+README\.md
+doc
+scripts
+
+# ❌ Bad: '.' matches any character; these are not reliable for ".agents" / "AGENTS.md"
+.agents
+AGENTS.md
+```
+
+### Related
+
+- [Project structure](mdc:.cursor/rules/project-structure.mdc) — where this file fits in the repo
+- [Setup and scripts](mdc:.agents/setup-and-scripts.md) — `stow . --target="$HOME"`

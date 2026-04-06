@@ -1,0 +1,56 @@
+---
+description: .config allowlist in .gitignore and untracking with git rm --cached
+globs:
+  - .gitignore
+alwaysApply: false
+---
+# Git ignore handling (dotfiles)
+
+This repo uses [`.gitignore`](mdc:.gitignore) to keep **machine-local** and **secret** material out of Git. When editing it, preserve the patterns below unless you are intentionally changing policy.
+
+## `.config` allowlist
+
+- **Default deny**: `.config/*` ignores every first-level entry under `.config`.
+- **Explicit allow**: Use `!.config/<name>/` and `!.config/<name>/**` (or a single file like `!.config/starship.toml`) for paths that **should** be versioned.
+- **Last match wins**: Put broad ignore rules first, then negations (`!`). Re-order carefully when debugging.
+- **Narrow trees**: Some tools need only a stub—for example `lnav` may allow only `.gitkeep` by un-ignoring `!.config/lnav/`, then `.config/lnav/*`, then `!.config/lnav/.gitkeep`.
+
+### ✅ Good: add a new tracked tool directory
+
+```gitignore
+.config/*
+# ... existing ! rules ...
+!.config/newtool/
+!.config/newtool/**
+```
+
+### ❌ Bad: only listing paths you want to ignore
+
+In this repo, `.config` is allowlisted; a block list of “bad” paths is easy to get wrong and misses new tools.
+
+## Ignoring paths that are already tracked
+
+`.gitignore` affects **untracked** files. It does **not** remove files from the index if they were already committed.
+
+- **Stop tracking, keep on disk**: `git rm --cached <file>` or `git rm --cached -r <dir>/`
+- **Then** commit the removal together with `.gitignore` changes so future edits stay local and ignored.
+
+```bash
+# ✅ Good: untrack then commit with ignore rules
+git rm --cached .config/some-tool/local-only.conf
+# edit .gitignore — remove matching !.config/some-tool/ lines if dropping from allowlist
+git commit -m "Stop tracking local-only tool config"
+
+# ❌ Bad: only editing .gitignore and expecting Git to forget tracked files
+```
+
+## Checklist when shrinking the allowlist
+
+1. `git rm --cached` the paths you no longer want in the repo.
+2. Remove the matching `!.config/...` lines from `.gitignore`.
+3. Confirm `git status` shows deletion staged and working-tree files still present (for local configs).
+
+## Related
+
+- [Project structure](mdc:.cursor/rules/project-structure.mdc) — where `.gitignore` fits in the repo
+- [Cursor rules format](mdc:.cursor/rules/cursor-rules.mdc) — how to author `.mdc` rules
