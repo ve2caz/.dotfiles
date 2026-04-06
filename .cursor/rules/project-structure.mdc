@@ -1,0 +1,52 @@
+---
+description: Cursor-oriented map of the repo by install, daily use, and development—minimal duplication with human docs
+globs:
+alwaysApply: false
+---
+# Project structure (Cursor)
+
+Personal **dotfiles** tree applied with **GNU Stow** from `~/.dotfiles` (or this clone). Do not mirror long-form setup or tool lists here—use [`README.md`](mdc:README.md), [`doc/`](mdc:doc/setup.md), and [`.agents/`](mdc:.agents/overview.md). Use `git ls-files` if you need an exact inventory.
+
+## Install and first-time use
+
+What someone needs to **clone, install packages, and stow** the tree.
+
+| Role | Path |
+|------|------|
+| Quick start | [`README.md`](mdc:README.md) |
+| Setup, requirements, platforms | [`doc/`](mdc:doc/setup.md) |
+| Installer entrypoint and helpers | [`scripts/setup.sh`](mdc:scripts/setup.sh), [`scripts/`](mdc:scripts/setup.sh) |
+| macOS packages | [`Brewfile`](mdc:Brewfile), [`.brewignore`](mdc:.brewignore) |
+| Stow exclusions (regex per line) | [`.stow-local-ignore`](mdc:.stow-local-ignore) — policy in [`stow-local-ignore.mdc`](mdc:.cursor/rules/stow-local-ignore.mdc) |
+
+## After install (daily configuration)
+
+What the **symlinked layout** represents once the environment is live—edit these when changing *behavior*, not when running setup.
+
+| Role | Path |
+|------|------|
+| Shell startup at repo root | [`.zshenv`](mdc:.zshenv), [`.zshrc`](mdc:.zshrc), [`.zprofile`](mdc:.zprofile) |
+| Modular zsh | [`.zsh/`](mdc:.zsh/env.zsh) |
+| Terminal multiplexer | [`.tmux.conf`](mdc:.tmux.conf) |
+| XDG `~/.config` tree (many tools; allowlisted in Git) | [`.config/`](mdc:.config/starship.toml) — see [`gitignore.mdc`](mdc:.cursor/rules/gitignore.mdc) before adding paths |
+| Neovim | [`.config/nvim/`](mdc:.config/nvim/init.lua) — agent notes in [`.agents/nvim.md`](mdc:.agents/nvim.md) |
+
+## Development, agents, and tests
+
+What matters when **changing the repo** or **verifying** changes (especially shell, `PATH`, mise).
+
+| Role | Path |
+|------|------|
+| Agent index | [`AGENTS.md`](mdc:AGENTS.md) |
+| Runbooks, conventions, Neovim, setup detail | [`.agents/`](mdc:.agents/overview.md) |
+| Checks after risky edits | [`.agents/testing.md`](mdc:.agents/testing.md) |
+| Shell smoke tests | [`scripts/test/`](mdc:scripts/test/interactive-login.sh) |
+| Secrets and machine-local policy | [`.gitignore`](mdc:.gitignore), [`gitignore.mdc`](mdc:.cursor/rules/gitignore.mdc) |
+
+## Cursor rules (`.cursor/rules/`)
+
+Project `*.mdc` rules live here only—structure and editing in [`cursor-rules.mdc`](mdc:.cursor/rules/cursor-rules.mdc). Current rules: [`gitignore.mdc`](mdc:.cursor/rules/gitignore.mdc), [`stow-local-ignore.mdc`](mdc:.cursor/rules/stow-local-ignore.mdc), [`self-improve.mdc`](mdc:.cursor/rules/self-improve.mdc), [`project-structure.mdc`](mdc:.cursor/rules/project-structure.mdc).
+
+## When to edit this file
+
+Update when **Cursor-relevant** layout changes: new rules under `.cursor/`, new first-class dirs for install vs runtime vs testing, or Stow/Git ignore story for agents. Prefer updating [`README.md`](mdc:README.md) / [`doc/`](mdc:doc/setup.md) / [`.agents/`](mdc:.agents/overview.md) for user-facing prose.

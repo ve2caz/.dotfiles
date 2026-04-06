@@ -1,9 +1,17 @@
-.DS_Store
-.git
-.gitignore
-.gitkeep
+# Perl regexes, one per line (see `info stow` / "Ignore Lists"). Use \. for a
+# literal dot. Patterns without "/" match the whole basename under the package.
+# Repo-only paths here must not become symlinks in $HOME.
+
+\.agents
+\.cursor
+\.DS_Store
+\.git
+\.gitignore
+\.gitkeep
+AGENTS\.md
 Brewfile
+\.brewignore
 doc
 LICENSE
-README.md
+README\.md
 scripts
