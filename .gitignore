@@ -1,7 +1,3 @@
-__pycache__/
-.DS_Store
-*.py[cod]
-
 # .config: ignore by default; only listed paths are tracked
 .config/*
 !.config/starship.toml
@@ -35,3 +31,9 @@ __pycache__/
 !.config/wezterm/**
 !.config/yazi/
 !.config/yazi/**
+
+# After all `!` rules: globals apply here too (later pattern wins over `!.config/.../**`)
+__pycache__/
+.config/nvim/pack/
+.DS_Store
+*.py[cod]
