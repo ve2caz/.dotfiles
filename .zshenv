@@ -47,3 +47,5 @@ __ZSH_ENV="${HOME}/.zsh/env.zsh"
 if [ -f "$__ZSH_ENV" ]; then
   source "$__ZSH_ENV"
 fi
+
+alias assume=". assume"
