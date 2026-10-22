@@ -75,13 +75,42 @@ fi
 
 # Additional high-priority developer paths (append if present)
 # Append as a security measure to avoid shadowing Brew, and system binaries
-[[ -d "$HOME/.local/bin" ]] && path=( $path "$HOME/.local/bin" )
-[[ -d "$HOME/bin" ]] && path=( $path "$HOME/bin" )
+[[ -d "$HOME/.local/bin" ]] && path=( "$HOME/.local/bin" $path )
+[[ -d "$HOME/bin" ]] && path=( "$HOME/bin" $path )
 
 # --- Finalize and Export ---
 export PATH
 
 # --- No PATH modifications beyond this point ---
+
+# Clear malformed transient kubeconfig files (for prompt/tool stability).
+# Some wrappers (e.g. kubie) may leave temp files without required keys.
+_validate_kubeconfig_file() {
+    local _candidate="$1"
+    [[ -f "${_candidate}" ]] && rg -q '^[[:space:]]*clusters:' "${_candidate}"
+}
+
+if [[ -n "${KUBIE_KUBECONFIG:-}" ]] && ! _validate_kubeconfig_file "${KUBIE_KUBECONFIG}"; then
+    if _validate_kubeconfig_file "${HOME}/.kube/config"; then
+        export KUBIE_KUBECONFIG="${HOME}/.kube/config"
+    else
+        unset KUBIE_KUBECONFIG
+    fi
+fi
+
+if [[ -n "${KUBECONFIG:-}" ]]; then
+    _first_kubeconfig="${KUBECONFIG%%:*}"
+    if ! _validate_kubeconfig_file "${_first_kubeconfig}"; then
+        if [[ -n "${KUBIE_KUBECONFIG:-}" ]] && _validate_kubeconfig_file "${KUBIE_KUBECONFIG}"; then
+            export KUBECONFIG="${KUBIE_KUBECONFIG}"
+        else
+            unset KUBECONFIG
+        fi
+    fi
+    unset _first_kubeconfig
+fi
+
+unset -f _validate_kubeconfig_file
 
 # Plugins that require explicit environment variable setup
 # These use zsh precmd hooks to dynamically update env vars based on the active version
