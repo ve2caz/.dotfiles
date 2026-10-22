@@ -1,46 +1,58 @@
+#:schema https://yazi-rs.github.io/schemas/theme.json
 # Tokyo Night flavor for Yazi
 # Based on the Tokyo Night color scheme: https://github.com/folke/tokyonight.nvim
 
-[manager]
+[mgr]
 cwd = { fg = "#7aa2f7", bold = true }
-
-hovered         = { fg = "#c0caf5", bg = "#283457" }
-preview_hovered = { underline = true }
 
 find_keyword  = { fg = "#e0af68", italic = true }
 find_position = { fg = "#bb9af7", bg = "reset", italic = true }
 
 marker_selected = { fg = "#9ece6a", bg = "#9ece6a" }
+marker_marked   = { fg = "#9ece6a", bg = "#9ece6a" }
 marker_copied   = { fg = "#e0af68", bg = "#e0af68" }
 marker_cut      = { fg = "#f7768e", bg = "#f7768e" }
 
-tab_active   = { fg = "#1a1b26", bg = "#7aa2f7" }
-tab_inactive = { fg = "#a9b1d6", bg = "#363c5f" }
-tab_width    = 1
+count_selected = { fg = "#1a1b26", bg = "#9ece6a" }
+count_copied   = { fg = "#1a1b26", bg = "#e0af68" }
+count_cut      = { fg = "#1a1b26", bg = "#f7768e" }
 
 border_symbol = "│"
 border_style  = { fg = "#565f89" }
 
-[status]
-separator_open  = ""
-separator_close = ""
-separator_style = { fg = "#363c5f", bg = "#363c5f" }
+[indicator]
+parent  = { fg = "#c0caf5", bg = "#283457" }
+current = { fg = "#c0caf5", bg = "#283457" }
+preview = { underline = true }
 
-mode_normal = { fg = "#1a1b26", bg = "#7aa2f7", bold = true }
-mode_select = { fg = "#1a1b26", bg = "#9ece6a", bold = true }
-mode_unset  = { fg = "#1a1b26", bg = "#f7768e", bold = true }
+[tabs]
+active   = { fg = "#1a1b26", bg = "#7aa2f7" }
+inactive = { fg = "#a9b1d6", bg = "#363c5f" }
+
+[mode]
+normal_main = { fg = "#1a1b26", bg = "#7aa2f7", bold = true }
+normal_alt  = { fg = "#7aa2f7", bg = "#363c5f" }
+select_main = { fg = "#1a1b26", bg = "#9ece6a", bold = true }
+select_alt  = { fg = "#9ece6a", bg = "#363c5f" }
+unset_main  = { fg = "#1a1b26", bg = "#f7768e", bold = true }
+unset_alt   = { fg = "#f7768e", bg = "#363c5f" }
+
+[status]
+overall   = { fg = "#a9b1d6", bg = "#1a1b26" }
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
 
 progress_label  = { fg = "#c0caf5", bold = true }
 progress_normal = { fg = "#7aa2f7", bg = "#283457" }
 progress_error  = { fg = "#f7768e", bg = "#283457" }
 
-permissions_t = { fg = "#9ece6a" }
-permissions_r = { fg = "#e0af68" }
-permissions_w = { fg = "#f7768e" }
-permissions_x = { fg = "#7aa2f7" }
-permissions_s = { fg = "#565f89" }
+perm_type  = { fg = "#9ece6a" }
+perm_read  = { fg = "#e0af68" }
+perm_write = { fg = "#f7768e" }
+perm_exec  = { fg = "#7aa2f7" }
+perm_sep   = { fg = "#565f89" }
 
-[select]
+[pick]
 border   = { fg = "#7aa2f7" }
 active   = { fg = "#bb9af7" }
 inactive = { fg = "#a9b1d6" }
@@ -51,7 +63,7 @@ title    = { fg = "#bb9af7" }
 value    = { fg = "#c0caf5" }
 selected = { reversed = true }
 
-[completion]
+[cmp]
 border   = { fg = "#7aa2f7" }
 active   = { bg = "#283457" }
 inactive = { fg = "#a9b1d6" }
@@ -62,6 +74,7 @@ title   = { fg = "#bb9af7" }
 hovered = { underline = true }
 
 [which]
+border          = { fg = "#7aa2f7" }
 mask            = { bg = "#1a1b26" }
 cand            = { fg = "#7dcfff" }
 rest            = { fg = "#565f89" }
@@ -70,11 +83,10 @@ separator       = "  "
 separator_style = { fg = "#565f89" }
 
 [help]
-on      = { fg = "#bb9af7" }
-exec    = { fg = "#7dcfff" }
-desc    = { fg = "#a9b1d6" }
+border  = { fg = "#7aa2f7" }
+chord   = { fg = "#7dcfff" }
+action  = { fg = "#bb9af7" }
 hovered = { bg = "#283457", bold = true }
-footer  = { fg = "#1a1b26", bg = "#a9b1d6" }
 
 [filetype]
 
@@ -99,6 +111,6 @@ rules = [
 	{ mime = "application/pdf", fg = "#f7768e" },
 
 	# Fallback
-	{ name = "*", fg = "#c0caf5" },
-	{ name = "*/", fg = "#7aa2f7" }
+	{ url = "*", fg = "#c0caf5" },
+	{ url = "*/", fg = "#7aa2f7" }
 ]
