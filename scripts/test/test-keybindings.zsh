@@ -15,7 +15,8 @@ SCRIPT_DIR="${0:A:h}"
 REPO_ROOT="${SCRIPT_DIR:h:h}"
 REAL_DATA="${XDG_DATA_HOME:-$HOME/.local/share}"
 REAL_FZF="$(whence -p fzf)" || { print -u2 "fzf is required"; exit 2 }
-SHEETS=(docs/zsh-keybindings.md docs/fzf-keybindings.md docs/fzf-git-keybindings.md)
+SHEETS_DIR="$REPO_ROOT/docs/cheatsheets"
+SHEETS=(zsh-keybindings.md fzf-keybindings.md fzf-git-keybindings.md)
 SEP=$'\x1f'
 
 # --- Spec ------------------------------------------------------------------------------------------
@@ -115,6 +116,31 @@ report() {
 }
 skip() { (( N_SKIP++ )); print -r -- "SKIP  $1: $2" }
 
+# sheet_keys <file> <header pattern>: for every table row, each backticked token in the column whose
+# header matches, as "token<SEP>row". A table without such a column gives "!nocol<SEP>header row".
+sheet_keys() {
+    local line col=0 i h
+    local -a cells parts
+    while IFS= read -r line; do
+        [[ $line == '|'* ]] || { col=0; continue }
+        cells=("${(@s:|:)line}")
+        cells=("${(@)cells[2,-2]}")
+        if (( col == 0 )); then
+            for (( i = 1; i <= ${#cells}; i++ )); do
+                h=${${cells[i]##[[:space:]]#}%%[[:space:]]#}
+                [[ $h == ${~2} ]] && { col=$i; break }
+            done
+            (( col )) || { print -r -- "!nocol$SEP$line"; col=-1 }
+            continue
+        fi
+        (( col > 0 )) || continue
+        [[ ${cells[col]} == *---* ]] && continue
+        # Text between backticks sits at the even positions of a split on backticks.
+        parts=("${(@ps:\x60:)cells[col]}")
+        for (( i = 2; i <= ${#parts}; i += 2 )); do print -r -- "${parts[i]}$SEP$line"; done
+    done < "$1"
+}
+
 # --- Test fixtures ---------------------------------------------------------------------------------
 TMP="$(mktemp -d)"
 KB="$TMP/kb"
@@ -191,6 +217,11 @@ chmod +x "$KB/stub/fzf"
 # Every key to look up with bindkey, one per line, in bindkey notation.
 for row in "${ZLE_ROWS[@]}" "${FZF_ROWS[@]}"; do print -r -- "${${(@ps:\x1f:)row}[3]}"; done > "$KB/seqs"
 
+# Every alias or function the aliases sheet lists, to look up with whence.
+ALIASES_SHEET="$SHEETS_DIR/aliases.md"
+[[ -f $ALIASES_SHEET ]] && for k in "${(@f)$(sheet_keys "$ALIASES_SHEET" Alias)}"; do print -r -- "${k%%$SEP*}"; done > "$KB/aliases-in"
+touch "$KB/aliases-in"
+
 cat > "$KB/helper.zsh" <<EOF
 typeset -gi KB_SEQ=0
 _kb_dump() {
@@ -213,6 +244,7 @@ while IFS= read -r k; do
     b="\$(bindkey -M emacs -- "\$k")"
     print -r -- "\${b##* }"
 done < ${(q)KB}/seqs >| ${(q)KB}/bindings
+while IFS= read -r n; do print -r -- "\$(whence -w -- "\$n")"; done < ${(q)KB}/aliases-in >| ${(q)KB}/aliases-out
 {
     print -r -- "flowcontrol=\${options[flowcontrol]}"
     print -r -- "FZF_DEFAULT_OPTS=\$FZF_DEFAULT_OPTS"
@@ -236,7 +268,8 @@ wait_for() {
     return 0
 }
 
-# zpty evaluates its arguments as one command line, hence the quoting.
+# zpty evaluates its arguments as one command line in a fork of this script, hence the quoting, and
+# exec, so the fork does not run the EXIT trap and delete the fixtures when the session ends.
 # A set SSH_AUTH_SOCK stops .zprofile from starting an ssh-agent that outlives the test.
 session_env=(
     HOME="$TMP/home" ZDOTDIR="$TMP/home" TERM=xterm-256color
@@ -245,7 +278,7 @@ session_env=(
     MISE_CACHE_DIR="$TMP/mise-cache" MISE_DATA_DIR="$TMP/mise-data" MISE_STATE_DIR="$TMP/mise-state"
     TMPPREFIX="$TMP/zsh"
 )
-zpty KBSH "env -i ${(j: :)${(@q)session_env}} zsh -i"
+zpty KBSH "exec env -i ${(j: :)${(@q)session_env}} zsh -i"
 
 # zle turns on bracketed paste each time it starts reading a line, so its escape code means a prompt.
 out=''
@@ -478,6 +511,25 @@ else
     done
     report herdr-prefix ok $(( ${#taken} == 0 )) "the herdr prefix $prefix takes ${taken%; }; mark the rows herdr or change the key"
     report herdr-marks ok $(( ${#stale} == 0 )) "rows marked herdr but not taken by the prefix $prefix: ${stale%; }"
+
+    # The herdr sheet's first key is the prefix; the yazi sheet must flag the key the prefix takes.
+    prefix_name=${prefix//+/-}
+    sheet="$SHEETS_DIR/herdr-keys.md"
+    if [[ -f $sheet ]]; then
+        first=${${(@f)$(sheet_keys "$sheet" Key)}[1]%%$SEP*}
+        [[ $first == '!nocol' ]] && first='(no Key column)'
+        ok=0; [[ ${(L)first} == ${(L)prefix_name} ]] && ok=1
+        report sheet:herdr-keys.md ok $ok "first key is '$first', the prefix is $prefix"
+    fi
+    sheet="$SHEETS_DIR/yazi-keys.md"
+    if [[ -f $sheet ]]; then
+        unflagged=''
+        for k in "${(@f)$(sheet_keys "$sheet" Key)}"; do
+            [[ ${k%%$SEP*} == '!nocol' ]] && unflagged+="(a table with no Key column); "
+            [[ ${(L)k%%$SEP*} == ${(L)prefix_name} && ${k#*$SEP} != *herdr* ]] && unflagged+="${k%%$SEP*}; "
+        done
+        report sheet:yazi-keys.md ok $(( ${#unflagged} == 0 )) "the herdr prefix takes ${unflagged%; } but the row does not say so"
+    fi
 fi
 
 # --- Cheat sheets list only keys in the spec -------------------------------------------------------
@@ -487,29 +539,26 @@ for row in "${ZLE_ROWS[@]}" "${FZF_ROWS[@]}" "${BIND_ROWS[@]}"; do
     for n in "${(@s:;:)${${(@ps:\x1f:)row}[2]}}"; do [[ -n $n ]] && SPEC_NAMES[$n]=1; done
 done
 for sheet in "${SHEETS[@]}"; do
-    file="$REPO_ROOT/$sheet"
-    [[ -f $file ]] || { report "sheet:${sheet:t}" ok 0 "$sheet is missing"; continue }
-    col=0 missing=''
-    while IFS= read -r line; do
-        [[ $line == '|'* ]] || { col=0; continue }
-        cells=("${(@s:|:)line}")
-        cells=("${(@)cells[2,-2]}")
-        if (( col == 0 )); then
-            for (( i = 1; i <= ${#cells}; i++ )); do
-                [[ ${cells[i]} == *(Key Binding|Command)* ]] && { col=$i; break }
-            done
-            continue
-        fi
-        [[ ${cells[col]} == *---* ]] && continue
-        # Text between backticks sits at the even positions of a split on backticks.
-        parts=("${(@ps:\x60:)cells[col]}")
-        for (( i = 2; i <= ${#parts}; i += 2 )); do
-            n=${(L)${parts[i]// ##/ }}
-            [[ -n ${SPEC_NAMES[$n]-} ]] || missing+="'${parts[i]}'; "
-        done
-    done < "$file"
-    report "sheet:${sheet:t}" ok $(( ${#missing} == 0 )) "lists keys the test does not cover: ${missing%; }"
+    file="$SHEETS_DIR/$sheet"
+    [[ -f $file ]] || { report "sheet:$sheet" ok 0 "$file is missing"; continue }
+    missing=''
+    for k in "${(@f)$(sheet_keys "$file" '(Key Binding|Command)')}"; do
+        name=${k%%$SEP*}
+        [[ $name == '!nocol' ]] && { missing+="a table with no Key Binding or Command column (${k#*$SEP}); "; continue }
+        [[ -n ${SPEC_NAMES[${(L)${name// ##/ }}]-} ]] || missing+="'$name'; "
+    done
+    report "sheet:$sheet" ok $(( ${#missing} == 0 )) "lists keys the test does not cover: ${missing%; }"
 done
+
+if [[ -f $ALIASES_SHEET ]]; then
+    missing=''
+    names=("${(@f)$(<$KB/aliases-in)}")
+    found=("${(@f)$(<$KB/aliases-out)}")
+    for (( i = 1; i <= ${#names}; i++ )); do
+        [[ ${found[i]-} == *': '(alias|function) ]] || missing+="${names[i]}; "
+    done
+    report sheet:aliases.md ok $(( ${#missing} == 0 )) "not an alias or function in an interactive shell: ${missing%; }"
+fi
 
 print
 print -r -- "$N_PASS passed, $N_FAIL failed, $N_XFAIL expected failures, $N_XPASS unexpected passes, $N_SKIP skipped"

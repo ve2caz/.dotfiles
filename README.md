@@ -21,7 +21,10 @@ cd ~/.dotfiles
 
 ## Cheat sheets
 
-- [zsh startup files](docs/zsh-shell-primer.md)
-- [zsh key bindings](docs/zsh-keybindings.md)
-- [fzf key bindings](docs/fzf-keybindings.md)
-- [fzf-git key bindings](docs/fzf-git-keybindings.md)
+- [zsh startup files](docs/cheatsheets/zsh-startup-files.md)
+- [zsh key bindings](docs/cheatsheets/zsh-keybindings.md)
+- [fzf key bindings](docs/cheatsheets/fzf-keybindings.md)
+- [fzf-git key bindings](docs/cheatsheets/fzf-git-keybindings.md)
+- [herdr keys](docs/cheatsheets/herdr-keys.md)
+- [yazi keys](docs/cheatsheets/yazi-keys.md)
+- [aliases and functions](docs/cheatsheets/aliases.md)

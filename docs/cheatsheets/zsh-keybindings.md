@@ -1,0 +1,31 @@
+# Zsh Key Bindings (Emacs-style)
+
+> **Note**: Some key bindings are overridden by fzf when enabled. See [fzf-keybindings.md](fzf-keybindings.md) for fzf-specific bindings.
+
+| Category | Key Binding | Description |
+|-----------|-------------|-------------|
+| **Navigation** | `CTRL-A` | Move cursor to beginning of line |
+|  | `CTRL-E` | Move cursor to end of line |
+|  | `CTRL-B` | Move cursor backward one character (inside herdr, `CTRL-B` is the herdr prefix: use the left arrow) |
+|  | `CTRL-F` | Move cursor forward one character |
+|  | `ALT-B` | Move cursor backward one word |
+|  | `ALT-F` | Move cursor forward one word |
+| **Deletion** | `CTRL-D` | Delete character under cursor |
+|  | `CTRL-H` | Delete character before cursor (backspace) |
+|  | `ALT-D` | Delete word forward |
+|  | `ALT-Backspace` | Delete word backward |
+| **Kill & Yank** | `CTRL-K` | Kill (cut) from cursor to end of line |
+|  | `CTRL-U` | Kill (cut) from cursor to beginning of line. Broken: it kills the whole line |
+|  | `CTRL-Y` | Yank (paste) most recently killed text |
+|  | `ALT-Y` | Cycle through kill ring (after CTRL-Y) |
+|  | `ALT-W` | Cut/kill selected region (custom) |
+| **Text Manipulation** | `CTRL-T` | Transpose characters (overridden by fzf file search) |
+|  | `ALT-T` | Transpose words |
+| **Search & Control** | `CTRL-R` | Reverse incremental search (overridden by fzf history search) |
+|  | `CTRL-S` | Forward incremental search. Broken: flow control takes `CTRL-S` and pauses the terminal (`CTRL-Q` resumes) |
+|  | `CTRL-P` | Search backward in command history (custom) |
+|  | `CTRL-N` | Search forward in command history (custom) |
+|  | `CTRL-G` | Cancel current operation |
+|  | `CTRL-L` | Clear screen |
+
+`ALT-` keys need the terminal to send Option as Meta. WezTerm does this for the left Option key by default.
