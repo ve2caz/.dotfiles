@@ -33,7 +33,7 @@ One check stays manual: that WezTerm sends `ESC` plus the key for left Option on
 
 ## Packages
 
-`brew bundle check --verbose` lists what the `Brewfile` asks for and is missing.
+`brew bundle check --no-upgrade --verbose` lists what the `Brewfile` asks for and is not installed. Without `--no-upgrade` it also lists every outdated package, so its answer changes with each new release.
 
 ## When to run what
 
@@ -41,4 +41,4 @@ One check stays manual: that WezTerm sends `ESC` plus the key for left Option on
 |--------|-----------------|
 | zsh init / PATH / mise | `zsh ./scripts/test/test-mise-shims-path.zsh` |
 | Key bindings, zsh plugins, fzf options, WezTerm or herdr keys | `zsh ./scripts/test/test-keybindings.zsh` |
-| `Brewfile` | `brew bundle check --verbose` |
+| `Brewfile` | `brew bundle check --no-upgrade --verbose` |
