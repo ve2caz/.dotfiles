@@ -33,10 +33,17 @@ fi
 
 # Step 3: Stow dotfiles
 echo "📂 Step 2: Installing dotfiles with stow..."
-echo "  1. Running 'stow . --target="$HOME"' from the .dotfiles directory to activate configuration"
+echo "  1. Running 'stow --target="$HOME" home' from the .dotfiles directory to activate configuration"
 echo "  2. Restart your shell or run 'exec zsh' to load the new environment once setup completes"
-stow . --target="$HOME"
+# Folders mixing tracked config and app state must be real, or Stow folds them into the repo.
+while read -r d; do mkdir -p "$HOME/.config/$d"; done < ./scripts/mixed-config-dirs.txt
+stow --target="$HOME" home
 echo "✅ Dotfiles stowed successfully"
+echo ""
+
+# Deploy agent skills; the first run clones Matt's skills
+echo "🧩 Deploying agent skills..."
+./scripts/update-skills.sh
 echo ""
 
 # Step 4: Setup Tokyo Night theme

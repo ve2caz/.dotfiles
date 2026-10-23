@@ -137,5 +137,5 @@ echo ""
 # Summary
 echo "=== Summary ==="
 echo "Run './scripts/install-packages.sh' to install missing tools"
-echo "Run 'stow .' to activate dotfiles configuration"  
+echo "Run 'stow --target=\$HOME home' from the .dotfiles directory to activate dotfiles configuration"  
 echo "Run 'exec zsh' to reload shell environment"

@@ -5,9 +5,9 @@ set -euo pipefail
 SCRIPT_DIR="${0:A:h}"
 REPO_ROOT="${SCRIPT_DIR:h:h}"
 
-# By default, run against this repository's zsh config.
-TEST_HOME="${TEST_HOME:-$REPO_ROOT}"
-TEST_ZDOTDIR="${TEST_ZDOTDIR:-$REPO_ROOT}"
+# By default, stow the home package into a temporary HOME, so sessions never write into the repo.
+TEST_HOME="${TEST_HOME:-}"
+TEST_ZDOTDIR="${TEST_ZDOTDIR:-}"
 MAX_MISE_INDEX="${MAX_MISE_INDEX:-5}"
 
 PATH_DUMP_CMD='print -r -- "__PATH_START__"; echo "$PATH" | tr ":" "\n"; print -r -- "__PATH_END__"'
@@ -20,13 +20,21 @@ run_session_test() {
     local -a shell_args=("$@")
     local temp_root
     temp_root="$(mktemp -d)"
+    local session_home="${TEST_HOME:-$temp_root/home}"
+    if [[ -z "$TEST_HOME" ]]; then
+        mkdir -p "$session_home/.config"
+        while read -r d; do mkdir -p "$session_home/.config/$d"; done < "$REPO_ROOT/scripts/mixed-config-dirs.txt"
+        stow -d "$REPO_ROOT" -t "$session_home" home
+    fi
 
     print -r -- "=== ${session_name} ==="
 
+    # A set SSH_AUTH_SOCK stops .zprofile from starting an ssh-agent that outlives the test.
     if ! output="$(
         env -i \
-            HOME="$TEST_HOME" \
-            ZDOTDIR="$TEST_ZDOTDIR" \
+            HOME="$session_home" \
+            ZDOTDIR="${TEST_ZDOTDIR:-$session_home}" \
+            SSH_AUTH_SOCK="$temp_root/no-agent.sock" \
             XDG_CACHE_HOME="$temp_root/xdg-cache" \
             XDG_DATA_HOME="$temp_root/xdg-data" \
             XDG_STATE_HOME="$temp_root/xdg-state" \

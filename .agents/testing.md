@@ -10,10 +10,14 @@ zsh ./scripts/test/test-mise-shims-path.zsh
 
 This script exercises four zsh session combinations (interactive/login variants) with a clean temporary XDG/mise environment and asserts that **mise shims** appear in `PATH` within the first few entries (`MAX_MISE_INDEX`, default 5). Use it after edits to:
 
-- `.zshenv`, `.zprofile`, `.zshrc`, or files under `.zsh/`
+- `home/.zshenv`, `home/.zprofile`, `home/.zshrc`, or files under `home/.zsh/`
 - Anything that changes **PATH** order or mise activation
 
 Optional environment overrides (see script): `TEST_HOME`, `TEST_ZDOTDIR`, `MAX_MISE_INDEX`.
+
+The test runs without zinit and without prompt hooks, so it cannot see what `.zshrc` does to `PATH`. After changing `.zshrc`, `zsh -i -c 'print -l $path'` and `zsh -c 'print -l $path'` must print the same list.
+
+The shims matter most to processes that never see a prompt, such as Tilt and its extensions ([ADR 0005](adr/0005-mise-shims-in-every-zsh.md)). After changes to startup files, `PATH` or mise, run this from a project folder with a `mise.toml`, replacing `<tool>` with any tool it pins: `env -i HOME="$HOME" TERM="$TERM" PATH=/usr/bin:/bin zsh -c 'sh -c "command -v <tool>; mise current <tool>"'`. It must print `~/.local/share/mise/shims/<tool>` and the version the project pins.
 
 ## Installation smoke check
 
@@ -50,4 +54,4 @@ Under `scripts/test/` there are additional drivers for interactive vs non-intera
 |--------|-----------------|
 | zsh init / PATH / mise | `zsh ./scripts/test/test-mise-shims-path.zsh` |
 | New CLI expected from install script | `./scripts/check-installation.sh` |
-| Only theme assets | No strict automated test in-repo; follow [`doc/tokyo-night-theme.md`](../doc/tokyo-night-theme.md) if touching theme scripts |
+| Only theme assets | No strict automated test in-repo; follow [`docs/tokyo-night-theme.md`](../docs/tokyo-night-theme.md) if touching theme scripts |

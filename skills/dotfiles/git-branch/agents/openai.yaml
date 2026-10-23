@@ -1,0 +1,5 @@
+interface:
+  display_name: "Git Branch"
+  short_description: "Ticket branch from main, pushed empty"
+policy:
+  allow_implicit_invocation: false
