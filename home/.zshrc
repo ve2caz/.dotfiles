@@ -9,6 +9,24 @@ if [[ "$OSTYPE" == darwin* ]]; then
     fi
 fi
 
+# --- Agent shells ---
+# Agents run commands through this shell and cannot answer prompts or read pagers, so they get plain
+# tools (ADR 0007). The markers are hints anyone can set: use them only to switch conveniences off.
+_agent_shell=0
+if [[ ! -t 0 ]]; then
+    _agent_shell=1
+else
+    for _marker in AI_AGENT AGENT; do
+        [[ -n ${(P)_marker} && ${(L)${(P)_marker}} != (0|false|no|off) ]] && _agent_shell=1
+    done
+    for _marker in CLAUDECODE CURSOR_AGENT CODEX_THREAD_ID CODEX_SANDBOX CODEX_CI GEMINI_CLI \
+        COPILOT_AGENT COPILOT_CLI PI_CODING_AGENT OPENCODE CRUSH KILO AUGMENT_AGENT CLINE_ACTIVE \
+        QWEN_CODE AMP_CURRENT_THREAD_ID GOOSE_TERMINAL ANTIGRAVITY_AGENT JUNIE_DATA HERMES_AGENT; do
+        [[ -n ${(P)_marker} ]] && _agent_shell=1
+    done
+    unset _marker
+fi
+
 # Apply user locale after user's ~/.zprofile has run
 if declare -f ensure_utf8_locale >/dev/null 2>&1; then
     ensure_utf8_locale
@@ -52,7 +70,7 @@ zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light Aloxaf/fzf-tab
-zinit light sinetoami/web-search
+(( _agent_shell )) || zinit light sinetoami/web-search
 
 # --- Prompt ---
 eval "$(starship init zsh)"
@@ -220,8 +238,9 @@ if command -v nvim >/dev/null 2>&1; then
 fi
 
 # --- Tool Integrations ---
-# zoxide should not depend on fzf/fzf-tab; initialize it unconditionally (when installed).
-if command -v zoxide >/dev/null 2>&1; then
+# zoxide should not depend on fzf/fzf-tab. Agents keep builtin cd: zoxide's cd jumps to a remembered
+# folder when the argument is not an existing one, and agent navigation would fill its history.
+if (( ! _agent_shell )) && command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init --cmd cd zsh)"
 fi
 
@@ -264,7 +283,7 @@ if command -v fzf >/dev/null 2>&1; then
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'
     zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'
     zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
-    zstyle ':fzf-tab:*' accept-line enter
+    (( _agent_shell )) || zstyle ':fzf-tab:*' accept-line enter
     zstyle ':fzf-tab:*' fzf-flags '--preview-window=right:50%:wrap'
     if [[ -f "$FZFGIT_HOME/fzf-git.sh" ]]; then
         # Function to source fzf-git with grep unaliased for its duration
@@ -278,7 +297,7 @@ if command -v fzf >/dev/null 2>&1; then
     fi
     bindkey '^[c' fzf-cd-widget
 fi
-if command -v thefuck >/dev/null 2>&1; then
+if (( ! _agent_shell )) && command -v thefuck >/dev/null 2>&1; then
     eval $(thefuck --alias tf)
 fi
 
@@ -286,4 +305,12 @@ fi
 # Enable dynamic version switching on directory change (interactive shells only)
 if command -v mise >/dev/null 2>&1; then
     eval "$(mise activate zsh)"  # Without --shims
+fi
+
+# In agent shells, no alias may shadow a real command: the command must behave as documented.
+if (( _agent_shell )); then
+    for _alias in ${(k)aliases}; do
+        (( ${+commands[$_alias]} )) && unalias -- "$_alias"
+    done
+    unset _alias
 fi

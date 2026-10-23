@@ -307,6 +307,7 @@ while IFS= read -r k; do
 done < ${(q)KB}/seqs >| ${(q)KB}/bindings
 while IFS= read -r n; do print -r -- "\$(whence -w -- "\$n")"; done < ${(q)KB}/aliases-in >| ${(q)KB}/aliases-out
 {
+    print -r -- "agent=\$_agent_shell|\${aliases[rm]-none}|\$(whence -w cd)"
     print -r -- "flowcontrol=\${options[flowcontrol]}"
     print -r -- "FZF_DEFAULT_OPTS=\$FZF_DEFAULT_OPTS"
 } >| ${(q)KB}/env
@@ -473,6 +474,39 @@ for row in "${FZF_ROWS[@]}"; do
 done
 
 zpty -d KBSH 2>/dev/null
+
+# --- Agent shells (ADR 0007) -----------------------------------------------------------------------
+# A marker or no terminal on stdin makes an agent shell: no alias shadows a command, cd is builtin.
+print -r -- "== agent shells =="
+human='0|rm -i|cd: function' agent='1|none|cd: builtin'
+ok=0; [[ ${ENV_VARS[agent]} == "$human" ]] && ok=1
+report agent-none-tty ok $ok "a terminal with no marker got '${ENV_VARS[agent]}', expected '$human'"
+probe='print -r -- "$_agent_shell|${aliases[rm]-none}|$(whence -w cd)"'
+# agent_probe <id> <expected> <tty|notty> [VAR=value ...]
+agent_probe() {
+    local id=$1 want=$2 mode=$3 out="$KB/agent-$1" c buf='' deadline
+    shift 3
+    if [[ $mode == tty ]]; then
+        zpty AP "exec env -i ${(j: :)${(@q)session_env}} ${(j: :)${(@q)@}} zsh -i"
+        deadline=$(( EPOCHREALTIME + 20 ))
+        while [[ $buf != *$'\e[?2004h'* ]] && (( EPOCHREALTIME < deadline )); do
+            zpty -rt AP c 2>/dev/null && buf+=$c || zselect -t 2 2>/dev/null
+        done
+        zpty -w -n AP " $probe >| ${(q)out}; exit"$'\r'
+        deadline=$(( EPOCHREALTIME + 10 ))
+        while [[ ! -s $out ]] && (( EPOCHREALTIME < deadline )); do zpty -rt AP c 2>/dev/null || zselect -t 2 2>/dev/null; done
+        zpty -d AP 2>/dev/null
+    else
+        env -i "${session_env[@]}" "$@" zsh -i -c "$probe >| ${(q)out}" </dev/null >/dev/null 2>&1
+    fi
+    local got="$(<$out 2>/dev/null)"
+    local ok=0; [[ $got == "$want" ]] && ok=1
+    report "$id" ok $ok "got '$got', expected '$want'"
+}
+agent_probe agent-standard-marker "$agent" tty AI_AGENT=claude
+agent_probe agent-marker-off      "$human" tty AI_AGENT=0
+agent_probe agent-vendor-marker   "$agent" tty CLAUDECODE=1
+agent_probe agent-no-terminal     "$agent" notty
 
 # --- Layer 4: keys handled inside fzf --------------------------------------------------------------
 print -r -- "== keys inside fzf =="

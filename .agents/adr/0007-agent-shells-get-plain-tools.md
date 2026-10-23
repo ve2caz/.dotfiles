@@ -1,0 +1,11 @@
+# 0007: Modern replacements are interactive aliases, and agent shells get plain tools
+
+Status: accepted, 2026-10-23.
+
+**Context.** The interactive layer gives classic commands new behavior under their own names: bat as `cat`, eza as `ls`, delta as `diff`, extra flags on `rg`, prompts on `rm`, `cp` and `mv`, zoxide as `cd`. AI agents (Cursor, Claude Code and others) run their commands through the same interactive zsh, with no one to answer a prompt or read a pager. Seen in practice: `rm` with no terminal printed its prompt, read end of input as "no" and kept the file; `cp -i` refused an agent's restore; the `rg` alias's `--line-number` corrupted a path piped from `rg -o`; `cat -v` failed because bat rejects `-v`. zoxide's `cd` also jumps to a remembered folder when the argument is not an existing one.
+
+**Decision.** Replacements stay aliases, defined only in interactive shells, never programs placed ahead of the real ones on `PATH`. `.zshrc` decides once whether a shell is an agent shell: stdin is not a terminal, or `AI_AGENT` or `AGENT` is set and not `0`, `false`, `no` or `off` (the emerging cross-tool convention), or one of the vendor markers listed there is set. In an agent shell, every alias that shadows a command is removed, `cd` stays builtin, and thefuck, web-search and fzf-tab's Enter-runs-the-line are skipped. `PATH`, mise, direnv, completions and the prompt are the same for both.
+
+**Alternatives rejected.** Wrapper programs in `~/.local/bin`: scripts and agents would get them too. No replacements: loses the conveniences people chose them for. Replacements everywhere: the failures above. A hand-kept list of aliases to drop in agent shells: the next alias that shadows a command would slip through.
+
+**Consequences.** The markers are hints anything can set, so they only switch conveniences off, never anything security-related. A person gets plain tools in a shell whose stdin is not a terminal, and in Claude Code's IDE terminal, which sets `CLAUDECODE`. An agent with no marker is caught only if its shell has no terminal. New agent markers go in the list in `.zshrc`. `scripts/test/test-keybindings.zsh` checks the standard marker, its off value, a vendor marker, the no-terminal case and a plain terminal.
