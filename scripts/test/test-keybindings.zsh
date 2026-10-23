@@ -1,7 +1,10 @@
 #!/usr/bin/env zsh
-# Proves the key bindings in the cheat sheets. Drives a real interactive zsh, built from the home
-# package in a temporary HOME, through a pseudo terminal. A stub fzf records how it was called and
-# picks a canned line, so fzf-driven keys run without a human.
+# Proves the key bindings, layer by layer, against each tool's own documentation: zsh's emacs keymap
+# (zshzle), fzf's defaults (man fzf), herdr's defaults and WezTerm's key table. A keymap may differ
+# from its tool's defaults only as listed in the change tables below. Drives a real interactive zsh,
+# built from the home package in a temporary HOME, through a pseudo terminal; a stub fzf records how
+# it was called and picks a canned line, so fzf-driven keys run without a human. Real fzf and herdr
+# run in their own pseudo terminals. The cheat sheets may list only keys this file covers.
 #
 # Results: PASS, FAIL, XFAIL (known broken, has a reason), XPASS (marked broken but now works: remove
 # the marker), SKIP (tool missing). Exits 1 on FAIL or XPASS.
@@ -93,6 +96,63 @@ bind_row fzf-scroll-down 'shift-down'                    'shift-down'         pr
 bind_row fzf-page-up     'shift-left'                    'shift-left'         preview-page-up ''    ok
 bind_row fzf-page-down   'shift-right'                   'shift-right'        preview-page-down '' ok
 bind_row fzf-query-keys  ''                              'ctrl-a ctrl-e ctrl-b ctrl-f ?' default '' ok
+
+# Every difference between zsh's own emacs keymap (zsh -f, bindkey -e) and the configured shell.
+# keys (space-separated, or "prefix*" for a family) | zsh default ("-": unbound) |
+# configured widget (a pattern) | set by
+typeset -a ZSH_CHANGES
+zsh_change() { ZSH_CHANGES+=("${(pj:\x1f:)@}") }
+zsh_change '^X? ^X^R ^X~ ^Xa ^Xc ^XC ^Xd ^Xe ^Xh ^Xm ^Xn ^Xt ^[, ^[/ ^[~' - '_*' 'compinit (zshcompsys, bindable commands)'
+zsh_change '^[OA' up-line-or-history   up-line-or-search   '/etc/zshrc (macOS), Up'
+zsh_change '^[OB' down-line-or-history down-line-or-search '/etc/zshrc (macOS), Down'
+zsh_change '^[OH' -                    beginning-of-line   '/etc/zshrc (macOS), Home'
+zsh_change '^[OF' -                    end-of-line         '/etc/zshrc (macOS), End'
+zsh_change '^[[3~' -                   delete-char         '/etc/zshrc (macOS), Delete'
+zsh_change '^[Q'  push-line                           zi-browse-symbol        'zinit (ESC q keeps push-line)'
+zsh_change '^T'   transpose-chars                     fzf-file-widget         fzf
+zsh_change '^R'   history-incremental-search-backward fzf-history-widget      fzf
+zsh_change '^[c'  capitalize-word                     fzf-cd-widget           'fzf, and again in .zshrc'
+zsh_change '^I'   expand-or-complete                  fzf-completion          'fzf, falling back to fzf-tab'
+zsh_change '^P'   up-line-or-history                  history-search-backward .zshrc
+zsh_change '^N'   down-line-or-history                history-search-forward  .zshrc
+zsh_change '^[w'  copy-region-as-kill                 kill-region             .zshrc
+zsh_change '^G*'  -                                   'fzf-git-*-widget'      fzf-git
+zsh_change '^X.'  -                                   fzf-tab-debug           fzf-tab
+
+# Every bind FZF_DEFAULT_OPTS sets. key | fzf default action ("-": none) | configured action
+typeset -a FZF_CHANGES
+fzf_change() { FZF_CHANGES+=("${(pj:\x1f:)@}") }
+fzf_change ctrl-/      -             toggle-preview
+fzf_change shift-up    preview-up    preview-up
+fzf_change shift-down  preview-down  preview-down
+fzf_change shift-left  backward-word preview-page-up
+fzf_change shift-right forward-word  preview-page-down
+
+# Keys typed into the real fzf, then X; the resulting query starts from "ab cd" with the cursor at
+# the end. Expected per man fzf, or per FZF_CHANGES for the keys it rebinds.
+# id | keys | query
+typeset -a FZF_QUERY_ROWS
+fzf_query() { FZF_QUERY_ROWS+=("${(pj:\x1f:)@}") }
+fzf_query ctrl-a        '^A'            'Xab cd'
+fzf_query ctrl-e        '^A^E'          'ab cdX'
+fzf_query ctrl-b        '^B'            'ab cXd'
+fzf_query ctrl-f        '^A^F'          'aXb cd'
+fzf_query alt-b         '\eb'           'ab Xcd'
+fzf_query alt-f         '^A\ef'         'abX cd'
+fzf_query ctrl-u        '^U'            'X'
+fzf_query ctrl-w        '^W'            'ab X'
+fzf_query alt-backspace '^[^?'          'ab X'
+fzf_query question      '?'             'ab cd?X'
+fzf_query shift-left    '^[[1;2D'       'ab cdX'
+fzf_query shift-right   '^A^[[1;2C'     'Xab cd'
+
+# WezTerm keys that hide a binding further down, accepted. WezTerm key | what it hides
+typeset -A WEZ_ACCEPTED=(
+    'ALT Enter' 'zsh ESC Enter (self-insert-unmeta, a newline in the command line); WezTerm toggles full screen'
+    'CTRL -'    'zsh ^_ (undo) typed as Ctrl+-; WezTerm shrinks the font. Undo stays on Ctrl-X u'
+    'CTRL _'    'zsh ^_ (undo) typed as Ctrl+Shift+-; WezTerm shrinks the font'
+    'CTRL @'    'zsh ^@ (set-mark-command) typed as Ctrl+Shift+2; WezTerm switches tab. Set mark stays on Ctrl+Space'
+)
 
 # --- Reporting -------------------------------------------------------------------------------------
 typeset -i N_PASS=0 N_FAIL=0 N_XFAIL=0 N_XPASS=0 N_SKIP=0
@@ -221,6 +281,7 @@ ALIASES_SHEET="$SHEETS_DIR/aliases.md"
 touch "$KB/aliases-in"
 
 cat > "$KB/helper.zsh" <<EOF
+bindkey -M emacs >| ${(q)KB}/emacs-configured
 typeset -gi KB_SEQ=0
 _kb_dump() {
     (( KB_SEQ++ ))
@@ -314,7 +375,40 @@ run_keys() {
     R_BUF=$f[2] R_CUR=$f[3] R_PWD=$f[4]
 }
 
-# --- Layers 1 and 2: zle keys ----------------------------------------------------------------------
+# --- zsh's keymap against zsh's own defaults -------------------------------------------------------
+print -r -- "== zsh keymap against zsh's defaults =="
+# The session runs the zsh that env -i finds, /bin/zsh, so take the defaults from the same binary.
+/bin/zsh -f -c 'bindkey -e; bindkey -M emacs' > "$KB/emacs-default"
+typeset -A ZSH_DEFAULT ZSH_CONFIGURED ALL_KEYS CHANGE_USED
+while IFS= read -r line; do k=${${${line% *}#\"}%\"}; ZSH_DEFAULT[$k]=${line##* }; done < "$KB/emacs-default"
+while IFS= read -r line; do k=${${${line% *}#\"}%\"}; ZSH_CONFIGURED[$k]=${line##* }; done < "$KB/emacs-configured"
+for k in "${(@k)ZSH_DEFAULT}" "${(@k)ZSH_CONFIGURED}"; do ALL_KEYS[$k]=1; done
+unexpected=''
+for k in "${(@ok)ALL_KEYS}"; do
+    d=${ZSH_DEFAULT[$k]--} c=${ZSH_CONFIGURED[$k]--}
+    [[ $d == "$c" ]] && continue
+    matched=0
+    for (( i = 1; i <= ${#ZSH_CHANGES}; i++ )); do
+        f=("${(@ps:\x1f:)ZSH_CHANGES[i]}")
+        if [[ $f[1] == *'*' ]]; then
+            [[ $k == "${f[1]%\*}"* ]] || continue
+        else
+            (( ${${(s: :)f[1]}[(Ie)$k]} )) || continue
+        fi
+        [[ $d == "$f[2]" && $c == ${~f[3]} ]] || continue
+        matched=1; CHANGE_USED[$i]=1; break
+    done
+    (( matched )) || unexpected+="$k is $c, zsh's default is $d; "
+done
+report zsh-keymap ok $(( ${#unexpected} == 0 )) "changes from zsh's defaults missing from ZSH_CHANGES: ${unexpected%; }"
+stale=''
+for (( i = 1; i <= ${#ZSH_CHANGES}; i++ )); do
+    f=("${(@ps:\x1f:)ZSH_CHANGES[i]}")
+    [[ -n ${CHANGE_USED[$i]-} ]] && print -r -- "      $f[1]: ${f[2]} -> ${f[3]} (${f[4]})" || stale+="$f[1]; "
+done
+report zsh-changes ok $(( ${#stale} == 0 )) "ZSH_CHANGES lists changes the shell does not have: ${stale%; }"
+
+# --- zsh keys --------------------------------------------------------------------------------------
 print -r -- "== zsh keys =="
 for row in "${ZLE_ROWS[@]}"; do
     (( ROW_INDEX++ ))
@@ -420,6 +514,45 @@ for row in "${BIND_ROWS[@]}"; do
     report "$id" "$st" $ok "${detail%; } (expected $action)"
 done
 
+typeset -A FZF_DECLARED
+for row in "${FZF_CHANGES[@]}"; do f=("${(@ps:\x1f:)row}"); FZF_DECLARED[$f[1]]=$f[3]; done
+unexpected='' stale=''
+for k in "${(@ok)FZF_BINDS}"; do [[ ${FZF_DECLARED[$k]-} == "${FZF_BINDS[$k]}" ]] || unexpected+="$k:${FZF_BINDS[$k]}; "; done
+for k in "${(@ok)FZF_DECLARED}"; do [[ -n ${FZF_BINDS[$k]-} ]] || stale+="$k; "; done
+report fzf-binds ok $(( ${#unexpected} == 0 )) "FZF_DEFAULT_OPTS binds keys missing from FZF_CHANGES: ${unexpected%; }"
+report fzf-changes ok $(( ${#stale} == 0 )) "FZF_CHANGES lists binds FZF_DEFAULT_OPTS does not set: ${stale%; }"
+for row in "${FZF_CHANGES[@]}"; do
+    f=("${(@ps:\x1f:)row}")
+    note=''; [[ $f[2] == "$f[3]" ]] && note=' (same as the default)'
+    print -r -- "      $f[1]: ${f[2]} -> ${f[3]}$note"
+done
+
+# The real fzf with the configured options: type, press the key, type X, read the query over --listen.
+port=$(( 40000 + RANDOM % 20000 ))
+fz_drain() { local c; while zpty -rt FZ c 2>/dev/null; do :; done }
+fz_query() { curl -s --max-time 1 "http://127.0.0.1:$port/" 2>/dev/null | jq -r .query 2>/dev/null }
+zpty FZ "stty rows 30 cols 100; seq 1 50 | FZF_DEFAULT_OPTS=${(q)FZF_OPTS} exec ${(q)REAL_FZF} --listen=127.0.0.1:$port --preview 'seq 1 200'"
+deadline=$(( EPOCHREALTIME + 5 ))
+while [[ "$(curl -s -o /dev/null -w '%{http_code}' --max-time 1 "http://127.0.0.1:$port/" 2>/dev/null)" != 200 ]]; do
+    (( EPOCHREALTIME > deadline )) && break
+    fz_drain; zselect -t 5 2>/dev/null
+done
+for row in "${FZF_QUERY_ROWS[@]}"; do
+    f=("${(@ps:\x1f:)row}")
+    id=fzf-query-$f[1] keys=$f[2] want=$f[3]
+    curl -s --max-time 1 -XPOST "http://127.0.0.1:$port/" -d 'change-query(ab cd)+end-of-line' >/dev/null 2>&1
+    zselect -t 10 2>/dev/null; fz_drain
+    zpty -w -n FZ "${(g:ce:)keys}X"
+    got='' deadline=$(( EPOCHREALTIME + 2 ))
+    while (( EPOCHREALTIME < deadline )); do
+        fz_drain; zselect -t 5 2>/dev/null
+        got=$(fz_query); [[ $got == *X* ]] && break
+    done
+    ok=0; [[ $got == "$want" ]] && ok=1
+    report "$id" ok $ok "query is '$got', expected '$want'"
+done
+zpty -d FZ 2>/dev/null
+
 # --- Layer 5: keys taken before zsh sees them ------------------------------------------------------
 print -r -- "== terminal and multiplexer =="
 # key_mods <bindkey key>: "MODS key" of the first key pressed, in WezTerm's naming.
@@ -431,6 +564,25 @@ key_mods() {
         '^I') print -r -- 'NONE Tab' ;;
         '^'?*) print -r -- "CTRL ${(L)k[2]}" ;;
         *) print -r -- "NONE $k" ;;
+    esac
+}
+# wez_names <bindkey key>: the WezTerm "MODS key" names that produce the key's first keystroke.
+wez_names() {
+    local k=$1
+    case $k in
+        '^['[\[O]*) ;;
+        '^[^M'*) print -r -- 'ALT Enter' ;;
+        '^[^I'*) print -r -- 'ALT Tab' ;;
+        '^[^?'*) print -r -- 'ALT Backspace' ;;
+        '^[^'?*) print -r -- "ALT|CTRL ${(L)k[4]}" ;;
+        '^['?*) print -r -- "ALT ${k[3]}" ;;
+        '^_'*) print -l -- 'CTRL -' 'CTRL _' 'CTRL /' ;;
+        '^@'*) print -l -- 'CTRL @' 'CTRL Space' ;;
+        '^^'*) print -l -- 'CTRL ^' 'CTRL 6' ;;
+        '^I'*) print -r -- 'NONE Tab' ;;
+        '^M'*) print -r -- 'NONE Enter' ;;
+        '^?'*) print -r -- 'NONE Backspace' ;;
+        '^'?*) print -r -- "CTRL ${(L)k[2]}" ;;
     esac
 }
 fzf_key_mods() {
@@ -468,18 +620,34 @@ else
         [[ $line == '  keys = {' ]] && { in_keys=1; continue }
         (( in_keys )) && [[ $line == '  },' ]] && break
         if (( in_keys )) && [[ $line =~ "key = '([^']+)', mods = '([^']+)', action = (.*) \\}," ]]; then
-            WEZ_KEYS["$match[2] $match[1]"]=$match[3]
+            wk="$match[2] $match[1]"
+            WEZ_KEYS[$wk]=$match[3]
         fi
     done < <(wezterm --config-file "$WEZTERM_LUA" show-keys --lua 2>/dev/null)
     if (( ${#WEZ_KEYS} == 0 )); then
         report wezterm-keys ok 0 "could not read WezTerm's key table"
     else
-        taken=''
-        for u in "${USED[@]}"; do
-            f=("${(@ps:\x1f:)u}")
-            [[ -n ${WEZ_KEYS[$f[2]]-} ]] && taken+="$f[1] ($f[2]: ${WEZ_KEYS[$f[2]]}); "
+        # Every key the configured zsh keymap binds, every fzf bind, and the herdr prefix, against
+        # WezTerm's table. Only WEZ_ACCEPTED collisions may exist.
+        typeset -a WANTED
+        for k in "${(@k)ZSH_CONFIGURED}"; do
+            for n in "${(@f)$(wez_names "$k")}"; do [[ -n $n ]] && WANTED+=("$n${SEP}zsh $k (${ZSH_CONFIGURED[$k]})"); done
         done
-        report wezterm-keys ok $(( ${#taken} == 0 )) "WezTerm takes ${taken%; }"
+        for k in "${(@k)FZF_BINDS}"; do WANTED+=("$(fzf_key_mods $k)${SEP}fzf $k (${FZF_BINDS[$k]})"); done
+        WANTED+=("CTRL b${SEP}the herdr prefix")
+        taken=''
+        typeset -A WEZ_HIT
+        for u in "${WANTED[@]}"; do
+            n=${u%%$SEP*}
+            [[ -n ${WEZ_KEYS[$n]-} ]] || continue
+            if [[ -n ${WEZ_ACCEPTED[$n]-} ]]; then WEZ_HIT[$n]=1; else taken+="$n takes ${u#*$SEP}; "; fi
+        done
+        report wezterm-keys ok $(( ${#taken} == 0 )) "WezTerm ${taken%; }"
+        stale=''
+        for n in "${(@ok)WEZ_ACCEPTED}"; do
+            [[ -n ${WEZ_HIT[$n]-} ]] && print -r -- "      accepted: $n: ${WEZ_ACCEPTED[$n]}" || stale+="$n; "
+        done
+        report wezterm-accepted ok $(( ${#stale} == 0 )) "WEZ_ACCEPTED lists keys that no longer collide: ${stale%; }"
     fi
     # WezTerm's default for this setting is false: left Option sends ESC plus the key, which ALT- rows need.
     ok=1
@@ -509,6 +677,72 @@ else
     done
     report herdr-prefix ok $(( ${#taken} == 0 )) "the herdr prefix $prefix takes ${taken%; }; mark the rows herdr or change the key"
     report herdr-marks ok $(( ${#stale} == 0 )) "rows marked herdr but not taken by the prefix $prefix: ${stale%; }"
+
+    # A real herdr in its own temporary HOME, so it never meets the user's server. Keys are sent the
+    # way WezTerm sends them by default (control bytes, ESC plus the key for Option).
+    if [[ $prefix != ctrl+[a-z] ]]; then
+        skip herdr-live "the live checks only know how to type a ctrl+letter prefix, not $prefix"
+    else
+    prefix_letter=${(U)prefix#ctrl+}
+    PB_SHOWN=$(( #prefix_letter ))
+    PB_CODE=$(( PB_SHOWN - 64 ))
+    PB=${(#)PB_CODE}
+    HT="$TMP/herdr"
+    mkdir -p "$HT/.config/herdr" "$HT/zd"
+    cp "$HERDR_TOML" "$HT/.config/herdr/"
+    hcli() { env -i HOME="$HT" PATH="$PATH" TERM=xterm-256color herdr "$@" 2>/dev/null }
+    HOUT=''
+    hdrain() { local c; while zpty -rt HD c 2>/dev/null; do HOUT+=$c; done }
+    hwait() { local d=$(( EPOCHREALTIME + $1 )); while (( EPOCHREALTIME < d )); do hdrain; zselect -t 5 2>/dev/null; done }
+    hcount() { hcli "$1" list | jq -r ".result.${1}s | length" }
+    zpty HD "stty rows 40 cols 160; exec env -i HOME=${(q)HT} PATH=${(q)PATH} TERM=xterm-256color SHELL=/bin/zsh ZDOTDIR=${(q)HT}/zd herdr"
+    deadline=$(( EPOCHREALTIME + 10 ))
+    until [[ "$(hcount pane)" == <1-> ]]; do (( EPOCHREALTIME > deadline )) && break; hwait 0.2; done
+    hwait 1
+
+    HOUT=''; zpty -w -n HD "$PB"; hwait 1
+    ok=0; [[ $HOUT == *PREFIX* ]] && ok=1
+    report herdr-prefix-mode ok $ok "no prefix bar after $prefix"
+    zpty -w -n HD '?'; hwait 1
+    ok=0; [[ $HOUT == *keybinds* && $HOUT == *'prefix mode'* ]] && ok=1
+    report herdr-help ok $ok "prefix then ? did not open the key help"
+    zpty -w -n HD $'\e'; hwait 0.5
+
+    before=$(hcount pane); zpty -w -n HD "$PB"; hwait 0.5; zpty -w -n HD v; hwait 1.5
+    ok=0; (( $(hcount pane) == before + 1 )) && ok=1
+    report herdr-split ok $ok "prefix then v did not split the pane"
+
+    # herdr's docs say prefix then c makes a new tab; it opens the new menu, where Enter makes one.
+    before=$(hcount tab); zpty -w -n HD "$PB"; hwait 0.5; zpty -w -n HD c; hwait 1; zpty -w -n HD $'\r'; hwait 1.5
+    ok=0; (( $(hcount tab) == before + 1 )) && ok=1
+    report herdr-new-tab ok $ok "prefix, c, Enter did not make a new tab"
+
+    # Every control key but the prefix, Backspace and every Option letter must reach the pane.
+    # Tab and Enter are left out because cat -v does not show them.
+    pane=$(hcli pane list | jq -r '.result.panes[] | select(.focused) | .pane_id')
+    zpty -w -n HD $'stty raw -echo; cat -vt\r'; hwait 1
+    payload='' expect=()
+    for b in {1..31} 127; do
+        (( b == PB_CODE || b == 9 || b == 10 || b == 13 || b == 27 )) && continue
+        payload+=${(#)b}
+        shown=$(( b + 64 ))
+        (( b == 127 )) && expect+=('^?') || expect+=("^${(#)shown}")
+    done
+    for l in {a..z}; do payload+=$'\e'$l; expect+=("^[$l"); done
+    zpty -w -n HD "${payload}|"; hwait 1.5
+    seen="$(hcli pane read "$pane" --source recent-unwrapped --lines 20)"
+    lost=''
+    rest=$seen
+    for e in "${expect[@]}"; do
+        if [[ $rest == *"$e"* ]]; then rest=${rest#*"$e"}; else lost+="$e "; fi
+    done
+    report herdr-passthrough ok $(( ${#lost} == 0 )) "keys that did not reach the pane: ${lost% }"
+    zpty -w -n HD "$PB"; hwait 0.5; zpty -w -n HD "$PB"; hwait 0.5; zpty -w -n HD 'Z|'; hwait 1
+    ok=0; [[ "$(hcli pane read "$pane" --source recent-unwrapped --lines 5)" == *"^${(#)PB_SHOWN}Z|"* ]] && ok=1
+    report herdr-send-prefix ok $ok "$prefix pressed twice did not send $prefix to the pane"
+    hcli server stop >/dev/null
+    zpty -d HD 2>/dev/null
+    fi
 
     # The herdr sheet's first key is the prefix; the yazi sheet must flag the key the prefix takes.
     prefix_name=${prefix//+/-}
