@@ -29,7 +29,7 @@ zsh ./scripts/test/test-keybindings.zsh
 
 Checks every layer a key passes through against that tool's own documentation, not against the cheat sheets: WezTerm's key table, a real herdr, zsh's emacs keymap (zshzle), fzf's defaults (man fzf) through a real fzf, and the fzf-driven widgets with a stub `fzf`. Each keymap may differ from its tool's defaults only as listed in the test's change tables (`ZSH_CHANGES`, `FZF_CHANGES`, `WEZ_ACCEPTED`); an unlisted change, or a listed one that is gone, fails. To change a key binding, change the config and its table entry together. It also fails if a cheat sheet lists a key the test does not cover. Known-broken keys are expected failures with a reason; one that starts working fails the run until its marker is removed. Run it after changes to key bindings, zsh plugins, `FZF_DEFAULT_OPTS`, `wezterm.lua` or `herdr/config.toml`; it takes about 30 seconds. It needs a real pseudo terminal, so it cannot run inside the Cursor agent sandbox. `KB_LOG=<file>` saves the session output and `KB_KEEP=1` keeps the temporary folder.
 
-One check stays manual: that WezTerm sends `ESC` plus the key for left Option on this keyboard. In WezTerm, run `cat -v`, press Option-C, and expect `^[c`.
+One check stays manual: that WezTerm sends `ESC` plus the key for left Option on this keyboard. In WezTerm, run `command cat -v` (the `cat` alias runs bat, which rejects `-v`), press left Option-C, and expect `^[c`. Last confirmed 2026-10-23.
 
 ## Packages
 
