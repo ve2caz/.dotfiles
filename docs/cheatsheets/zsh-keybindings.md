@@ -15,7 +15,7 @@
 |  | `ALT-D` | Delete word forward |
 |  | `ALT-Backspace` | Delete word backward |
 | **Kill & Yank** | `CTRL-K` | Kill (cut) from cursor to end of line |
-|  | `CTRL-U` | Kill (cut) from cursor to beginning of line |
+|  | `CTRL-U` | Kill (cut) the whole line |
 |  | `CTRL-Y` | Yank (paste) most recently killed text |
 |  | `ALT-Y` | Cycle through kill ring (after CTRL-Y) |
 |  | `ALT-W` | Cut/kill selected region (custom) |

@@ -122,7 +122,6 @@ bindkey -e
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
-bindkey '^u' backward-kill-line
 # With flow control on, the terminal takes Ctrl-S (and fzf-git's Ctrl-G Ctrl-S) before zsh sees it.
 unsetopt flow_control
 

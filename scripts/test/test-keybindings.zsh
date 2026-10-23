@@ -42,7 +42,7 @@ zle_row ctrl-h        'ctrl-h'        '^H'   backward-delete-char              '
 zle_row alt-d         'alt-d'         '\ed'  kill-word                         'aa bb^A\ed'          ' bb'         0 ''    ok
 zle_row alt-backspace 'alt-backspace' '^[^?' backward-kill-word                'aa bb^[^?'           'aa '         3 ''    ok
 zle_row ctrl-k        'ctrl-k'        '^K'   kill-line                         'aa bb^A^F^F^K'       'aa'          2 ''    ok
-zle_row ctrl-u        'ctrl-u'        '^U'   backward-kill-line                'aa bb^B^B^U'         'bb'          0 ''    ok
+zle_row ctrl-u        'ctrl-u'        '^U'   kill-whole-line                   'aa bb^B^B^U'         ''            0 ''    ok
 zle_row ctrl-y        'ctrl-y'        '^Y'   yank                              'aa bb^[^?^Y'         'aa bb'       5 ''    ok
 zle_row alt-y         'alt-y'         '\ey'  yank-pop                          'alpha^A^K^[[23~beta^A^K^[[23~^Y\ey' 'alpha' 5 '' ok
 zle_row alt-w         'alt-w'         '\ew'  kill-region                       'aa bb^A^@^F^F^F\ew'  'bb'          0 ''    ok
