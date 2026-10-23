@@ -51,8 +51,10 @@ zle_row alt-y         'alt-y'         '\ey'  yank-pop                          '
 zle_row alt-w         'alt-w'         '\ew'  kill-region                       'aa bb^A^@^F^F^F\ew'  'bb'          0 ''    ok
 zle_row alt-t         'alt-t'         '\et'  transpose-words                   'aa bb\et'            'bb aa'       5 ''    ok
 zle_row ctrl-s        'ctrl-s'        '^S'   history-incremental-search-forward '^Sx'                ''            - flow  ok
-zle_row ctrl-p        'ctrl-p'        '^P'   history-search-backward           'echo^P'              'echo kb-two' - ''    ok
-zle_row ctrl-n        'ctrl-n'        '^N'   history-search-forward            'echo^P^P^N'          'echo kb-two' - ''    ok
+zle_row ctrl-p        'ctrl-p'        '^P'   history-search-backward           'ls^P'                'ls -la'     - ''    ok
+zle_row ctrl-n        'ctrl-n'        '^N'   history-search-forward            'echo^P^P^N'          'echo kb-three' - ''    ok
+zle_row up-arrow      ''              '^[[A' up-line-or-history                'ls^[[A'              'echo kb-three' - ''    ok
+zle_row down-arrow    ''              '^[[B' down-line-or-history              'ls^[[A^[[B'          'ls'          - ''    ok
 zle_row ctrl-g        'ctrl-g'        '^G'   send-break                        'aa bb^G'             ''            0 wait  ok
 zle_row ctrl-l        'ctrl-l'        '^L'   clear-screen                      'aa bb^L'             'aa bb'       5 ''    ok
 
@@ -225,7 +227,7 @@ if [[ -f "$REAL_DATA/fzf-git/fzf-git.sh" ]]; then
     HAVE_FZF_GIT=1
 fi
 
-print -l 'echo kb-one' 'ls' 'echo kb-two' > "$TMP/xdg-state/zsh/history"
+print -l 'echo kb-one' 'ls -la' 'echo kb-two' > "$TMP/xdg-state/zsh/history"
 
 g() { git -C "$REPO" -c user.name=kb -c user.email=kb@example.invalid -c init.defaultBranch=main "$@" >/dev/null 2>&1 }
 mkdir -p "$REPO/kbdir" "$REPO/kbdir2"
@@ -308,6 +310,9 @@ while IFS= read -r n; do print -r -- "\$(whence -w -- "\$n")"; done < ${(q)KB}/a
     print -r -- "flowcontrol=\${options[flowcontrol]}"
     print -r -- "FZF_DEFAULT_OPTS=\$FZF_DEFAULT_OPTS"
 } >| ${(q)KB}/env
+# hist_ignore_space keeps the command that sourced this file in history until the next command, so
+# add a known newest line on top of it.
+print -s 'echo kb-three'
 print ready >| ${(q)KB}/ready
 EOF
 

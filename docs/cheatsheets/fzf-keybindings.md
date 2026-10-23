@@ -29,11 +29,11 @@
 
 | Key Binding | Description |
 |-------------|-------------|
-| `Ctrl-/` | Toggle preview window on/off - useful when you need more space for results |
-| `Shift-Up` or `Shift-Down` | Scroll the preview a line up or down |
-| `Shift-Left` or `Shift-Right` | Scroll the preview a page up or down |
+| `Ctrl-/` | Toggle preview window on/off - useful when you need more space for results (added by the config) |
+| `Shift-Up` or `Shift-Down` | Scroll the preview a line up or down (fzf's default) |
+| `Shift-Left` or `Shift-Right` | Scroll the preview a page up or down. Changed: fzf's default moves one word in the search |
 
-`Ctrl-A`, `Ctrl-E`, `Ctrl-B`, `Ctrl-F` and `?` keep their usual meaning while you type the search.
+While you type the search, `Ctrl-A`, `Ctrl-E`, `Ctrl-B`, `Ctrl-F`, `Alt-B`, `Alt-F`, `Ctrl-U` and `Ctrl-W` edit it as in the shell, and `?` is typed as text (`man fzf`).
 
 **Tips:**
 - Preview window automatically resizes based on your terminal size

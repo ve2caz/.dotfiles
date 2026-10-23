@@ -5,8 +5,9 @@ Press the prefix, release it, then the key. `?` after the prefix lists every bin
 | Key | Description |
 |-----|-------------|
 | `Ctrl-B` | Prefix |
+| `Ctrl-B` | Pressed again after the prefix: send `Ctrl-B` to the program |
 | `?` | Help: every key binding |
-| `c` | New tab |
+| `c` | New: opens the new menu; `Enter` makes a tab |
 | `n` / `p` | Next / previous tab |
 | `1`..`9` | Switch to tab 1 to 9 |
 | `v` | Split side by side |
