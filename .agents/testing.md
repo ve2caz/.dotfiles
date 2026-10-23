@@ -21,6 +21,16 @@ The shims matter most to processes that never see a prompt, such as Tilt and its
 
 The script also prints `PATH` one entry per line for each session type, which is the quickest way to inspect startup order when debugging.
 
+## Key bindings
+
+```bash
+zsh ./scripts/test/test-keybindings.zsh
+```
+
+Drives a real interactive zsh through a pseudo terminal and proves every key in the cheat sheets: the zle widgets, the fzf-driven keys (with a stub `fzf`), the binds inside fzf, and the keys WezTerm or the herdr prefix take first. It fails if a cheat sheet lists a key the test does not cover. Known-broken keys are expected failures with a reason; one that starts working fails the run until its marker is removed. Run it after changes to key bindings, zsh plugins, `FZF_DEFAULT_OPTS`, `wezterm.lua` or `herdr/config.toml`. It needs a real pseudo terminal, so it cannot run inside the Cursor agent sandbox. `KB_LOG=<file>` saves the session output and `KB_KEEP=1` keeps the temporary folder.
+
+One check stays manual: that WezTerm sends `ESC` plus the key for left Option on this keyboard. In WezTerm, run `cat -v`, press Option-C, and expect `^[c`.
+
 ## Packages
 
 `brew bundle check --verbose` lists what the `Brewfile` asks for and is missing.
@@ -30,4 +40,5 @@ The script also prints `PATH` one entry per line for each session type, which is
 | Change | Suggested check |
 |--------|-----------------|
 | zsh init / PATH / mise | `zsh ./scripts/test/test-mise-shims-path.zsh` |
+| Key bindings, zsh plugins, fzf options, WezTerm or herdr keys | `zsh ./scripts/test/test-keybindings.zsh` |
 | `Brewfile` | `brew bundle check --verbose` |
