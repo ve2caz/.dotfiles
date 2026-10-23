@@ -66,7 +66,8 @@ fzf_row() { FZF_ROWS+=("${(pj:\x1f:)@}") }
 fzf_row ctrl-t       'ctrl-t'         '^T'   fzf-file-widget             'vim ^T'       'tracked.txt'      'vim tracked.txt '  'eza --tree'       ''   ok
 fzf_row ctrl-r       'ctrl-r'         '^R'   fzf-history-widget          '^R'           '*echo kb-one'     'echo kb-one'       '--scheme=history' ''   ok
 fzf_row alt-c        'alt-c'          '\ec'  fzf-cd-widget               '\ec'          'kbdir(|/)'        'pwd:kbdir'         'eza --tree'       ''   ok
-fzf_row cd-star      'cd **tab'       '^I'   fzf-completion              'cd **^I'      '(./|)kbdir(|/)'   '~cd (./|)kbdir/*'  'eza --tree'       ''   ok
+fzf_row cd-star      'cd **tab'       '^I'   fzf-completion              'cd **^I'      '(./|)kbdir(|/)'   '~cd (./|)kbdir/*'  '--level=2'        ''   ok
+fzf_row z-star       ''               '^I'   fzf-completion              'z **^I'       '(./|)kbdir(|/)'   '~z (./|)kbdir*'    '--level=2'        ''   ok
 fzf_row export-star  'export **tab'   '^I'   fzf-completion              'export **^I'  'HOME'             '~export HOME*'     'echo'             ''   ok
 fzf_row unset-star   'unset **tab'    '^I'   fzf-completion              'unset **^I'   'HOME'             '~unset HOME*'      'echo'             ''   ok
 fzf_row unalias-star 'unalias **tab'  '^I'   fzf-completion              'unalias **^I' 'lg'               '~unalias lg*'      ''                 ''   ok
@@ -307,7 +308,7 @@ while IFS= read -r k; do
 done < ${(q)KB}/seqs >| ${(q)KB}/bindings
 while IFS= read -r n; do print -r -- "\$(whence -w -- "\$n")"; done < ${(q)KB}/aliases-in >| ${(q)KB}/aliases-out
 {
-    print -r -- "agent=\$_agent_shell|\${aliases[rm]-none}|\$(whence -w cd)"
+    print -r -- "agent=\$_agent_shell|\${aliases[rm]-none}|\$(whence -w cd)|\$(whence -w z)"
     print -r -- "flowcontrol=\${options[flowcontrol]}"
     print -r -- "FZF_DEFAULT_OPTS=\$FZF_DEFAULT_OPTS"
 } >| ${(q)KB}/env
@@ -476,12 +477,13 @@ done
 zpty -d KBSH 2>/dev/null
 
 # --- Agent shells (ADR 0007) -----------------------------------------------------------------------
-# A marker or no terminal on stdin makes an agent shell: no alias shadows a command, cd is builtin.
+# A marker or no terminal on stdin makes an agent shell: no alias shadows a command, no zoxide.
+# cd is the builtin in every shell.
 print -r -- "== agent shells =="
-human='0|rm -i|cd: function' agent='1|none|cd: builtin'
+human='0|rm -i|cd: builtin|z: function' agent='1|none|cd: builtin|z: none'
 ok=0; [[ ${ENV_VARS[agent]} == "$human" ]] && ok=1
 report agent-none-tty ok $ok "a terminal with no marker got '${ENV_VARS[agent]}', expected '$human'"
-probe='print -r -- "$_agent_shell|${aliases[rm]-none}|$(whence -w cd)"'
+probe='print -r -- "$_agent_shell|${aliases[rm]-none}|$(whence -w cd)|$(whence -w z)"'
 # agent_probe <id> <expected> <tty|notty> [VAR=value ...]
 agent_probe() {
     local id=$1 want=$2 mode=$3 out="$KB/agent-$1" c buf='' deadline

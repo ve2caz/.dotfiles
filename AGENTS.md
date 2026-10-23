@@ -31,7 +31,7 @@ The main job of the zsh files is one fixed `PATH` order in every zsh, despite ma
 - `PATH` order is built only in `.zsh/env.zsh`. `~/.local/bin` and `~/bin` go last, so they never shadow Homebrew or system tools. `.zshrc` removes zinit's `$ZPFX/bin` right after loading zinit. Add nothing else to `PATH` anywhere else.
 - `env.zsh` puts the mise shims first in every zsh, so child processes such as Tilt and its extensions resolve each project's `mise.toml` versions without shell hooks. Never limit the shims to interactive or login shells. Why: [ADR 0005](.agents/adr/0005-mise-shims-in-every-zsh.md).
 - `env.zsh` runs in every new zsh, including non-interactive ones. Keep it fast.
-- Agent shells (an `AI_AGENT` or vendor marker, or no terminal on stdin) get no alias that shadows a command, builtin `cd` and no prompts. Define new conveniences in `.zshrc` so this keeps covering them. Why: [ADR 0007](.agents/adr/0007-agent-shells-get-plain-tools.md).
+- Agent shells (an `AI_AGENT` or vendor marker, or no terminal on stdin) get no alias that shadows a command, no zoxide and no prompts. Define new conveniences in `.zshrc` so this keeps covering them. Why: [ADR 0007](.agents/adr/0007-agent-shells-get-plain-tools.md).
 
 ## Scripts
 

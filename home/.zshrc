@@ -238,10 +238,10 @@ if command -v nvim >/dev/null 2>&1; then
 fi
 
 # --- Tool Integrations ---
-# zoxide should not depend on fzf/fzf-tab. Agents keep builtin cd: zoxide's cd jumps to a remembered
-# folder when the argument is not an existing one, and agent navigation would fill its history.
+# zoxide adds z and zi; cd stays zsh's builtin. Agent shells skip zoxide: their navigation stays out
+# of its history, and the Cursor sandbox cannot write its database.
 if (( ! _agent_shell )) && command -v zoxide >/dev/null 2>&1; then
-    eval "$(zoxide init --cmd cd zsh)"
+    eval "$(zoxide init zsh)"
 fi
 
 if command -v fzf >/dev/null 2>&1; then
@@ -272,16 +272,15 @@ if command -v fzf >/dev/null 2>&1; then
       local command=$1
       shift
       case "$command" in
-        cd|__zoxide_z) fzf --preview 'eza --tree --color=always --level=2 {} 2>/dev/null || ls -la {}' "$@" ;;
+        cd|z)         fzf --preview 'eza --tree --color=always --level=2 {} 2>/dev/null || ls -la {}' "$@" ;;
         export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
         ssh)          fzf --preview 'dig {}'                   "$@" ;;
         *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
       esac
     }
-    # fzf-tab previews for directory completion
-    # Keep the original `cd` context (what you type) and also support zoxide's internal function.
+    # fzf-tab previews for folder completion; completion names the command as typed (cd, z).
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'
-    zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'
+    zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'
     zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
     (( _agent_shell )) || zstyle ':fzf-tab:*' accept-line enter
     zstyle ':fzf-tab:*' fzf-flags '--preview-window=right:50%:wrap'
