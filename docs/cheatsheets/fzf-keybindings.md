@@ -29,12 +29,11 @@
 
 | Key Binding | Description |
 |-------------|-------------|
-| `?` | Toggle preview window on/off - useful when you need more space for results |
-| `Ctrl-/` | Alternative key to toggle preview window |
-| `Shift-Up` or `Shift-Down` | Scroll through long files or command outputs vertically |
-| `Shift-Left` or `Shift-Right` | Scroll horizontally for wide content (long lines, tables). Broken: they page the preview up and down |
-| `Ctrl-B` or `Ctrl-F` | Jump through preview content in larger chunks (backward/forward). Inside herdr, `Ctrl-B` is the herdr prefix |
-| `Ctrl-A` or `Ctrl-E` | Jump to beginning or end of current line in preview. Broken: they jump to the top and bottom of the preview |
+| `Ctrl-/` | Toggle preview window on/off - useful when you need more space for results |
+| `Shift-Up` or `Shift-Down` | Scroll the preview a line up or down |
+| `Shift-Left` or `Shift-Right` | Scroll the preview a page up or down |
+
+`Ctrl-A`, `Ctrl-E`, `Ctrl-B`, `Ctrl-F` and `?` keep their usual meaning while you type the search.
 
 **Tips:**
 - Preview window automatically resizes based on your terminal size

@@ -42,12 +42,12 @@ zle_row ctrl-h        'ctrl-h'        '^H'   backward-delete-char              '
 zle_row alt-d         'alt-d'         '\ed'  kill-word                         'aa bb^A\ed'          ' bb'         0 ''    ok
 zle_row alt-backspace 'alt-backspace' '^[^?' backward-kill-word                'aa bb^[^?'           'aa '         3 ''    ok
 zle_row ctrl-k        'ctrl-k'        '^K'   kill-line                         'aa bb^A^F^F^K'       'aa'          2 ''    ok
-zle_row ctrl-u        'ctrl-u'        '^U'   backward-kill-line                'aa bb^B^B^U'         'bb'          0 ''    'xfail:zsh binds ^U to kill-whole-line, which also deletes after the cursor; the sheet says to the beginning of the line'
+zle_row ctrl-u        'ctrl-u'        '^U'   backward-kill-line                'aa bb^B^B^U'         'bb'          0 ''    ok
 zle_row ctrl-y        'ctrl-y'        '^Y'   yank                              'aa bb^[^?^Y'         'aa bb'       5 ''    ok
 zle_row alt-y         'alt-y'         '\ey'  yank-pop                          'alpha^A^K^[[23~beta^A^K^[[23~^Y\ey' 'alpha' 5 '' ok
 zle_row alt-w         'alt-w'         '\ew'  kill-region                       'aa bb^A^@^F^F^F\ew'  'bb'          0 ''    ok
 zle_row alt-t         'alt-t'         '\et'  transpose-words                   'aa bb\et'            'bb aa'       5 ''    ok
-zle_row ctrl-s        'ctrl-s'        '^S'   history-incremental-search-forward '^S'                 ''            - flow  'xfail:flow control is on (zsh option flow_control), so the terminal pauses output instead'
+zle_row ctrl-s        'ctrl-s'        '^S'   history-incremental-search-forward '^Sx'                ''            - flow  ok
 zle_row ctrl-p        'ctrl-p'        '^P'   history-search-backward           'echo^P'              'echo kb-two' - ''    ok
 zle_row ctrl-n        'ctrl-n'        '^N'   history-search-forward            'echo^P^P^N'          'echo kb-two' - ''    ok
 zle_row ctrl-g        'ctrl-g'        '^G'   send-break                        'aa bb^G'             ''            0 wait  ok
@@ -75,7 +75,7 @@ fzf_row git-branches 'ctrl-gb'        '^G^B' fzf-git-branches-widget     '^G^B' 
 fzf_row git-tags     'ctrl-gt'        '^G^T' fzf-git-tags-widget         '^G^T'         '*kb-tag*'         '~*kb-tag*'         ''                 ''   ok
 fzf_row git-remotes  'ctrl-gr'        '^G^R' fzf-git-remotes-widget      '^G^R'         '*kb-remote*'      '~*kb-remote*'      ''                 ''   ok
 fzf_row git-hashes   'ctrl-gh'        '^G^H' fzf-git-hashes-widget       '^G^H'         '*kb commit two*'  '~*@HASH@*'         ''                 ''   ok
-fzf_row git-stashes  'ctrl-gs'        '^G^S' fzf-git-stashes-widget      '^G^S'         '*stash@{0}*'      'stash@\{0\} '      ''                 flow 'xfail:the chord ends in Ctrl-S, which flow control takes'
+fzf_row git-stashes  'ctrl-gs'        '^G^S' fzf-git-stashes-widget      '^G^S'         '*stash@{0}*'      'stash@\{0\} '      ''                 flow ok
 fzf_row git-reflogs  'ctrl-gl'        '^G^L' fzf-git-lreflogs-widget     '^G^L'         '*HEAD@{1}*'       'HEAD@\{1\} '       ''                 ''   ok
 fzf_row git-worktree 'ctrl-gw'        '^G^W' fzf-git-worktrees-widget    '^G^W'         '*kb-worktree*'    '~*kb-worktree*'    ''                 ''   ok
 fzf_row git-refs     'ctrl-ge'        '^G^E' fzf-git-each_ref-widget     '^G^E'         '*kb-tag*'         '~*kb-tag*'         ''                 ''   ok
@@ -87,14 +87,12 @@ bind_row fzf-enter       'enter'                         'enter'              de
 bind_row fzf-down        'ctrl-j;ctrl-n;down arrow'      'ctrl-j ctrl-n down' default         ''    ok
 bind_row fzf-up          'ctrl-k;ctrl-p;up arrow'        'ctrl-k ctrl-p up'   default         ''    ok
 bind_row fzf-mark        'tab;shift-tab'                 'tab btab'           default         ''    ok
-bind_row fzf-toggle      '?;ctrl-/'                      '? ctrl-/'           toggle-preview  ''    ok
+bind_row fzf-toggle      'ctrl-/'                        'ctrl-/'             toggle-preview  ''    ok
 bind_row fzf-scroll-up   'shift-up'                      'shift-up'           preview-up      ''    ok
 bind_row fzf-scroll-down 'shift-down'                    'shift-down'         preview-down    ''    ok
-bind_row fzf-sideways    'shift-left;shift-right'        'shift-left shift-right' scroll-sideways '' 'xfail:the sheet says these scroll sideways; fzf cannot scroll the preview sideways and they page it'
-bind_row fzf-page-up     'ctrl-b'                        'ctrl-b'             preview-page-up herdr ok
-bind_row fzf-page-down   'ctrl-f'                        'ctrl-f'             preview-page-down ''  ok
-bind_row fzf-line-ends   'ctrl-a;ctrl-e'                 'ctrl-a ctrl-e'      line-ends       ''    'xfail:the sheet says beginning or end of the preview line; they jump to the top and bottom of the preview'
-bind_row fzf-query-keys  ''                              'ctrl-a ctrl-e ctrl-b ctrl-f ?' default '' 'xfail:these keys edit the fzf query and must not be rebound'
+bind_row fzf-page-up     'shift-left'                    'shift-left'         preview-page-up ''    ok
+bind_row fzf-page-down   'shift-right'                   'shift-right'        preview-page-down '' ok
+bind_row fzf-query-keys  ''                              'ctrl-a ctrl-e ctrl-b ctrl-f ?' default '' ok
 
 # --- Reporting -------------------------------------------------------------------------------------
 typeset -i N_PASS=0 N_FAIL=0 N_XFAIL=0 N_XPASS=0 N_SKIP=0

@@ -122,6 +122,9 @@ bindkey -e
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
+bindkey '^u' backward-kill-line
+# With flow control on, the terminal takes Ctrl-S (and fzf-git's Ctrl-G Ctrl-S) before zsh sees it.
+unsetopt flow_control
 
 # --- Aliases & Functions ---
 alias cls='clear'
@@ -231,7 +234,7 @@ if command -v fzf >/dev/null 2>&1; then
     purple="#B388FF"
     blue="#06BCE4"
     cyan="#2CF9ED"
-    export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${purple},fg+:${fg},bg+:${bg_highlight},hl+:${purple},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan} --bind='?:toggle-preview,ctrl-/:toggle-preview,shift-up:preview-up,shift-down:preview-down,shift-left:preview-page-up,shift-right:preview-page-down,ctrl-b:preview-page-up,ctrl-f:preview-page-down,ctrl-a:preview-top,ctrl-e:preview-bottom'"
+    export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${purple},fg+:${fg},bg+:${bg_highlight},hl+:${purple},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan} --bind='ctrl-/:toggle-preview,shift-up:preview-up,shift-down:preview-down,shift-left:preview-page-up,shift-right:preview-page-down'"
     if command -v fd >/dev/null 2>&1; then
         export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
         export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
