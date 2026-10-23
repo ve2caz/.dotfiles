@@ -1,10 +1,10 @@
 tap "gromgit/brewtils"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3"
 # Download with resuming and segmented downloading
 brew "aria2"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3", link: true
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
@@ -35,9 +35,13 @@ brew "gh"
 brew "git"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
+# Render markdown on the CLI
+brew "glow"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
-# Terminal workspace manager for AI coding agents
+# Graph visualization software from AT&T and Bell Labs
+brew "graphviz"
+# Agent multiplexer that lives in your terminal
 brew "herdr"
 # Improved top (interactive process viewer)
 brew "htop"
@@ -75,6 +79,8 @@ brew "regclient"
 brew "ripgrep"
 # 7-Zip is a file archiver with a high compression ratio
 brew "sevenzip"
+# Static analysis and lint tool, for (ba)sh scripts
+brew "shellcheck"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -85,7 +91,7 @@ brew "thefuck"
 brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Best command-line tool to install and switch between multiple versions of Xcode
+# Command-line tool to install and switch between multiple versions of Xcode
 brew "xcodes"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
@@ -94,7 +100,7 @@ brew "yq"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Interactive TUI for Homebrew
-brew "gromgit/brewtils/taproom"
+brew "gromgit/brewtils/taproom", trusted: true
 cask "font-meslo-lg-nerd-font"
 cask "font-symbols-only-nerd-font"
 # Desktop client for GitHub repositories
