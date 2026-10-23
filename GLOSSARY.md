@@ -42,4 +42,3 @@ _Avoid_: clone, copy.
 
 - **`.agents/`**: the repo's `.agents/` holds repo-only agent docs (`testing.md`, `adr/`). `~/.agents/` is a skill target. They are unrelated; nothing in the repo's `.agents/` deploys.
 - **`.cursor/`**: the repo has no `.cursor/` folder. `~/.cursor/` is Cursor's own folder: settings, app state, and skills kept local. Never tracked.
-- **"Linux support"**: Debian/Ubuntu code paths exist but are untested. Say "untested", not "supported".
