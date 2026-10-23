@@ -1,6 +1,5 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
-local action = wezterm.action
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
@@ -39,15 +38,6 @@ config.colors = {
 	selection_fg = "#c0caf5",
 	ansi = { "#15161e", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6" },
 	brights = { "#414868", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5" },
-}
-
--- Ensure CTRL-A is sent directly to the terminal (e.g., for tmux or yazi)
-config.keys = {
-	{
-		key = 'a',
-		mods = 'CTRL',
-		action = action.SendKey { key = 'a', mods = 'CTRL' },
-	},
 }
 
 return config

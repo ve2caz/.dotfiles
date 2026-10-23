@@ -26,6 +26,7 @@ This document details how tools from the macOS `Brewfile` are installed on Linux
 | `brew "git"` | `apt install git` | System package |
 | `brew "git-delta"` | GitHub Releases | Downloaded as deb package |
 | `brew "gnupg"` | `apt install gnupg` | System package |
+| `brew "herdr"` | Official installer | Installed via `curl -fsSL https://herdr.dev/install.sh \| sh` |
 | `brew "htop"` | `apt install htop` | System package |
 | `brew "imagemagick"` | `apt install imagemagick` | System package |
 | `brew "ipcalc"` | `apt install ipcalc` | System package |
@@ -50,8 +51,6 @@ This document details how tools from the macOS `Brewfile` are installed on Linux
 | `brew "taproom"` (gromgit/brewtils) | N/A | macOS/Homebrew specific; no Linux equivalent |
 | `brew "thefuck"` | `pip3 install --user thefuck` | Python package |
 | `brew "tlrc"` | GitHub Releases | Downloaded as pre-compiled binary |
-| `brew "tmux"` | `apt install tmux` | System package |
-| `brew "tpm"` | Git clone | Cloned to tmux plugins directory |
 | `brew "tree"` | `apt install tree` | System package |
 | `brew "wezterm"` | Official repo | Added via official WezTerm repository |
 | `brew "xcodes"` | N/A | macOS only (Xcode version manager) |

@@ -75,13 +75,13 @@ CORE_TOOLS=(
     "direnv" "Environment variable manager"
     "fzf" "Fuzzy finder"
     "git" "Version control" 
+    "herdr" "Terminal workspace manager for AI coding agents"
     "htop" "Process monitor"
     "jq" "JSON processor"
     "nmap" "Network scanner"
     "nvim" "Text editor (neovim)"
     "rg" "Fast text search (ripgrep)"
     "stow" "Symlink manager"
-    "tmux" "Terminal multiplexer"
     "tree" "Directory tree view"
 )
 

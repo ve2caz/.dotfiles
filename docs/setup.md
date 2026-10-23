@@ -59,7 +59,7 @@ setup.sh (master)
 │   ├── Platform detection (macOS/Linux)
 │   ├── Package installation (brew/apt)
 │   ├── Font installation
-│   └── Tool setup (Zinit, TPM, fzf-git)
+│   └── Tool setup (Zinit, fzf-git)
 ├── stow --target=$HOME home
 ├── setup-tokyo-night-theme.sh
     ├── Bat theme download
@@ -195,7 +195,6 @@ The automated installation script (`./scripts/install-packages.sh`) will:
 ### On all platforms:
 - Verify and install `zsh` if missing
 - Install all core command-line tools
-- Set up tmux plugin manager (tpm)
 - Create necessary directories and symlinks
 
 ### On macOS:
@@ -230,12 +229,11 @@ Use the verification script to check your installation status:
 ```
 
 This script verifies that all tools are properly installed and checks:
-- Core tools availability (git, neovim, stow, tmux, etc.)
+- Core tools availability (git, neovim, stow, herdr, etc.)
 - Modern CLI tools installation (eza, fzf, bat, fd, etc.)
 - Development tools functionality (gh, lazygit, delta, etc.)
 - System tools (btop, yq, k9s, etc.)
 - Font installation status (MesloLG Nerd Font, Symbols Only)
-- Tmux plugin manager (TPM) setup
 
 ### Utility Scripts
 

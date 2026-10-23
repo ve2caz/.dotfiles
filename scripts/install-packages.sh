@@ -85,7 +85,7 @@ case "$OS" in
                 sudo apt update
                 # Install packages that are available via apt (zsh handled separately above)
                 # Note: coreutils (GNU File, Shell, and Text utilities) are included by default on Linux
-                sudo apt install -y curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip-full openssl direnv starship gnupg mtr aria2 lnav
+                sudo apt install -y curl git neovim stow tree fzf bat htop imagemagick jq nmap ripgrep p7zip-full openssl direnv starship gnupg mtr aria2 lnav
                 
                 # Install packages that need special handling
                 echo "Installing additional packages..."
@@ -134,6 +134,11 @@ case "$OS" in
                 # mise (polyglot version manager)
                 if ! command -v mise >/dev/null 2>&1; then
                     curl https://mise.jdx.dev/install.sh | sh
+                fi
+                
+                # herdr (terminal workspace manager for AI coding agents)
+                if ! command -v herdr >/dev/null 2>&1; then
+                    curl -fsSL https://herdr.dev/install.sh | sh
                 fi
                 
                 # thefuck
@@ -297,7 +302,7 @@ case "$OS" in
                 echo "Please use a Debian/Ubuntu-based distribution or install packages manually."
                 echo ""
                 echo "Required packages for manual installation:"
-                echo "  curl git neovim stow tmux tree fzf bat htop imagemagick jq nmap ripgrep p7zip openssl"
+                echo "  curl git neovim stow tree fzf bat htop imagemagick jq nmap ripgrep p7zip openssl"
                 echo ""
                 echo "Additional tools can be installed from their respective GitHub releases:"
                 echo "  eza, zoxide, thefuck, gh, lazygit, git-delta, tlrc, yazi, wezterm, btop, yq, k9s, kubie, lazydocker"
@@ -317,13 +322,6 @@ ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
 if [ ! -d "$ZINIT_HOME" ]; then
 	mkdir -p "$(dirname $ZINIT_HOME)"
 	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-fi
-
-# Install tpm (Tmux Plugin Manager)
-if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
-    echo "Installing tpm (Tmux Plugin Manager)..."
-    mkdir -p "${HOME}/.tmux/plugins"
-    git clone https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
 fi
 
 # Install fzf-git (fzf-git.sh)
@@ -350,11 +348,11 @@ echo "    • curl"
 echo "    • fzf"
 echo "    • git"
 echo "    • gnupg"
+echo "    • herdr"
 echo "    • htop"
 echo "    • mise"
 echo "    • neovim"
 echo "    • stow"
-echo "    • tmux"
 echo "    • tree"
 echo ""
 echo "  Modern CLI:"

@@ -209,9 +209,6 @@ fi
 if command -v lazydocker >/dev/null 2>&1; then
     alias lzd='lazydocker'
 fi
-if command -v tmux >/dev/null 2>&1; then
-    alias tm='tmux'
-fi
 if command -v tree >/dev/null 2>&1; then
     alias tree='tree -C'
 fi

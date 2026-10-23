@@ -37,6 +37,8 @@ brew "git"
 brew "git-delta"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
+# Terminal workspace manager for AI coding agents
+brew "herdr"
 # Improved top (interactive process viewer)
 brew "htop"
 # Tools and libraries to manipulate images in select formats
@@ -81,10 +83,6 @@ brew "stow"
 brew "thefuck"
 # Official tldr client written in Rust
 brew "tlrc"
-# Terminal multiplexer
-brew "tmux"
-# Plugin manager for tmux
-brew "tpm"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # Best command-line tool to install and switch between multiple versions of Xcode

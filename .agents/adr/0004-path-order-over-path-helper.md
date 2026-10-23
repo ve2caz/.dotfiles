@@ -2,7 +2,7 @@
 
 Status: accepted, 2026-10-22.
 
-**Context.** On macOS, `/etc/zprofile` runs `path_helper` in every login shell, and every Terminal tab and tmux pane is one. `path_helper` puts `/etc/paths` and `/etc/paths.d` first and moves the existing `PATH` behind them, so Homebrew and mise entries set in `~/.zshenv` end up behind `/usr/bin` in login shells only. Login and non-login shells then resolve different tools.
+**Context.** On macOS, `/etc/zprofile` runs `path_helper` in every login shell, and every Terminal tab is one. `path_helper` puts `/etc/paths` and `/etc/paths.d` first and moves the existing `PATH` behind them, so Homebrew and mise entries set in `~/.zshenv` end up behind `/usr/bin` in login shells only. Login and non-login shells then resolve different tools.
 
 **Decision.** On macOS, `.zshenv` unsets `GLOBAL_RCS`, runs `path_helper` first to get the system baseline, then sources `/etc/zshenv` and, for login shells, `/etc/zprofile` by hand; `.zshrc` sources `/etc/zshrc`. Every `path_helper` call happens before any user entry is added. `.zsh/env.zsh` then builds the order; `typeset -U path` keeps the first occurrence of each entry. Its guard is not exported, so every zsh rebuilds the order from the baseline instead of trusting an inherited `PATH`. Final order: mise shims, Homebrew `curl`, `sbin` and `bin`, the baseline, then `~/.local/bin` and `~/bin`. Those two are appended so nothing a user-level installer drops there can shadow Homebrew or system tools. `.zshrc` removes zinit's `$ZPFX/bin` right after loading zinit, so interactive and non-interactive shells get the same order.
 

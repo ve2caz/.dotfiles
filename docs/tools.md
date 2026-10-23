@@ -63,11 +63,10 @@ This dotfiles configuration includes a curated set of modern command-line tools:
 |------|-------------|
 | [**bash**](https://www.gnu.org/software/bash/) | Bourne-Again SHell, a UNIX command interpreter |
 | [**direnv**](https://direnv.net/) | Environment variable manager for project-specific environments |
+| [**herdr**](https://herdr.dev) | Terminal workspace manager for AI coding agents |
 | [**starship**](https://starship.rs/) | Cross-shell prompt with minimal, blazing-fast rendering and context awareness |
 | [**taproom**](https://github.com/gromgit/homebrew-brewtils) | Interactive TUI for browsing and managing Homebrew packages (alternative to `brew search`) |
 | [**thefuck**](https://github.com/nvbn/thefuck) | Corrects mistyped console commands |
-| [**tmux**](https://github.com/tmux/tmux) | Terminal multiplexer for session management |
-| [**tpm**](https://github.com/tmux-plugins/tpm) | Plugin manager for tmux |
 | [**wezterm**](https://github.com/wez/wezterm) | GPU-accelerated cross-platform terminal emulator |
 
 ## Fonts and Typography

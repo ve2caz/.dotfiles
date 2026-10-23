@@ -24,7 +24,6 @@ All theme files and configurations are stored according to XDG standards:
 | **bat** | `tokyonight_night.tmTheme` | ✅ Auto-downloads |
 | **btop** | `tokyo-night` theme (from local dotfiles) | ✅ Configured |
 | **Starship** | Tokyo Night theme | ✅ Configured |
-| **tmux** | Powerline blue (Tokyo Night compatible) | ✅ Configured |
 | **WezTerm** | Custom Tokyo Night colorscheme | ✅ Configured |
 | **yazi** | `tokyo-night` flavor | ✅ Configured |
 
@@ -59,7 +58,6 @@ $XDG_CONFIG_HOME/
 
 $XDG_DATA_HOME/
 ├── zinit/                # zsh plugin manager data
-├── tmux/plugins/         # tmux plugins
 └── fzf-git/              # fzf-git integration
 ```
 
