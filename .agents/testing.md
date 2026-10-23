@@ -54,4 +54,3 @@ Under `scripts/test/` there are additional drivers for interactive vs non-intera
 |--------|-----------------|
 | zsh init / PATH / mise | `zsh ./scripts/test/test-mise-shims-path.zsh` |
 | New CLI expected from install script | `./scripts/check-installation.sh` |
-| Only theme assets | No strict automated test in-repo; follow [`docs/tokyo-night-theme.md`](../docs/tokyo-night-theme.md) if touching theme scripts |
