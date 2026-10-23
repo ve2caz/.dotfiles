@@ -19,38 +19,15 @@ The test runs without zinit and without prompt hooks, so it cannot see what `.zs
 
 The shims matter most to processes that never see a prompt, such as Tilt and its extensions ([ADR 0005](adr/0005-mise-shims-in-every-zsh.md)). After changes to startup files, `PATH` or mise, run this from a project folder with a `mise.toml`, replacing `<tool>` with any tool it pins: `env -i HOME="$HOME" TERM="$TERM" PATH=/usr/bin:/bin zsh -c 'sh -c "command -v <tool>; mise current <tool>"'`. It must print `~/.local/share/mise/shims/<tool>` and the version the project pins.
 
-## Installation smoke check
+The script also prints `PATH` one entry per line for each session type, which is the quickest way to inspect startup order when debugging.
 
-```bash
-./scripts/check-installation.sh
-```
+## Packages
 
-Lists whether expected CLI tools are on `PATH` (bash; safe before zsh is fully configured).
-
-## Session-type probes (manual / debugging)
-
-Small scripts that print `PATH` one entry per line for a given session type. They are **not** a single combined automated suite; use them to inspect PATH when debugging startup.
-
-| Script | Session |
-|--------|---------|
-| `scripts/test/interactive-login.sh` | interactive login |
-| `scripts/test/interactive-non-login.sh` | interactive non-login |
-| `scripts/test/non-interactive-login.sh` | non-interactive login |
-| `scripts/test/non-interactive-non-login.sh` | non-interactive non-login |
-
-Example:
-
-```bash
-bash ./scripts/test/non-interactive-non-login.sh
-```
-
-## Shell harness scripts (broader checks)
-
-Under `scripts/test/` there are additional drivers for interactive vs non-interactive shells (see file names). Prefer **`test-mise-shims-path.zsh`** for routine validation of PATH/mise behavior after dotfile changes.
+`brew bundle check --verbose` lists what the `Brewfile` asks for and is missing.
 
 ## When to run what
 
 | Change | Suggested check |
 |--------|-----------------|
 | zsh init / PATH / mise | `zsh ./scripts/test/test-mise-shims-path.zsh` |
-| New CLI expected from install script | `./scripts/check-installation.sh` |
+| `Brewfile` | `brew bundle check --verbose` |

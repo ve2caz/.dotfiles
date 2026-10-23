@@ -9,7 +9,7 @@
 
 ## Untested
 
-- Debian/Ubuntu: `scripts/install-packages.sh` and `.zsh/env.zsh` have Linux paths, but nothing verifies them. Fix them when found broken; do not claim support.
+- Debian/Ubuntu: `.zsh/env.zsh` has Linux paths, but nothing verifies them. Fix them when found broken; do not claim support.
 
 ## Out of scope
 
