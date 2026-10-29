@@ -37,6 +37,10 @@ The main job of the zsh files is one fixed `PATH` order in every zsh, despite ma
 
 Scripts in `scripts/` are bash, not zsh: they run on a fresh machine before the zsh config exists.
 
+## Homebrew
+
+Never run `brew install`, `brew upgrade` or `brew bundle install`: the user decides when to install or upgrade. Report what `brew bundle check --no-upgrade` or `brew outdated` shows instead.
+
 ## Skills
 
 - Create or convert skills with the `new-skill` skill in `skills/dotfiles/new-skill/`. It holds the front matter format, writes the files, adds the README entry and links the skill. Its `scripts/check-skills.sh` must pass.
