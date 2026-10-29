@@ -47,16 +47,6 @@ case "$(uname -s)" in
             _BREW_PREFIX="/usr/local"
         fi
         ;;
-    Linux)
-        # Homebrew on Linux (linuxbrew)
-        if [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
-            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-            _BREW_PREFIX="/home/linuxbrew/.linuxbrew"
-        elif [[ -x "$HOME/.linuxbrew/bin/brew" ]]; then
-            eval "$("$HOME/.linuxbrew/bin/brew" shellenv)"
-            _BREW_PREFIX="$HOME/.linuxbrew"
-        fi
-        ;;
 esac
 
 # --- Unified PATH Management (zsh array) ---

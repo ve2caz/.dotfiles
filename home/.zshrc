@@ -160,29 +160,16 @@ if (( ! _agent_shell )); then
         alias lt='eza --tree --color=auto --group-directories-first'
         alias lta='eza --tree -a --color=auto --group-directories-first'
     else
-        # BSD ls (macOS) uses -G; GNU ls uses --color=auto.
-        if [[ "$OSTYPE" == darwin* ]]; then
-            alias ls='ls -G'
-            alias l='ls -lhG'
-            alias la='ls -lahG'
-            alias ll='ls -laahG'
-        else
-            alias ls='ls --color=auto'
-            alias l='ls -lh --color=auto'
-            alias la='ls -lah --color=auto'
-            alias ll='ls -laah --color=auto'
-        fi
+        alias ls='ls -G'
+        alias l='ls -lhG'
+        alias la='ls -lahG'
+        alias ll='ls -laahG'
     fi
     alias cp='cp -i'
     alias mv='mv -i'
     alias rm='rm -i'
     alias mkdir='mkdir -p'
-    # GNU rmdir supports --ignore-fail-on-non-empty; BSD rmdir (macOS) does not.
-    if [[ "$OSTYPE" == darwin* ]]; then
-        alias rmdir='rmdir'
-    else
-        alias rmdir='rmdir --ignore-fail-on-non-empty'
-    fi
+    alias rmdir='rmdir'
     if command -v bat >/dev/null 2>&1; then
         alias cat='bat --style=plain --color=auto'
     fi
@@ -198,26 +185,19 @@ if (( ! _agent_shell )); then
             alias grep='ggrep --color=auto'
             alias egrep='ggrep --color=auto -E'
             alias fgrep='ggrep --color=auto -F'
-        elif [[ "$OSTYPE" == darwin* ]]; then
+        else
             alias grep='grep'
             alias egrep='egrep'
             alias fgrep='fgrep'
-        else
-            alias grep='grep --color=auto'
-            alias egrep='egrep --color=auto'
-            alias fgrep='fgrep --color=auto'
         fi
     fi
     if command -v delta >/dev/null 2>&1; then
         alias diff='delta'
     else
-        # GNU diff supports --color; BSD diff (macOS) does not.
         if command -v gdiff >/dev/null 2>&1; then
             alias diff='gdiff --color=auto'
-        elif [[ "$OSTYPE" == darwin* ]]; then
-            alias diff='diff'
         else
-            alias diff='diff --color=auto'
+            alias diff='diff'
         fi
     fi
     if command -v lazygit >/dev/null 2>&1; then

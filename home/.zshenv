@@ -14,7 +14,6 @@
 # -------------------------
 #
 # Work around for macOS path_helper
-# (Linux doesn't have this problem!)
 if [[ "$OSTYPE" == darwin* ]]; then
   # Prevent /etc/zprofile and /etc/zshrc from loading automatically
   unsetopt GLOBAL_RCS
