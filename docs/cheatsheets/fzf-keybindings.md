@@ -33,6 +33,8 @@
 | `Shift-Up` or `Shift-Down` | Scroll the preview a line up or down (fzf's default) |
 | `Shift-Left` or `Shift-Right` | Scroll the preview a page up or down. Changed: fzf's default moves one word in the search |
 
+To move within the preview: `Shift-Up`/`Shift-Down` one line, `Shift-Left`/`Shift-Right` one page, or the mouse wheel over the preview. `Ctrl-/` hides it to give the list more room.
+
 While you type the search, `Ctrl-A`, `Ctrl-E`, `Ctrl-B`, `Ctrl-F`, `Alt-B`, `Alt-F`, `Ctrl-U` and `Ctrl-W` edit it as in the shell, and `?` is typed as text (`man fzf`).
 
 **Tips:**
