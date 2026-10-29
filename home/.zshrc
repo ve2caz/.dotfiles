@@ -58,6 +58,9 @@ FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                      # FZF Git integratio
 
 # --- Plugin Manager ---
 if [[ -r "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh" ]]; then
+    # zinit's aliases (zi, zini, zpl, zplg) would hide zoxide's zi.
+    typeset -gA ZINIT
+    ZINIT[NO_ALIASES]=1
     source "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
     # Drop zinit's $ZPFX/bin: no plugin here installs programs, and PATH order belongs to .zsh/env.zsh.
     [[ -n "$ZPFX" ]] && path=( ${path:#$ZPFX/bin} )

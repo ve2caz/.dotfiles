@@ -308,7 +308,7 @@ while IFS= read -r k; do
 done < ${(q)KB}/seqs >| ${(q)KB}/bindings
 while IFS= read -r n; do print -r -- "\$(whence -w -- "\$n")"; done < ${(q)KB}/aliases-in >| ${(q)KB}/aliases-out
 {
-    print -r -- "agent=\$_agent_shell|\${aliases[rm]-none}|\$(whence -w cd)|\$(whence -w z)"
+    print -r -- "agent=\$_agent_shell|\${aliases[rm]-none}|\$(whence -w cd)|\$(whence -w z)|\$(whence -w zi)"
     print -r -- "flowcontrol=\${options[flowcontrol]}"
     print -r -- "FZF_DEFAULT_OPTS=\$FZF_DEFAULT_OPTS"
 } >| ${(q)KB}/env
@@ -480,10 +480,10 @@ zpty -d KBSH 2>/dev/null
 # A marker or no terminal on stdin makes an agent shell: no alias shadows a command, no zoxide.
 # cd is the builtin in every shell.
 print -r -- "== agent shells =="
-human='0|rm -i|cd: builtin|z: function' agent='1|none|cd: builtin|z: none'
+human='0|rm -i|cd: builtin|z: function|zi: function' agent='1|none|cd: builtin|z: none|zi: none'
 ok=0; [[ ${ENV_VARS[agent]} == "$human" ]] && ok=1
 report agent-none-tty ok $ok "a terminal with no marker got '${ENV_VARS[agent]}', expected '$human'"
-probe='print -r -- "$_agent_shell|${aliases[rm]-none}|$(whence -w cd)|$(whence -w z)"'
+probe='print -r -- "$_agent_shell|${aliases[rm]-none}|$(whence -w cd)|$(whence -w z)|$(whence -w zi)"'
 # agent_probe <id> <expected> <tty|notty> [VAR=value ...]
 agent_probe() {
     local id=$1 want=$2 mode=$3 out="$KB/agent-$1" c buf='' deadline
