@@ -32,6 +32,7 @@ The main job of the zsh files is one fixed `PATH` order in every zsh, despite ma
 - `env.zsh` puts the mise shims first in every zsh, so child processes such as Tilt and its extensions resolve each project's `mise.toml` versions without shell hooks. Never limit the shims to interactive or login shells. Why: [ADR 0005](.agents/adr/0005-mise-shims-in-every-zsh.md).
 - `env.zsh` runs in every new zsh, including non-interactive ones. Keep it fast.
 - Aliases exist only in human shells (a terminal, a herdr pane). Agent shells (an `AI_AGENT` or vendor marker, or no terminal on stdin) create none, keeping only zsh's `run-help` and `which-command`, and get no zoxide. Define new aliases inside the agent-shell check in `.zshrc`. Why: [ADR 0007](.agents/adr/0007-agent-shells-get-plain-tools.md).
+- herdr is the terminal multiplexer and must keep working after every zsh change: a herdr pane is a human shell, and herdr's keys must still reach herdr. `scripts/test/test-keybindings.zsh` checks both.
 
 ## Scripts
 
