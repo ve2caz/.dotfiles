@@ -510,6 +510,8 @@ agent_probe agent-standard-marker "$agent" tty AI_AGENT=claude
 agent_probe agent-marker-off      "$human" tty AI_AGENT=0
 agent_probe agent-legacy-ignored  "$human" tty AGENT=1
 agent_probe agent-vendor-marker   "$agent" tty CLAUDECODE=1
+agent_probe agent-cursor-marker   "$agent" tty CURSOR_AGENT=1
+agent_probe agent-herdr-pane      "$human" tty HERDR_PANE_ID=w1:p1 HERDR_ENV=1 TERM_PROGRAM=herdr
 agent_probe agent-no-terminal     "$agent" notty
 
 # --- Layer 4: keys handled inside fzf --------------------------------------------------------------
