@@ -508,6 +508,7 @@ agent_probe() {
 }
 agent_probe agent-standard-marker "$agent" tty AI_AGENT=claude
 agent_probe agent-marker-off      "$human" tty AI_AGENT=0
+agent_probe agent-legacy-ignored  "$human" tty AGENT=1
 agent_probe agent-vendor-marker   "$agent" tty CLAUDECODE=1
 agent_probe agent-no-terminal     "$agent" notty
 

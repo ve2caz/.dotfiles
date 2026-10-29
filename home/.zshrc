@@ -10,15 +10,15 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 
 # --- Agent shells ---
-# Agents run commands through this shell and cannot answer prompts or read pagers, so they get plain
-# tools (ADR 0007). The markers are hints anyone can set: use them only to switch conveniences off.
+# An agent shell has no terminal on stdin or carries an agent marker. It creates no aliases and skips
+# the conveniences (ADR 0007). Markers are hints anyone can set: use them only to switch
+# conveniences off.
 _agent_shell=0
 if [[ ! -t 0 ]]; then
     _agent_shell=1
+elif [[ -n $AI_AGENT && ${(L)AI_AGENT} != (0|false|no|off) ]]; then
+    _agent_shell=1
 else
-    for _marker in AI_AGENT AGENT; do
-        [[ -n ${(P)_marker} && ${(L)${(P)_marker}} != (0|false|no|off) ]] && _agent_shell=1
-    done
     for _marker in CLAUDECODE CURSOR_AGENT CODEX_THREAD_ID CODEX_SANDBOX CODEX_CI GEMINI_CLI \
         COPILOT_AGENT COPILOT_CLI PI_CODING_AGENT OPENCODE CRUSH KILO AUGMENT_AGENT CLINE_ACTIVE \
         QWEN_CODE AMP_CURRENT_THREAD_ID GOOSE_TERMINAL ANTIGRAVITY_AGENT JUNIE_DATA HERMES_AGENT; do
