@@ -67,7 +67,7 @@ fzf_row ctrl-t       'ctrl-t'         '^T'   fzf-file-widget             'vim ^T
 fzf_row ctrl-r       'ctrl-r'         '^R'   fzf-history-widget          '^R'           '*echo kb-one'     'echo kb-one'       '--scheme=history' ''   ok
 fzf_row alt-c        'alt-c'          '\ec'  fzf-cd-widget               '\ec'          'kbdir(|/)'        'pwd:kbdir'         'eza --tree'       ''   ok
 fzf_row cd-star      'cd **tab'       '^I'   fzf-completion              'cd **^I'      '(./|)kbdir(|/)'   '~cd (./|)kbdir/*'  '--level=2'        ''   ok
-fzf_row z-star       ''               '^I'   fzf-completion              'z **^I'       '(./|)kbdir(|/)'   '~z (./|)kbdir*'    '--level=2'        ''   ok
+fzf_row z-star       'z **tab'         '^I'   fzf-completion              'z **^I'       '(./|)kbdir(|/)'   '~z (./|)kbdir*'    '--level=2'        ''   ok
 fzf_row export-star  'export **tab'   '^I'   fzf-completion              'export **^I'  'HOME'             '~export HOME*'     'echo'             ''   ok
 fzf_row unset-star   'unset **tab'    '^I'   fzf-completion              'unset **^I'   'HOME'             '~unset HOME*'      'echo'             ''   ok
 fzf_row unalias-star 'unalias **tab'  '^I'   fzf-completion              'unalias **^I' 'lg'               '~unalias lg*'      ''                 ''   ok
@@ -89,7 +89,7 @@ fzf_row git-refs     'ctrl-ge'        '^G^E' fzf-git-each_ref-widget     '^G^E' 
 # id names fzf-keys action flags status
 # Keys handled inside fzf, read from FZF_DEFAULT_OPTS. action "default": the key must not be rebound.
 bind_row() { BIND_ROWS+=("${(pj:\x1f:)@}") }
-bind_row fzf-enter       'enter'                         'enter'              default         ''    ok
+bind_row fzf-enter       'enter;esc'                     'enter esc'          default         ''    ok
 bind_row fzf-down        'ctrl-j;ctrl-n;down arrow'      'ctrl-j ctrl-n down' default         ''    ok
 bind_row fzf-up          'ctrl-k;ctrl-p;up arrow'        'ctrl-k ctrl-p up'   default         ''    ok
 bind_row fzf-mark        'tab;shift-tab'                 'tab btab'           default         ''    ok
