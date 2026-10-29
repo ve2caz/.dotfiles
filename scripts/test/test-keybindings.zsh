@@ -531,9 +531,21 @@ if (( $+commands[rg] )); then
     print -r -- alpha >| "$KB/pipe.txt"
     probe="rg alpha ${(q)KB}/pipe.txt | command cat"
     agent_probe pipe-rg alpha tty
+    probe="print -r -- \"\$(grep alpha ${(q)KB}/pipe.txt | command cat)|\$(whence -w grep)\""
+    agent_probe pipe-grep 'alpha|grep: alias' tty
 else
     skip pipe-rg "ripgrep is not installed"
+    skip pipe-grep "ripgrep is not installed"
 fi
+if (( $+commands[delta] )); then
+    print -r -- one >| "$KB/pipe-a"; print -r -- two >| "$KB/pipe-b"
+    probe="diff ${(q)KB}/pipe-a ${(q)KB}/pipe-b | command grep -c \$'\\e'"
+    agent_probe pipe-diff 0 tty
+else
+    skip pipe-diff "delta is not installed"
+fi
+probe="print -n \$'\\e' | cat -v"
+agent_probe cat-flags '^[' tty
 if (( $+commands[tree] )); then
     mkdir -p "$KB/pipe-dir/sub"
     probe="tree ${(q)KB}/pipe-dir | command grep -c \$'\\e'"

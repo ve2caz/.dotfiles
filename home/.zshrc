@@ -43,19 +43,6 @@ LESS='-R'                                                   # Display colors cor
 PAGER='less -R'                                             # Set less as default pager with color support
 FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                      # FZF Git integration
 
-# --- VS Code Shell Integration ---
-# if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-#   echo "[.zshrc] Loading VS Code shell integration"
-#   if command -v code >/dev/null 2>&1; then
-#       echo "[.zshrc] Locating VS Code shell integration for zsh"
-#       vscode_shell_integration="$(code --locate-shell-integration-path zsh 2>/dev/null)"
-#       if [[ -r "$vscode_shell_integration" ]]; then
-#           echo "[.zshrc] Sourcing VS Code shell integration from $vscode_shell_integration"
-#           source "$vscode_shell_integration"
-#       fi
-#   fi
-# fi
-
 # --- Plugin Manager ---
 if [[ -r "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh" ]]; then
     # zinit's aliases (zi, zini, zpl, zplg) would hide zoxide's zi.
@@ -70,9 +57,6 @@ fi
 
 # --- Plugins ---
 zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light Aloxaf/fzf-tab
 
 # --- Prompt ---
 eval "$(starship init zsh)"
@@ -109,6 +93,10 @@ autoload -U compinit && compinit -d "$ZSH_COMPDUMP"
 unset _zsh_current_fpath_fingerprint _zsh_saved_fpath_fingerprint _ZSH_FPATH_FINGERPRINT_FILE
 
 # --- Plugin Post-Init ---
+# fzf-tab needs compinit, and must load before the plugins that wrap widgets.
+zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-syntax-highlighting
 zinit cdreplay -q
 
 # --- History ---
@@ -168,9 +156,6 @@ if (( ! _agent_shell )); then
     alias mv='mv -i'
     alias rm='rm -i'
     alias mkdir='mkdir -p'
-    if command -v bat >/dev/null 2>&1; then
-        alias cat='bat --style=plain --color=auto'
-    fi
     alias more='less -R'
     if command -v rg >/dev/null 2>&1; then
         alias rg='rg --color=auto --hidden --smart-case'
@@ -190,7 +175,11 @@ if (( ! _agent_shell )); then
         fi
     fi
     if command -v delta >/dev/null 2>&1; then
-        alias diff='delta'
+        # delta on a terminal, diff's own output in a pipe. The function keyword keeps an old diff
+        # alias from renaming it when .zshrc is sourced again.
+        function diff {
+            if [[ -t 1 ]]; then delta "$@"; else command diff "$@"; fi
+        }
     else
         if command -v gdiff >/dev/null 2>&1; then
             alias diff='gdiff --color=auto'
@@ -274,14 +263,14 @@ if command -v fzf >/dev/null 2>&1; then
     (( _agent_shell )) || zstyle ':fzf-tab:*' accept-line enter
     zstyle ':fzf-tab:*' fzf-flags '--preview-window=right:50%:wrap'
     if [[ -f "$FZFGIT_HOME/fzf-git.sh" ]]; then
-        # Function to source fzf-git with grep unaliased for its duration
-        _fzf_git_wrapper() {
-            unalias grep 2>/dev/null
+        # fzf-git's functions are written for the real grep. Aliases expand when a function is
+        # defined, so loading fzf-git with aliases off keeps them on grep and leaves the aliases.
+        _fzf_git_load() {
+            setopt local_options no_aliases
             source "$FZFGIT_HOME/fzf-git.sh"
-            # Optionally, re-alias grep after, but in zsh, aliases are not global, so this is safe
         }
-        # Use the wrapper instead of direct source
-        _fzf_git_wrapper
+        _fzf_git_load
+        unfunction _fzf_git_load
     fi
 fi
 
