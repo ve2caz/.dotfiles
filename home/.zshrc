@@ -97,7 +97,7 @@ if [[ -f "$_ZSH_FPATH_FINGERPRINT_FILE" ]]; then
 fi
 
 if [[ "$_zsh_saved_fpath_fingerprint" != "$_zsh_current_fpath_fingerprint" ]]; then
-    rm -f "${ZSH_COMPDUMP}"* 2>/dev/null
+    rm -f -- "${ZSH_COMPDUMP}"*(N)
     print -r -- "$_zsh_current_fpath_fingerprint" >| "$_ZSH_FPATH_FINGERPRINT_FILE"
 fi
 
@@ -115,7 +115,6 @@ zinit cdreplay -q
 HISTFILE="${XDG_STATE_HOME}/zsh/history"
 HISTSIZE=5000
 SAVEHIST=$HISTSIZE
-HISTDUP=erase
 setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
@@ -174,10 +173,10 @@ if (( ! _agent_shell )); then
     fi
     alias more='less -R'
     if command -v rg >/dev/null 2>&1; then
-        alias rg='rg --color=auto --line-number --hidden --smart-case'
-        alias grep='rg --color=auto --line-number --hidden --smart-case'
-        alias egrep='rg --color=auto --line-number --hidden --smart-case -E'
-        alias fgrep='rg --color=auto --line-number --hidden --smart-case -F'
+        alias rg='rg --color=auto --hidden --smart-case'
+        alias grep='rg --color=auto --hidden --smart-case'
+        alias egrep='rg --color=auto --hidden --smart-case -E'
+        alias fgrep='rg --color=auto --hidden --smart-case -F'
     else
         # Prefer GNU grep if installed via Homebrew (ggrep). Otherwise keep BSD defaults.
         if command -v ggrep >/dev/null 2>&1; then
@@ -217,6 +216,7 @@ fi
 # --- Functions ---
 if command -v yazi >/dev/null 2>&1; then
     fm() {
+        local tmp cwd
         tmp="$(mktemp -t "yazi-cwd.XXXXXX")"; cwd=""
         yazi "$@" --cwd-file="$tmp"
         if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
@@ -265,7 +265,7 @@ if command -v fzf >/dev/null 2>&1; then
       shift
       case "$command" in
         cd|z)         fzf --preview 'eza --tree --color=always --level=2 {} 2>/dev/null || ls -la {}' "$@" ;;
-        export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
+        export|unset) fzf --preview "eval 'echo \${}'"        "$@" ;;
         ssh)          fzf --preview 'dig {}'                   "$@" ;;
         *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
       esac

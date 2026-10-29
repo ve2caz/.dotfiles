@@ -68,8 +68,8 @@ fzf_row ctrl-r       'ctrl-r'         '^R'   fzf-history-widget          '^R'   
 fzf_row alt-c        'alt-c'          '\ec'  fzf-cd-widget               '\ec'          'kbdir(|/)'        'pwd:kbdir'         'eza --tree'       ''   ok
 fzf_row cd-star      'cd **tab'       '^I'   fzf-completion              'cd **^I'      '(./|)kbdir(|/)'   '~cd (./|)kbdir/*'  '--level=2'        ''   ok
 fzf_row z-star       'z **tab'         '^I'   fzf-completion              'z **^I'       '(./|)kbdir(|/)'   '~z (./|)kbdir*'    '--level=2'        ''   ok
-fzf_row export-star  'export **tab'   '^I'   fzf-completion              'export **^I'  'HOME'             '~export HOME*'     'echo'             ''   ok
-fzf_row unset-star   'unset **tab'    '^I'   fzf-completion              'unset **^I'   'HOME'             '~unset HOME*'      'echo'             ''   ok
+fzf_row export-star  'export **tab'   '^I'   fzf-completion              'export **^I'  'HOME'             '~export HOME*'     'echo ${}'         ''   ok
+fzf_row unset-star   'unset **tab'    '^I'   fzf-completion              'unset **^I'   'HOME'             '~unset HOME*'      'echo ${}'         ''   ok
 fzf_row unalias-star 'unalias **tab'  '^I'   fzf-completion              'unalias **^I' 'lg'               '~unalias lg*'      ''                 ''   ok
 fzf_row ssh-star     'ssh **tab'      '^I'   fzf-completion              'ssh **^I'     'localhost'        '~ssh localhost*'   'dig'              ''   ok
 fzf_row kill-star    'kill -9 **tab'  '^I'   fzf-completion              'kill -9 **^I' '*zsh*'            '~kill -9 <->*'     ''                 ''   ok
@@ -525,6 +525,15 @@ agent_probe agent-vendor-marker   "$agent" tty CLAUDECODE=1
 agent_probe agent-cursor-marker   "$agent" tty CURSOR_AGENT=1
 agent_probe agent-herdr-pane      "$human" tty HERDR_PANE_ID=w1:p1 HERDR_ENV=1 TERM_PROGRAM=herdr
 agent_probe agent-no-terminal     "$agent" notty
+
+# Human aliases keep piped output plain.
+if (( $+commands[rg] )); then
+    print -r -- alpha >| "$KB/pipe.txt"
+    probe="rg alpha ${(q)KB}/pipe.txt | command cat"
+    agent_probe pipe-rg alpha tty
+else
+    skip pipe-rg "ripgrep is not installed"
+fi
 
 # --- Layer 4: keys handled inside fzf --------------------------------------------------------------
 print -r -- "== keys inside fzf =="

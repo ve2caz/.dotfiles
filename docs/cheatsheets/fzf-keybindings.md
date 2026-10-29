@@ -24,8 +24,8 @@ Type the command, then `**`, then `Tab`.
 |---------|-------------|-----------------|
 | `cd **Tab` | Find directory to navigate to | Directory tree structure using `eza` |
 | `z **Tab` | Find directory to jump to with zoxide | Directory tree structure using `eza` |
-| `export **Tab` | Find environment variable to export | Meant to show the value; empty today because of a bug in `.zshrc` |
-| `unset **Tab` | Find environment variable to unset | Meant to show the value; empty today because of a bug in `.zshrc` |
+| `export **Tab` | Find environment variable to export | The variable's value |
+| `unset **Tab` | Find environment variable to unset | The variable's value |
 | `unalias **Tab` | Find alias to remove | None useful: a "No such file" error |
 | `ssh **Tab` | Find host to SSH into | DNS information using `dig` |
 | `kill -9 **Tab` | Find process to terminate | No preview; each row shows user, PID, parent PID, start time, CPU time and command |
