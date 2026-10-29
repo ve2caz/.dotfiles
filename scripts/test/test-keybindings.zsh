@@ -114,7 +114,7 @@ zsh_change '^[[3~' -                   delete-char         '/etc/zshrc (macOS), 
 zsh_change '^[Q'  push-line                           zi-browse-symbol        'zinit (ESC q keeps push-line)'
 zsh_change '^T'   transpose-chars                     fzf-file-widget         fzf
 zsh_change '^R'   history-incremental-search-backward fzf-history-widget      fzf
-zsh_change '^[c'  capitalize-word                     fzf-cd-widget           'fzf, and again in .zshrc'
+zsh_change '^[c'  capitalize-word                     fzf-cd-widget           'fzf'
 zsh_change '^I'   expand-or-complete                  fzf-completion          'fzf, falling back to fzf-tab'
 zsh_change '^P'   up-line-or-history                  history-search-backward .zshrc
 zsh_change '^N'   down-line-or-history                history-search-forward  .zshrc
@@ -533,6 +533,13 @@ if (( $+commands[rg] )); then
     agent_probe pipe-rg alpha tty
 else
     skip pipe-rg "ripgrep is not installed"
+fi
+if (( $+commands[tree] )); then
+    mkdir -p "$KB/pipe-dir/sub"
+    probe="tree ${(q)KB}/pipe-dir | command grep -c \$'\\e'"
+    agent_probe pipe-tree 0 tty
+else
+    skip pipe-tree "tree is not installed"
 fi
 
 # --- Layer 4: keys handled inside fzf --------------------------------------------------------------

@@ -204,9 +204,6 @@ if (( ! _agent_shell )); then
     if command -v lazydocker >/dev/null 2>&1; then
         alias lzd='lazydocker'
     fi
-    if command -v tree >/dev/null 2>&1; then
-        alias tree='tree -C'
-    fi
     if command -v nvim >/dev/null 2>&1; then
         alias vim='nvim'
     fi
@@ -286,7 +283,6 @@ if command -v fzf >/dev/null 2>&1; then
         # Use the wrapper instead of direct source
         _fzf_git_wrapper
     fi
-    bindkey '^[c' fzf-cd-widget
 fi
 
 # --- Version Manager Hook Integration ---
