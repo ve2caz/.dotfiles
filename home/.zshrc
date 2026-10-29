@@ -103,6 +103,9 @@ if [[ "$_zsh_saved_fpath_fingerprint" != "$_zsh_current_fpath_fingerprint" ]]; t
 fi
 
 autoload -U compinit && compinit -d "$ZSH_COMPDUMP"
+# Homebrew's git ships a _git that offers every file to git checkout; zsh's own offers refs and
+# changed files.
+[[ -r /usr/share/zsh/$ZSH_VERSION/functions/_git ]] && autoload -Uz /usr/share/zsh/$ZSH_VERSION/functions/_git
 
 unset _zsh_current_fpath_fingerprint _zsh_saved_fpath_fingerprint _ZSH_FPATH_FINGERPRINT_FILE
 

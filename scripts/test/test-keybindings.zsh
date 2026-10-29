@@ -265,6 +265,7 @@ if [[ \$all == *--read0* ]]; then
 else
     while IFS= read -r r || [[ -n \$r ]]; do recs+=("\$r"); done
 fi
+print -rl -- "\${recs[@]}" >| ${(q)KB}/fzf-input
 [[ \$all == *--print-query* ]] && print -r -- "\${\${(M)@:#--query=*}#--query=}"
 [[ \$all == *--expect* ]] && print
 for r in "\${recs[@]}"; do
@@ -473,6 +474,17 @@ for row in "${FZF_ROWS[@]}"; do
     fi
     report "$id" "$st" $ok "got buffer '${R_BUF}', expected '${expect#\~}'"
 done
+
+# git checkout completion offers refs and changed files, not every tracked file (zsh's own _git).
+print -r -- '*kb-branch*' >| "$KB/pick"
+rm -f "$KB/fzf-opts" "$KB/fzf-input"
+if run_keys 'git checkout ^I' wait "$KB/fzf-opts"; then
+    offered="$(<$KB/fzf-input 2>/dev/null)"
+    ok=0; [[ $offered == *kb-branch* && $offered == *kb-tag* && $offered != *tracked.txt* ]] && ok=1
+    report git-checkout-tab ok $ok "offered: ${${(f)offered}[1,6]}"
+else
+    report git-checkout-tab ok 0 "no response from the shell"
+fi
 
 zpty -d KBSH 2>/dev/null
 
