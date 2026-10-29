@@ -73,7 +73,6 @@ zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light Aloxaf/fzf-tab
-(( _agent_shell )) || zinit light sinetoami/web-search
 
 # --- Prompt ---
 eval "$(starship init zsh)"
@@ -309,9 +308,6 @@ if command -v fzf >/dev/null 2>&1; then
         _fzf_git_wrapper
     fi
     bindkey '^[c' fzf-cd-widget
-fi
-if (( ! _agent_shell )) && command -v thefuck >/dev/null 2>&1; then
-    eval $(thefuck --alias tf)
 fi
 
 # --- Version Manager Hook Integration ---

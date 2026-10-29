@@ -85,8 +85,6 @@ brew "shellcheck"
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
-# Programmatically correct mistyped console commands
-brew "thefuck"
 # Official tldr client written in Rust
 brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
