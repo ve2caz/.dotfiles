@@ -39,8 +39,6 @@ KEYTIMEOUT=50
 
 # --- Environment Variables ---
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship.toml"   # Starship prompt configuration
-LESS='-R'                                                   # Display colors correctly
-PAGER='less -R'                                             # Set less as default pager with color support
 FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                      # FZF Git integration
 
 # --- Plugin Manager ---
@@ -113,8 +111,7 @@ setopt hist_find_no_dups
 
 # --- Pager & Colors ---
 if command -v bat >/dev/null 2>&1; then
-    BAT_THEME=tokyonight_night
-    LESSOPEN='|bat --color=always %s'
+    export BAT_THEME=tokyonight_night
 fi
 if command -v dircolors >/dev/null 2>&1; then
     eval "$(dircolors -b)"
