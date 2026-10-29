@@ -169,7 +169,6 @@ if (( ! _agent_shell )); then
     alias mv='mv -i'
     alias rm='rm -i'
     alias mkdir='mkdir -p'
-    alias rmdir='rmdir'
     if command -v bat >/dev/null 2>&1; then
         alias cat='bat --style=plain --color=auto'
     fi
