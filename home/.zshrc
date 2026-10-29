@@ -146,76 +146,94 @@ bindkey '^[w' kill-region
 # With flow control on, the terminal takes Ctrl-S (and fzf-git's Ctrl-G Ctrl-S) before zsh sees it.
 unsetopt flow_control
 
-# --- Aliases & Functions ---
-alias cls='clear'
-if command -v eza >/dev/null 2>&1; then
-    alias ls='eza --color=auto --group-directories-first'
-    alias l='eza -lh --color=auto --group-directories-first'
-    alias la='eza -lah --color=auto --group-directories-first'
-    alias ll='eza -laah --color=auto --group-directories-first'
-    alias lt='eza --tree --color=auto --group-directories-first'
-    alias lta='eza --tree -a --color=auto --group-directories-first'
-else
-    # BSD ls (macOS) uses -G; GNU ls uses --color=auto.
+# --- Aliases ---
+# Aliases exist only in human shells (ADR 0007); agent shells create none.
+if (( ! _agent_shell )); then
+    alias cls='clear'
+    if command -v eza >/dev/null 2>&1; then
+        alias ls='eza --color=auto --group-directories-first'
+        alias l='eza -lh --color=auto --group-directories-first'
+        alias la='eza -lah --color=auto --group-directories-first'
+        alias ll='eza -laah --color=auto --group-directories-first'
+        alias lt='eza --tree --color=auto --group-directories-first'
+        alias lta='eza --tree -a --color=auto --group-directories-first'
+    else
+        # BSD ls (macOS) uses -G; GNU ls uses --color=auto.
+        if [[ "$OSTYPE" == darwin* ]]; then
+            alias ls='ls -G'
+            alias l='ls -lhG'
+            alias la='ls -lahG'
+            alias ll='ls -laahG'
+        else
+            alias ls='ls --color=auto'
+            alias l='ls -lh --color=auto'
+            alias la='ls -lah --color=auto'
+            alias ll='ls -laah --color=auto'
+        fi
+    fi
+    alias cp='cp -i'
+    alias mv='mv -i'
+    alias rm='rm -i'
+    alias mkdir='mkdir -p'
+    # GNU rmdir supports --ignore-fail-on-non-empty; BSD rmdir (macOS) does not.
     if [[ "$OSTYPE" == darwin* ]]; then
-        alias ls='ls -G'
-        alias l='ls -lhG'
-        alias la='ls -lahG'
-        alias ll='ls -laahG'
+        alias rmdir='rmdir'
     else
-        alias ls='ls --color=auto'
-        alias l='ls -lh --color=auto'
-        alias la='ls -lah --color=auto'
-        alias ll='ls -laah --color=auto'
+        alias rmdir='rmdir --ignore-fail-on-non-empty'
     fi
-fi
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-alias mkdir='mkdir -p'
-# GNU rmdir supports --ignore-fail-on-non-empty; BSD rmdir (macOS) does not.
-if [[ "$OSTYPE" == darwin* ]]; then
-    alias rmdir='rmdir'
-else
-    alias rmdir='rmdir --ignore-fail-on-non-empty'
-fi
-if command -v bat >/dev/null 2>&1; then
-    alias cat='bat --style=plain --color=auto'
-fi
-alias more='less -R'
-if command -v rg >/dev/null 2>&1; then
-    alias rg='rg --color=auto --line-number --hidden --smart-case'
-    alias grep='rg --color=auto --line-number --hidden --smart-case'
-    alias egrep='rg --color=auto --line-number --hidden --smart-case -E'
-    alias fgrep='rg --color=auto --line-number --hidden --smart-case -F'
-else
-    # Prefer GNU grep if installed via Homebrew (ggrep). Otherwise keep BSD defaults.
-    if command -v ggrep >/dev/null 2>&1; then
-        alias grep='ggrep --color=auto'
-        alias egrep='ggrep --color=auto -E'
-        alias fgrep='ggrep --color=auto -F'
-    elif [[ "$OSTYPE" == darwin* ]]; then
-        alias grep='grep'
-        alias egrep='egrep'
-        alias fgrep='fgrep'
+    if command -v bat >/dev/null 2>&1; then
+        alias cat='bat --style=plain --color=auto'
+    fi
+    alias more='less -R'
+    if command -v rg >/dev/null 2>&1; then
+        alias rg='rg --color=auto --line-number --hidden --smart-case'
+        alias grep='rg --color=auto --line-number --hidden --smart-case'
+        alias egrep='rg --color=auto --line-number --hidden --smart-case -E'
+        alias fgrep='rg --color=auto --line-number --hidden --smart-case -F'
     else
-        alias grep='grep --color=auto'
-        alias egrep='egrep --color=auto'
-        alias fgrep='fgrep --color=auto'
+        # Prefer GNU grep if installed via Homebrew (ggrep). Otherwise keep BSD defaults.
+        if command -v ggrep >/dev/null 2>&1; then
+            alias grep='ggrep --color=auto'
+            alias egrep='ggrep --color=auto -E'
+            alias fgrep='ggrep --color=auto -F'
+        elif [[ "$OSTYPE" == darwin* ]]; then
+            alias grep='grep'
+            alias egrep='egrep'
+            alias fgrep='fgrep'
+        else
+            alias grep='grep --color=auto'
+            alias egrep='egrep --color=auto'
+            alias fgrep='fgrep --color=auto'
+        fi
     fi
-fi
-if command -v delta >/dev/null 2>&1; then
-    alias diff='delta'
-else
-    # GNU diff supports --color; BSD diff (macOS) does not.
-    if command -v gdiff >/dev/null 2>&1; then
-        alias diff='gdiff --color=auto'
-    elif [[ "$OSTYPE" == darwin* ]]; then
-        alias diff='diff'
+    if command -v delta >/dev/null 2>&1; then
+        alias diff='delta'
     else
-        alias diff='diff --color=auto'
+        # GNU diff supports --color; BSD diff (macOS) does not.
+        if command -v gdiff >/dev/null 2>&1; then
+            alias diff='gdiff --color=auto'
+        elif [[ "$OSTYPE" == darwin* ]]; then
+            alias diff='diff'
+        else
+            alias diff='diff --color=auto'
+        fi
     fi
+    if command -v lazygit >/dev/null 2>&1; then
+        alias lg='lazygit'
+    fi
+    if command -v lazydocker >/dev/null 2>&1; then
+        alias lzd='lazydocker'
+    fi
+    if command -v tree >/dev/null 2>&1; then
+        alias tree='tree -C'
+    fi
+    if command -v nvim >/dev/null 2>&1; then
+        alias vim='nvim'
+    fi
+    alias assume=". assume"
 fi
+
+# --- Functions ---
 if command -v yazi >/dev/null 2>&1; then
     fm() {
         tmp="$(mktemp -t "yazi-cwd.XXXXXX")"; cwd=""
@@ -226,17 +244,7 @@ if command -v yazi >/dev/null 2>&1; then
         rm -f -- "$tmp"
     }
 fi
-if command -v lazygit >/dev/null 2>&1; then
-    alias lg='lazygit'
-fi
-if command -v lazydocker >/dev/null 2>&1; then
-    alias lzd='lazydocker'
-fi
-if command -v tree >/dev/null 2>&1; then
-    alias tree='tree -C'
-fi
 if command -v nvim >/dev/null 2>&1; then
-    alias vim='nvim'
     export EDITOR=nvim
 fi
 
@@ -309,10 +317,3 @@ if command -v mise >/dev/null 2>&1; then
     eval "$(mise activate zsh)"  # Without --shims
 fi
 
-# In agent shells, no alias may shadow a real command: the command must behave as documented.
-if (( _agent_shell )); then
-    for _alias in ${(k)aliases}; do
-        (( ${+commands[$_alias]} )) && unalias -- "$_alias"
-    done
-    unset _alias
-fi
