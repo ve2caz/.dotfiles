@@ -45,6 +45,8 @@ brew "graphviz"
 brew "herdr"
 # Improved top (interactive process viewer)
 brew "htop"
+# Review-first terminal diff viewer for agent-authored changesets
+brew "hunk"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Calculate various network masks, etc. from a given IP address
@@ -89,6 +91,8 @@ brew "stow"
 brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# CLI for Git worktree management, designed for parallel AI agent workflows
+brew "worktrunk"
 # Command-line tool to install and switch between multiple versions of Xcode
 brew "xcodes"
 # Blazing fast terminal file manager written in Rust, based on async I/O
