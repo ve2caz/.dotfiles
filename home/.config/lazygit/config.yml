@@ -1,6 +1,6 @@
 git:
-  pagers:
-    - colorArg: always
+  diffRenderers:
+    - command: delta --{{colorScheme}} --paging=never
   merging:
     # only applicable to unix users
     manualCommit: false
