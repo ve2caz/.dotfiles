@@ -1,0 +1,71 @@
+# ~/.gitconfig: this machine's identities, accounts and hosts. Never tracked.
+#
+# Read docs/git-identities.md in the .dotfiles repo first: it explains the layers, why
+# nothing is set by default, and how git and gh share one login per account.
+#
+# scripts/setup.sh copied this template because ~/.gitconfig was missing; it never copies
+# over an existing file. Replace every placeholder and delete what this machine does not
+# use. Settings shared by every machine live in ~/.config/git/config, which git reads
+# before this file.
+#
+# Placeholders:
+#   github.example.com          the GitHub Enterprise host
+#   ~/dev/personal/             folder of personal projects on github.com
+#   ~/dev/work-github/          folder of work projects on github.com
+#   ~/dev/work-enterprise/      folder of work projects on the Enterprise host
+
+# --- Enterprise host -----------------------------------------------------------------
+# Only an identity may supply credentials, as the shared config does for github.com.
+[credential "https://github.example.com"]
+	helper =
+
+# --- SSH remotes go over HTTPS ----------------------------------------------------------
+# Clones made with SSH URLs keep working through the same gh login as HTTPS ones.
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+	insteadOf = ssh://git@github.com/
+[url "https://github.example.com/"]
+	insteadOf = git@github.example.com:
+	insteadOf = ssh://git@github.example.com/
+
+# --- Folders choose the identity --------------------------------------------------------
+# Outside these folders git has no identity and no GitHub credentials: commits, pushes
+# and private clones fail until the repo sits in one of them.
+#
+# The dotfiles repo. Its worktrees keep their git dir in ~/.dotfiles/.git/worktrees/,
+# so this one rule covers them too.
+[includeIf "gitdir:~/.dotfiles/"]
+	path = ~/.gitconfig-personal
+[includeIf "gitdir:~/dev/personal/"]
+	path = ~/.gitconfig-personal
+[includeIf "gitdir:~/dev/work-github/"]
+	path = ~/.gitconfig-work
+[includeIf "gitdir:~/dev/work-enterprise/"]
+	path = ~/.gitconfig-work
+
+# --- Identity files ---------------------------------------------------------------------
+# One file per identity, next to this one. Copy a block into its file and fill it in.
+# Each names its account on every host: gh returns that account's token, read from the
+# identity's own gh config folder, and nothing else.
+#
+# ~/.gitconfig-personal
+#   [user]
+#   	name = Your Name
+#   	email = 12345678+personal-account@users.noreply.github.com
+#   [credential "https://github.com"]
+#   	username = personal-account
+#   	helper = !GH_CONFIG_DIR=$HOME/.config/gh-personal /opt/homebrew/bin/gh auth git-credential
+#   [credential "https://gist.github.com"]
+#   	username = personal-account
+#   	helper = !GH_CONFIG_DIR=$HOME/.config/gh-personal /opt/homebrew/bin/gh auth git-credential
+#
+# ~/.gitconfig-work
+#   [user]
+#   	name = Your Name
+#   	email = you@work.example.com
+#   [credential "https://github.com"]
+#   	username = work-account
+#   	helper = !GH_CONFIG_DIR=$HOME/.config/gh-work /opt/homebrew/bin/gh auth git-credential
+#   [credential "https://github.example.com"]
+#   	username = enterprise-account
+#   	helper = !GH_CONFIG_DIR=$HOME/.config/gh-work /opt/homebrew/bin/gh auth git-credential

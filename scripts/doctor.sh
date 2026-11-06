@@ -48,6 +48,14 @@ while read -r d; do
     fi
 done < "$REPO/scripts/mixed-config-dirs.txt"
 
+# Without a real ~/.gitconfig, git config --global writes into the repo through the link.
+if [ -f "$HOME/.gitconfig" ] && [ ! -L "$HOME/.gitconfig" ]; then
+    pass "$HOME/.gitconfig is a real file"
+else
+    fail "$HOME/.gitconfig must be a real file; it holds this machine's identities" \
+        "cp $REPO/.gitconfig-template ~/.gitconfig, then fill it in: docs/git-identities.md"
+fi
+
 broken="$({
     find "$HOME" -maxdepth 1 -type l -lname '*dotfiles*' ! -exec test -e {} \; -print
     find "$HOME/.config" -maxdepth 2 -type l -lname '*dotfiles*' ! -exec test -e {} \; -print

@@ -1,0 +1,32 @@
+# Settings shared by every machine. Git reads ~/.gitconfig after this file: it holds this
+# machine's identities, accounts and hosts, and is never tracked. docs/git-identities.md
+# explains the layers.
+
+[user]
+	# No identity by default: outside a folder that sets one, git refuses to commit.
+	useConfigOnly = true
+
+[credential]
+	# Fail instead of asking for a username or password.
+	interactive = false
+# Only an identity may supply GitHub credentials: drop Homebrew's keychain helper here.
+[credential "https://github.com"]
+	helper =
+[credential "https://gist.github.com"]
+	helper =
+
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	side-by-side = true
+	syntax-theme = tokyonight_night
+[pager]
+	branch = false
+
+[merge]
+	conflictstyle = diff3
+[diff]
+	colorMoved = default

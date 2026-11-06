@@ -19,6 +19,13 @@ fi
 while read -r d; do mkdir -p "$HOME/.config/$d"; done < scripts/mixed-config-dirs.txt
 stow -t "$HOME" home
 
+# ~/.gitconfig holds this machine's identities and accounts, so it is copied once and never
+# overwritten. Until it exists, git config --global writes into the repo through the link.
+if [ ! -e "$HOME/.gitconfig" ]; then
+    cp .gitconfig-template "$HOME/.gitconfig"
+    echo "Created ~/.gitconfig from the template: fill it in, see docs/git-identities.md."
+fi
+
 themes="$HOME/.config/bat/themes"
 if [ ! -f "$themes/tokyonight_night.tmTheme" ]; then
     mkdir -p "$themes"
