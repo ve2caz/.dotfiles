@@ -25,7 +25,8 @@ zsh's emacs keymap, as `man zshzle` documents it, except where marked as changed
 |  | `CTRL-S` | Forward incremental search (works because flow control is off) |
 |  | `CTRL-P` | Previous history line. ALT-P finds the previous line starting with the same first word |
 |  | `CTRL-N` | Next history line. ALT-N finds the next line starting with the same first word |
-|  | `CTRL-G` | Cancel the line. Waits half a second first, because fzf-git uses `CTRL-G` to start its keys |
+|  | `CTRL-G` | Cancel the line. Waits a moment first, because fzf-git uses `CTRL-G` to start its keys |
 |  | `CTRL-L` | Clear screen |
+|  | `CTRL-X CTRL-E` | Edit the command line in your editor; save and quit to bring it back |
 
 `ALT-` keys need the terminal to send Option as Meta. WezTerm does this for the left Option key by default. WezTerm keeps `ALT-Enter` (full screen) and `CTRL-Minus` (smaller font), so zsh's newline-in-line and undo on those keys never arrive; undo stays on Ctrl-X u.

@@ -57,6 +57,8 @@ zle_row up-arrow      ''              '^[[A' up-line-or-history                '
 zle_row down-arrow    ''              '^[[B' down-line-or-history              'ls^[[A^[[B'          'ls'          - ''    ok
 zle_row ctrl-g        'ctrl-g'        '^G'   send-break                        'aa bb^G'             ''            0 wait  ok
 zle_row ctrl-l        'ctrl-l'        '^L'   clear-screen                      'aa bb^L'             'aa bb'       5 ''    ok
+zle_row ctrl-x-ctrl-e 'ctrl-x ctrl-e' '^X^E' edit-command-line                 'echo hi^X^E'         'echo bye'    - wait  ok
+zle_row paste-url     ''              '^[[200~' bracketed-paste                'curl \e[200~https://x.test/a?b=1\e[201~' "curl 'https://x.test/a?b=1'" - '' ok
 
 # id names key widget typed pick expect options flags status
 # pick: pattern the stub fzf selects. expect: the resulting buffer, a pattern if it starts with "~",
@@ -117,6 +119,7 @@ zsh_change '^[c'  capitalize-word                     fzf-cd-widget           'f
 zsh_change '^I'   expand-or-complete                  fzf-completion          'fzf, falling back to fzf-tab'
 zsh_change '^G*'  -                                   'fzf-git-*-widget'      fzf-git
 zsh_change '^X.'  -                                   fzf-tab-debug           fzf-tab
+zsh_change '^X^E' -                                   edit-command-line       .zshrc
 
 # Every bind FZF_DEFAULT_OPTS sets. key | fzf default action ("-": none) | configured action
 typeset -a FZF_CHANGES
@@ -207,6 +210,9 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 mkdir -p "$KB/stub" "$TMP/home/.config" "$TMP/xdg-cache" "$TMP/xdg-state/zsh" "$TMP/xdg-data/zinit"
+# The editor Ctrl-X Ctrl-E opens: it changes hi to bye and exits. Its name must not contain "vi",
+# or zsh starts the session in vi mode.
+print -rl -- '#!/bin/sh' "sed -i '' s/hi/bye/ \"\$1\"" >| "$KB/stub/kb-editor" && chmod +x "$KB/stub/kb-editor"
 while read -r d; do mkdir -p "$TMP/home/.config/$d"; done < "$REPO_ROOT/scripts/mixed-config-dirs.txt"
 stow -d "$REPO_ROOT" -t "$TMP/home" home
 # A machine-local file (docs/machine-local.md): human shells read it, agent shells do not.
@@ -306,6 +312,7 @@ while IFS= read -r n; do print -r -- "\$(whence -w -- "\$n")"; done < ${(q)KB}/a
 {
     print -r -- "agent=\$_agent_shell|\${aliases[rm]-none}|\$(whence -w cd)|\$(whence -w z)|\$(whence -w zi)|\$(( \${#\${(@k)aliases:#(run-help|which-command)}} > 0 ))|\${GIT_EDITOR-unset}|\${+aliases[kb-local]}"
     print -r -- "flowcontrol=\${options[flowcontrol]}"
+    print -r -- "comments=\${options[interactivecomments]}"
     print -r -- "FZF_DEFAULT_OPTS=\$FZF_DEFAULT_OPTS"
 } >| ${(q)KB}/env
 # hist_ignore_space keeps the command that sourced this file in history until the next command, so
@@ -338,7 +345,7 @@ session_env=(
     SSH_AUTH_SOCK="$TMP/no-agent.sock"
     XDG_CACHE_HOME="$TMP/xdg-cache" XDG_DATA_HOME="$TMP/xdg-data" XDG_STATE_HOME="$TMP/xdg-state"
     MISE_CACHE_DIR="$TMP/mise-cache" MISE_DATA_DIR="$TMP/mise-data" MISE_STATE_DIR="$TMP/mise-state"
-    TMPPREFIX="$TMP/zsh"
+    TMPPREFIX="$TMP/zsh" VISUAL="$KB/stub/kb-editor"
 )
 zpty KBSH "exec env -i ${(j: :)${(@q)session_env}} zsh -i"
 
@@ -357,6 +364,8 @@ typeset -a BINDINGS=("${(@f)$(<$KB/bindings)}")
 typeset -A ENV_VARS
 for line in "${(@f)$(<$KB/env)}"; do ENV_VARS[${line%%=*}]=${line#*=}; done
 FLOW_ON=0; [[ ${ENV_VARS[flowcontrol]} == on ]] && FLOW_ON=1
+ok=0; [[ ${ENV_VARS[comments]} == on ]] && ok=1
+report interactive-comments ok $ok "interactive_comments is ${ENV_VARS[comments]:-unset}, so # at the prompt is not a comment"
 
 typeset -i ROW_INDEX=0
 # run_keys <typed> <flags> [file]: reset the line, type, read back the dump. Sets R_BUF R_CUR R_PWD.

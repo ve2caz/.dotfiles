@@ -32,11 +32,6 @@ if declare -f ensure_utf8_locale >/dev/null 2>&1; then
     ensure_utf8_locale
 fi
 
-# --- Zsh Key Timeout ---
-# The time (in hundredths of a second) that Zsh waits for a key sequence to complete.
-# Increase if you use slow key chords or custom keybindings. Default is 40 (0.4s).
-KEYTIMEOUT=50
-
 # --- Environment Variables ---
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship.toml"   # Starship prompt configuration
 FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                      # FZF Git integration
@@ -92,6 +87,15 @@ autoload -U compinit && compinit -d "$ZSH_COMPDUMP"
 
 unset _zsh_current_fpath_fingerprint _zsh_saved_fpath_fingerprint _ZSH_FPATH_FINGERPRINT_FILE
 
+# --- Line editor widgets ---
+# Defined before the plugins below, which wrap the widgets that exist when they load.
+# A pasted URL is quoted, so its ? and & are not taken as globs.
+autoload -Uz bracketed-paste-url-magic
+zle -N bracketed-paste bracketed-paste-url-magic
+# Edits the command line in $VISUAL or $EDITOR; bound to Ctrl-X Ctrl-E below, as in bash.
+autoload -Uz edit-command-line
+zle -N edit-command-line
+
 # --- Plugin Post-Init ---
 # fzf-tab needs compinit, and must load before the plugins that wrap widgets.
 zinit light Aloxaf/fzf-tab
@@ -128,8 +132,11 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # --- Keybindings ---
 bindkey -e
+bindkey '^X^E' edit-command-line
 # With flow control on, the terminal takes Ctrl-S (and fzf-git's Ctrl-G Ctrl-S) before zsh sees it.
 unsetopt flow_control
+# A # starts a comment at the prompt too, so pasted commands with comments run as written.
+setopt interactive_comments
 
 # --- Aliases ---
 # Aliases exist only in human shells (ADR 0007); agent shells create none.
