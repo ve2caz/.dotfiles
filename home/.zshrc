@@ -156,21 +156,11 @@ if (( ! _agent_shell )); then
     alias more='less -R'
     if command -v rg >/dev/null 2>&1; then
         alias rg='rg --color=auto --hidden --smart-case'
-        alias grep='rg --color=auto --hidden --smart-case'
-        alias egrep='rg --color=auto --hidden --smart-case -E'
-        alias fgrep='rg --color=auto --hidden --smart-case -F'
-    else
-        # Prefer GNU grep if installed via Homebrew (ggrep). Otherwise keep BSD defaults.
-        if command -v ggrep >/dev/null 2>&1; then
-            alias grep='ggrep --color=auto'
-            alias egrep='ggrep --color=auto -E'
-            alias fgrep='ggrep --color=auto -F'
-        else
-            alias grep='grep'
-            alias egrep='egrep'
-            alias fgrep='fgrep'
-        fi
     fi
+    # grep stays grep, distinct from rg, so grep's own flags keep working (rg reads -E as encoding).
+    alias grep='grep --color=auto'
+    alias egrep='grep -E --color=auto'
+    alias fgrep='grep -F --color=auto'
     if command -v delta >/dev/null 2>&1; then
         # delta on a terminal, diff's own output in a pipe. The function keyword keeps an old diff
         # alias from renaming it when .zshrc is sourced again.
