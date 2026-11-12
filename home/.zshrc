@@ -253,8 +253,6 @@ if command -v fzf >/dev/null 2>&1; then
     # fzf-tab previews for folder completion; completion names the command as typed (cd, z).
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'
     zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -la --color=always $realpath 2>/dev/null || ls -la $realpath'
-    zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
-    (( _agent_shell )) || zstyle ':fzf-tab:*' accept-line enter
     zstyle ':fzf-tab:*' fzf-flags '--preview-window=right:50%:wrap'
     if [[ -f "$FZFGIT_HOME/fzf-git.sh" ]]; then
         # fzf-git's functions are written for the real grep. Aliases expand when a function is
