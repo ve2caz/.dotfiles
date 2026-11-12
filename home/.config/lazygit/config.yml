@@ -1,6 +1,8 @@
 git:
   diffRenderers:
     - command: delta --{{colorScheme}} --paging=never
+    - type: rawGit
+      name: default # git's own diff, no renderer
   merging:
     # only applicable to unix users
     manualCommit: false
