@@ -1,0 +1,15 @@
+# hunk reads this file; its state goes to ~/.local/state/hunk and its extensions to
+# ~/.config/hunk/extensions, which stay out of the repo (scripts/mixed-config-dirs.txt).
+
+# Use the terminal's palette (Tokyo Night, set in wezterm.lua) and its background, so hunk
+# matches WezTerm and herdr instead of bringing its own colors.
+theme = "terminal"
+transparent_background = true
+mode = "split"
+line_numbers = true
+wrap_lines = false
+hunk_headers = true
+menu_bar = true
+agent_notes = false
+copy_decorations = false
+cursor_line = "row"
