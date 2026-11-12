@@ -211,6 +211,10 @@ fi
 if command -v nvim >/dev/null 2>&1; then
     export EDITOR=nvim
 fi
+# In an agent shell no one can type in git's message editor: git keeps its prepared message (ADR 0007).
+if (( _agent_shell )); then
+    export GIT_EDITOR=true
+fi
 
 # --- Tool Integrations ---
 # zoxide adds z and zi; cd stays zsh's builtin. Agent shells skip zoxide: their navigation stays out
