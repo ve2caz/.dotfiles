@@ -1,4 +1,3 @@
 git
-granted
 herdr
 mise

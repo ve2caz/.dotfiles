@@ -1,7 +1,0 @@
-DefaultBrowser = "CHROME"
-CustomBrowserPath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-CustomSSOBrowserPath = ""
-Ordering = "Alphabetical"
-
-[Keyring]
-  Backend = "keychain"

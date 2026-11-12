@@ -193,7 +193,10 @@ if (( ! _agent_shell )); then
     if command -v nvim >/dev/null 2>&1; then
         alias vim='nvim'
     fi
-    alias assume=". assume"
+    # Machine-local aliases and functions, never tracked: docs/machine-local.md.
+    if [[ -r ${XDG_CONFIG_HOME:-$HOME/.config}/zsh/local.zsh ]]; then
+        source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/local.zsh"
+    fi
 fi
 
 # --- Functions ---

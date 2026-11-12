@@ -216,6 +216,8 @@ trap cleanup EXIT INT TERM
 mkdir -p "$KB/stub" "$TMP/home/.config" "$TMP/xdg-cache" "$TMP/xdg-state/zsh" "$TMP/xdg-data/zinit"
 while read -r d; do mkdir -p "$TMP/home/.config/$d"; done < "$REPO_ROOT/scripts/mixed-config-dirs.txt"
 stow -d "$REPO_ROOT" -t "$TMP/home" home
+# A machine-local file (docs/machine-local.md): human shells read it, agent shells do not.
+mkdir -p "$TMP/home/.config/zsh" && print -r -- "alias kb-local=true" >| "$TMP/home/.config/zsh/local.zsh"
 
 # Plugins are linked, not copied: the session only reads them.
 [[ -d "$REAL_DATA/zinit/zinit.git" ]] || { print -u2 "zinit is missing from $REAL_DATA; run scripts/setup.sh"; exit 2 }
@@ -309,7 +311,7 @@ while IFS= read -r k; do
 done < ${(q)KB}/seqs >| ${(q)KB}/bindings
 while IFS= read -r n; do print -r -- "\$(whence -w -- "\$n")"; done < ${(q)KB}/aliases-in >| ${(q)KB}/aliases-out
 {
-    print -r -- "agent=\$_agent_shell|\${aliases[rm]-none}|\$(whence -w cd)|\$(whence -w z)|\$(whence -w zi)|\$(( \${#\${(@k)aliases:#(run-help|which-command)}} > 0 ))|\${GIT_EDITOR-unset}"
+    print -r -- "agent=\$_agent_shell|\${aliases[rm]-none}|\$(whence -w cd)|\$(whence -w z)|\$(whence -w zi)|\$(( \${#\${(@k)aliases:#(run-help|which-command)}} > 0 ))|\${GIT_EDITOR-unset}|\${+aliases[kb-local]}"
     print -r -- "flowcontrol=\${options[flowcontrol]}"
     print -r -- "FZF_DEFAULT_OPTS=\$FZF_DEFAULT_OPTS"
 } >| ${(q)KB}/env
@@ -490,13 +492,14 @@ zpty -d KBSH 2>/dev/null
 
 # --- Agent shells (ADR 0007) -----------------------------------------------------------------------
 # A marker or no terminal on stdin makes an agent shell: no aliases beyond zsh's run-help and
-# which-command, no zoxide, and GIT_EDITOR=true. The fifth field is 1 when a shell has any other alias.
+# which-command, no zoxide, GIT_EDITOR=true, and no machine-local file. The sixth field is 1 when a
+# shell has any other alias; the last is 1 when the local file's alias exists.
 # cd is the builtin in every shell.
 print -r -- "== agent shells =="
-human='0|rm -i|cd: builtin|z: function|zi: function|1|unset' agent='1|none|cd: builtin|z: none|zi: none|0|true'
+human='0|rm -i|cd: builtin|z: function|zi: function|1|unset|1' agent='1|none|cd: builtin|z: none|zi: none|0|true|0'
 ok=0; [[ ${ENV_VARS[agent]} == "$human" ]] && ok=1
 report agent-none-tty ok $ok "a terminal with no marker got '${ENV_VARS[agent]}', expected '$human'"
-probe='print -r -- "$_agent_shell|${aliases[rm]-none}|$(whence -w cd)|$(whence -w z)|$(whence -w zi)|$(( ${#${(@k)aliases:#(run-help|which-command)}} > 0 ))|${GIT_EDITOR-unset}"'
+probe='print -r -- "$_agent_shell|${aliases[rm]-none}|$(whence -w cd)|$(whence -w z)|$(whence -w zi)|$(( ${#${(@k)aliases:#(run-help|which-command)}} > 0 ))|${GIT_EDITOR-unset}|${+aliases[kb-local]}"'
 # agent_probe <id> <expected> <tty|notty> [VAR=value ...]
 agent_probe() {
     local id=$1 want=$2 mode=$3 out="$KB/agent-$1" c buf='' deadline

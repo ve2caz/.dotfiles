@@ -64,7 +64,7 @@ The repo is public. Never commit:
 
 - secrets, tokens, or files that hold them, such as `gh/hosts.yml`
 - work content: employer names, hostnames, GitHub Enterprise hosts, ticket IDs or prefixes, work paths
-- work-only tools and skills; they stay local, outside the repo
+- work-only tools and skills; they stay local, outside the repo. Where local settings go: [docs/machine-local.md](docs/machine-local.md)
 - app state
 - anything a shell writes under `$HOME`, such as `home/.cache` or `home/.ssh`; tests run shells in a temporary HOME
 
