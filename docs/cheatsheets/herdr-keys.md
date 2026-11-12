@@ -4,8 +4,8 @@ Press the prefix, release it, then the key. `?` after the prefix lists every bin
 
 | Key | Description |
 |-----|-------------|
-| `Ctrl-B` | Prefix |
-| `Ctrl-B` | Pressed again after the prefix: send `Ctrl-B` to the program |
+| `Ctrl-A` | Prefix |
+| `Ctrl-A` | Pressed again after the prefix: send `Ctrl-A` to the program |
 | `?` | Help: every key binding |
 | `c` | New: opens the new menu; `Enter` makes a tab |
 | `n` / `p` | Next / previous tab |
@@ -28,4 +28,4 @@ Press the prefix, release it, then the key. `?` after the prefix lists every bin
 | `s` | Settings |
 | `q` | Detach (the session keeps running) |
 
-The prefix hides `Ctrl-B` from everything running inside herdr: backward-char in zsh (use the left arrow), page up in fzf previews, yazi, nvim and less (use `PageUp`).
+The prefix hides `Ctrl-A` from everything running inside herdr: beginning of line in zsh and in fzf's search (use `Home`, or `Ctrl-A` twice) and increment number in nvim.

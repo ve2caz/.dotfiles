@@ -34,9 +34,9 @@ typeset -a ZLE_ROWS FZF_ROWS BIND_ROWS
 
 # id names key widget typed buffer cursor flags status ("-" for cursor: not checked)
 zle_row() { ZLE_ROWS+=("${(pj:\x1f:)@}") }
-zle_row ctrl-a        'ctrl-a'        '^A'   beginning-of-line                 'aa bb^A'             'aa bb'       0 ''    ok
+zle_row ctrl-a        'ctrl-a'        '^A'   beginning-of-line                 'aa bb^A'             'aa bb'       0 herdr ok
 zle_row ctrl-e        'ctrl-e'        '^E'   end-of-line                       'aa bb^A^E'           'aa bb'       5 ''    ok
-zle_row ctrl-b        'ctrl-b'        '^B'   backward-char                     'abc^B'               'abc'         2 herdr ok
+zle_row ctrl-b        'ctrl-b'        '^B'   backward-char                     'abc^B'               'abc'         2 ''    ok
 zle_row ctrl-f        'ctrl-f'        '^F'   forward-char                      'abc^A^F'             'abc'         1 ''    ok
 zle_row alt-b         'alt-b'         '\eb'  backward-word                     'aa bb\eb'            'aa bb'       3 ''    ok
 zle_row alt-f         'alt-f'         '\ef'  forward-word                      'aa bb^A\ef'          'aa bb'       3 ''    ok
@@ -48,11 +48,11 @@ zle_row ctrl-k        'ctrl-k'        '^K'   kill-line                         '
 zle_row ctrl-u        'ctrl-u'        '^U'   kill-whole-line                   'aa bb^B^B^U'         ''            0 ''    ok
 zle_row ctrl-y        'ctrl-y'        '^Y'   yank                              'aa bb^[^?^Y'         'aa bb'       5 ''    ok
 zle_row alt-y         'alt-y'         '\ey'  yank-pop                          'alpha^A^K^[[23~beta^A^K^[[23~^Y\ey' 'alpha' 5 '' ok
-zle_row alt-w         'alt-w'         '\ew'  kill-region                       'aa bb^A^@^F^F^F\ew'  'bb'          0 ''    ok
+zle_row alt-w         'alt-w'         '\ew'  copy-region-as-kill               'aa bb^A^@^F^F^F\ew'  'aa bb'       3 ''    ok
 zle_row alt-t         'alt-t'         '\et'  transpose-words                   'aa bb\et'            'bb aa'       5 ''    ok
 zle_row ctrl-s        'ctrl-s'        '^S'   history-incremental-search-forward '^Sx'                ''            - flow  ok
-zle_row ctrl-p        'ctrl-p'        '^P'   history-search-backward           'ls^P'                'ls -la'     - ''    ok
-zle_row ctrl-n        'ctrl-n'        '^N'   history-search-forward            'echo^P^P^N'          'echo kb-three' - ''    ok
+zle_row ctrl-p        'ctrl-p'        '^P'   up-line-or-history                'ls^P'                'echo kb-three' - ''    ok
+zle_row ctrl-n        'ctrl-n'        '^N'   down-line-or-history              'ls^P^N'              'ls'          - ''    ok
 zle_row up-arrow      ''              '^[[A' up-line-or-history                'ls^[[A'              'echo kb-three' - ''    ok
 zle_row down-arrow    ''              '^[[B' down-line-or-history              'ls^[[A^[[B'          'ls'          - ''    ok
 zle_row ctrl-g        'ctrl-g'        '^G'   send-break                        'aa bb^G'             ''            0 wait  ok
@@ -111,14 +111,10 @@ zsh_change '^[OB' down-line-or-history down-line-or-search '/etc/zshrc (macOS), 
 zsh_change '^[OH' -                    beginning-of-line   '/etc/zshrc (macOS), Home'
 zsh_change '^[OF' -                    end-of-line         '/etc/zshrc (macOS), End'
 zsh_change '^[[3~' -                   delete-char         '/etc/zshrc (macOS), Delete'
-zsh_change '^[Q'  push-line                           zi-browse-symbol        'zinit (ESC q keeps push-line)'
 zsh_change '^T'   transpose-chars                     fzf-file-widget         fzf
 zsh_change '^R'   history-incremental-search-backward fzf-history-widget      fzf
 zsh_change '^[c'  capitalize-word                     fzf-cd-widget           'fzf'
 zsh_change '^I'   expand-or-complete                  fzf-completion          'fzf, falling back to fzf-tab'
-zsh_change '^P'   up-line-or-history                  history-search-backward .zshrc
-zsh_change '^N'   down-line-or-history                history-search-forward  .zshrc
-zsh_change '^[w'  copy-region-as-kill                 kill-region             .zshrc
 zsh_change '^G*'  -                                   'fzf-git-*-widget'      fzf-git
 zsh_change '^X.'  -                                   fzf-tab-debug           fzf-tab
 
@@ -152,9 +148,6 @@ fzf_query shift-right   '^A^[[1;2C'     'Xab cd'
 # WezTerm keys that hide a binding further down, accepted. WezTerm key | what it hides
 typeset -A WEZ_ACCEPTED=(
     'ALT Enter' 'zsh ESC Enter (self-insert-unmeta, a newline in the command line); WezTerm toggles full screen'
-    'CTRL -'    'zsh ^_ (undo) typed as Ctrl+-; WezTerm shrinks the font. Undo stays on Ctrl-X u'
-    'CTRL _'    'zsh ^_ (undo) typed as Ctrl+Shift+-; WezTerm shrinks the font'
-    'CTRL @'    'zsh ^@ (set-mark-command) typed as Ctrl+Shift+2; WezTerm switches tab. Set mark stays on Ctrl+Space'
 )
 
 # --- Reporting -------------------------------------------------------------------------------------
@@ -723,7 +716,9 @@ else
             for n in "${(@f)$(wez_names "$k")}"; do [[ -n $n ]] && WANTED+=("$n${SEP}zsh $k (${ZSH_CONFIGURED[$k]})"); done
         done
         for k in "${(@k)FZF_BINDS}"; do WANTED+=("$(fzf_key_mods $k)${SEP}fzf $k (${FZF_BINDS[$k]})"); done
-        WANTED+=("CTRL b${SEP}the herdr prefix")
+        hp=ctrl+b
+        [[ "$(<$REPO_ROOT/home/.config/herdr/config.toml)" =~ '(^|'$'\n'')prefix *= *"([^"]+)"' ]] && hp=$match[2]
+        WANTED+=("CTRL ${hp#ctrl+}${SEP}the herdr prefix")
         taken=''
         typeset -A WEZ_HIT
         for u in "${WANTED[@]}"; do

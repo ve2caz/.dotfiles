@@ -46,6 +46,8 @@ if [[ -r "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh" ]]; then
     # zinit's aliases (zi, zini, zpl, zplg) would hide zoxide's zi.
     typeset -gA ZINIT
     ZINIT[NO_ALIASES]=1
+    # zinit's symbol browser needs a TAGS file and would take Esc Q from zsh's push-line.
+    zstyle ':zinit:browse-symbol' key ''
     source "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
     # Drop zinit's $ZPFX/bin: no plugin here installs programs, and PATH order belongs to .zsh/env.zsh.
     [[ -n "$ZPFX" ]] && path=( ${path:#$ZPFX/bin} )
@@ -126,9 +128,6 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # --- Keybindings ---
 bindkey -e
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey '^[w' kill-region
 # With flow control on, the terminal takes Ctrl-S (and fzf-git's Ctrl-G Ctrl-S) before zsh sees it.
 unsetopt flow_control
 

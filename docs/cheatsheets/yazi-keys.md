@@ -7,7 +7,7 @@ The keys worth remembering. `~` or `F1` inside yazi lists them all. Start yazi w
 | `h` `j` `k` `l` | Parent folder, down, up, open folder |
 | `gg` / `G` | Top / bottom |
 | `Ctrl-U` / `Ctrl-D` | Half a page up / down |
-| `Ctrl-B` / `Ctrl-F` | A page up / down. Inside herdr, `Ctrl-B` is the herdr prefix: use `PageUp` |
+| `Ctrl-B` / `Ctrl-F` | A page up / down |
 | `H` / `L` | Back / forward in folder history |
 | `Enter` / `o` | Open |
 | `O` | Open with |

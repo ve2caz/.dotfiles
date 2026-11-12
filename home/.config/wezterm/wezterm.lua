@@ -40,4 +40,17 @@ config.colors = {
 	brights = { "#414868", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5" },
 }
 
+-- Free WezTerm's Ctrl font-size and tab shortcuts that hide zsh undo (Ctrl+- / Ctrl+_) and
+-- set mark (Ctrl+Shift+2). Cmd+- , Cmd+0 and Cmd+1..9 still do the same jobs.
+local free = wezterm.action.DisableDefaultAssignment
+config.keys = {
+  { key = "-", mods = "CTRL", action = free },
+  { key = "-", mods = "SHIFT|CTRL", action = free },
+  { key = "_", mods = "CTRL", action = free },
+  { key = "_", mods = "SHIFT|CTRL", action = free },
+  { key = "2", mods = "SHIFT|CTRL", action = free },
+  { key = "@", mods = "CTRL", action = free },
+  { key = "@", mods = "SHIFT|CTRL", action = free },
+}
+
 return config
