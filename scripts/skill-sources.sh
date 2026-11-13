@@ -13,6 +13,6 @@ SKILL_TARGETS=("$HOME/.claude/skills" "$HOME/.agents/skills")
 # scripts/update-skills.sh moves a pin forward after showing what changed.
 THIRD_PARTY_SKILLS=(
     "herdrdev/herdr v0.9.5 herdr"
-    "modem-dev/hunk v0.24.1 packages/hunk/skills/hunk-review"
-    "mattpocock/skills 5beb35b040e3de97e54fa9e386d7e42d15c295c2 skills/engineering/* skills/productivity/*"
+    "modem-dev/hunk v0.25.0 packages/hunk/skills/hunk-review"
+    "mattpocock/skills 5863806dd4e15c63174bee4e7515a4256792ecfa skills/engineering/* skills/productivity/*"
 )
