@@ -24,18 +24,8 @@ config.background = {
 config.font = wezterm.font("MesloLGS Nerd Font Mono")
 config.font_size = 15
 
--- Tokyo Night colorscheme for consistency across tools
-config.colors = {
-	foreground = "#c0caf5",
-	background = "#1a1b26",
-	cursor_bg = "#c0caf5",
-	cursor_border = "#c0caf5",
-	cursor_fg = "#1a1b26",
-	selection_bg = "#283457",
-	selection_fg = "#c0caf5",
-	ansi = { "#15161e", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6" },
-	brights = { "#414868", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5" },
-}
+-- The one palette: tools that use the 16 terminal colors follow it.
+config.color_scheme = "Catppuccin Mocha"
 
 -- Free WezTerm's Ctrl font-size and tab shortcuts that hide zsh undo (Ctrl+- / Ctrl+_) and
 -- set mark (Ctrl+Shift+2). Cmd+- , Cmd+0 and Cmd+1..9 still do the same jobs.

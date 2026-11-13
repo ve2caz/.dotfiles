@@ -1,29 +1,11 @@
 # Only settings that differ from the defaults. Defaults: lazydocker -c
 gui:
-  theme:
-    # Tokyo Night
-    activeBorderColor:
-      - '#7aa2f7'
-      - bold
-    inactiveBorderColor:
-      - '#565f89'
-    optionsTextColor:
-      - '#7aa2f7'
-    selectedLineBgColor:
-      - '#283457'
   wrapMainPanel: false
 
 logs:
   tail: '300'
 
 stats:
-  graphs:
-    - caption: CPU (%)
-      statPath: DerivedStats.CPUPercentage
-      color: '#7aa2f7'
-    - caption: Memory (%)
-      statPath: DerivedStats.MemoryPercentage
-      color: '#bb9af7'
   maxDuration: 24h
 
 customCommands:

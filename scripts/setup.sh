@@ -1,5 +1,5 @@
 #!/bin/bash
-# Bootstraps a Mac: packages, the home package, the bat theme and skills. Safe to rerun.
+# Bootstraps a Mac: packages, the home package and skills. Safe to rerun.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -24,13 +24,6 @@ stow -t "$HOME" home
 if [ ! -e "$HOME/.gitconfig" ]; then
     cp .gitconfig-template "$HOME/.gitconfig"
     echo "Created ~/.gitconfig from the template: fill it in, see docs/git-identities.md."
-fi
-
-themes="$HOME/.config/bat/themes"
-if [ ! -f "$themes/tokyonight_night.tmTheme" ]; then
-    mkdir -p "$themes"
-    curl -fsSL -o "$themes/tokyonight_night.tmTheme" https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/sublime/tokyonight_night.tmTheme
-    bat cache --build
 fi
 
 # Links this repo's skills, then installs everyone else's at the pins in scripts/skill-sources.sh.

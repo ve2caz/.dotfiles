@@ -32,6 +32,5 @@ herdr/.plugins.lock
 glow
 superfile
 
-# Downloaded by scripts/setup.sh: lnav's kubectl log formats, and the bat theme.
+# Downloaded by scripts/setup.sh: lnav's kubectl log formats.
 lnav
-bat

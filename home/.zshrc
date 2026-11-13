@@ -117,7 +117,7 @@ setopt hist_find_no_dups
 
 # --- Pager & Colors ---
 if command -v bat >/dev/null 2>&1; then
-    export BAT_THEME=tokyonight_night
+    export BAT_THEME="Catppuccin Mocha"
 fi
 if command -v dircolors >/dev/null 2>&1; then
     eval "$(dircolors -b)"
@@ -224,13 +224,8 @@ fi
 
 if command -v fzf >/dev/null 2>&1; then
     eval "$(fzf --zsh)"
-    fg="#CBE0F0"
-    bg="#011628"
-    bg_highlight="#143652"
-    purple="#B388FF"
-    blue="#06BCE4"
-    cyan="#2CF9ED"
-    export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${purple},fg+:${fg},bg+:${bg_highlight},hl+:${purple},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan} --bind='ctrl-/:toggle-preview,shift-up:preview-up,shift-down:preview-down,shift-left:preview-page-up,shift-right:preview-page-down'"
+    # The 16 terminal colors, so fzf follows WezTerm's palette.
+    export FZF_DEFAULT_OPTS="--color=16 --bind='ctrl-/:toggle-preview,shift-up:preview-up,shift-down:preview-down,shift-left:preview-page-up,shift-right:preview-page-down'"
     if command -v fd >/dev/null 2>&1; then
         export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
         export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
