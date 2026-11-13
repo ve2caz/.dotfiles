@@ -47,6 +47,8 @@ brew "herdr"
 brew "htop"
 # Review-first terminal diff viewer for agent-authored changesets
 brew "hunk"
+# Command-line benchmarking tool
+brew "hyperfine"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Calculate various network masks, etc. from a given IP address

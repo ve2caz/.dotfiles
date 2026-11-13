@@ -31,6 +31,16 @@ Checks every layer a key passes through against that tool's own documentation, n
 
 One check stays manual: that WezTerm sends `ESC` plus the key for left Option on this keyboard. In WezTerm, run `cat -v`, press left Option-C, and expect `^[c`. Last confirmed 2026-10-23.
 
+## Startup time
+
+`env.zsh` runs in every zsh, and tools such as Tilt start many. After a change to the startup files, compare against zsh with no startup files at all, from a folder with no `mise.toml` or `.envrc`:
+
+```bash
+cd /tmp && hyperfine --warmup 3 'zsh -f -c exit' 'zsh -c exit' 'zsh -i -c exit'
+```
+
+Run it in a terminal: an agent shell sets markers that change what `.zshrc` does.
+
 ## Packages
 
 `brew bundle check --no-upgrade --verbose` lists what the `Brewfile` asks for and is not installed. Without `--no-upgrade` it also lists every outdated package, so its answer changes with each new release.
@@ -39,6 +49,6 @@ One check stays manual: that WezTerm sends `ESC` plus the key for left Option on
 
 | Change | Suggested check |
 |--------|-----------------|
-| zsh init / PATH / mise | `zsh ./scripts/test/test-mise-shims-path.zsh` |
+| zsh init / PATH / mise | `zsh ./scripts/test/test-mise-shims-path.zsh`, then the startup time check |
 | Key bindings, zsh plugins, fzf options, WezTerm or herdr keys | `zsh ./scripts/test/test-keybindings.zsh` |
 | `Brewfile` | `brew bundle check --no-upgrade --verbose` |
