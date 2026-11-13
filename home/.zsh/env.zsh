@@ -76,34 +76,25 @@ export PATH
 
 # --- No PATH modifications beyond this point, except the mise shims below ---
 
-# Clear malformed transient kubeconfig files (for prompt/tool stability).
-# Some wrappers (e.g. kubie) may leave temp files without required keys.
-_validate_kubeconfig_file() {
-    local _candidate="$1"
-    [[ -f "${_candidate}" ]] && rg -q '^[[:space:]]*clusters:' "${_candidate}"
-}
-
-if [[ -n "${KUBIE_KUBECONFIG:-}" ]] && ! _validate_kubeconfig_file "${KUBIE_KUBECONFIG}"; then
-    if _validate_kubeconfig_file "${HOME}/.kube/config"; then
-        export KUBIE_KUBECONFIG="${HOME}/.kube/config"
+# A kubeconfig with no top-level clusters: key, such as a failed Rancher download that kubie picked
+# up, breaks kubectl and the prompt in every shell: fall back to ~/.kube/config, or drop the variable.
+# zsh reads the file itself, so the check starts no program.
+_kubeconfig_ok() { [[ -f $1 && $'\n'$(<$1) =~ $'\n''[[:space:]]*clusters:' ]] }
+if [[ -n ${KUBIE_KUBECONFIG-} ]] && ! _kubeconfig_ok "$KUBIE_KUBECONFIG"; then
+    if _kubeconfig_ok "$HOME/.kube/config"; then
+        export KUBIE_KUBECONFIG="$HOME/.kube/config"
     else
         unset KUBIE_KUBECONFIG
     fi
 fi
-
-if [[ -n "${KUBECONFIG:-}" ]]; then
-    _first_kubeconfig="${KUBECONFIG%%:*}"
-    if ! _validate_kubeconfig_file "${_first_kubeconfig}"; then
-        if [[ -n "${KUBIE_KUBECONFIG:-}" ]] && _validate_kubeconfig_file "${KUBIE_KUBECONFIG}"; then
-            export KUBECONFIG="${KUBIE_KUBECONFIG}"
-        else
-            unset KUBECONFIG
-        fi
+if [[ -n ${KUBECONFIG-} ]] && ! _kubeconfig_ok "${KUBECONFIG%%:*}"; then
+    if [[ -n ${KUBIE_KUBECONFIG-} ]]; then
+        export KUBECONFIG="$KUBIE_KUBECONFIG"
+    else
+        unset KUBECONFIG
     fi
-    unset _first_kubeconfig
 fi
-
-unset -f _validate_kubeconfig_file
+unfunction _kubeconfig_ok
 
 # Plugins that require explicit environment variable setup
 # These use zsh precmd hooks to dynamically update env vars based on the active version

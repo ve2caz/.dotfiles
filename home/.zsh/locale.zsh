@@ -4,8 +4,13 @@
 
 # Avoid LC_ALL; prefer setting LANG (region + UTF-8) and LC_CTYPE.
 ensure_utf8_locale() {
+  # Already UTF-8, as a parent shell usually passes it down: nothing to check, no program to start.
+  # An unset LC_CTYPE follows LANG.
+  if [[ $LANG == *UTF-8* && ( -z $LC_CTYPE || $LC_CTYPE == *UTF-8* ) ]]; then
+    return 0
+  fi
   local os region candidate chosen
-  os="$(uname -s)"
+  case $OSTYPE in darwin*) os=Darwin ;; *) os=$(uname -s) ;; esac
 
   # Derive region from existing LANG if present (e.g., fr_CA from fr_CA.UTF-8)
   if [[ -n "$LANG" ]]; then

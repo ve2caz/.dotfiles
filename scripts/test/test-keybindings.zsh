@@ -372,6 +372,27 @@ if (( $+commands[direnv] )); then
 else
     skip direnv-hook "direnv is not installed"
 fi
+# env.zsh drops a kubeconfig with no clusters: key, as a failed download leaves, for ~/.kube/config.
+mkdir -p "$TMP/home/.kube"
+print -l 'apiVersion: v1' 'clusters:' >| "$TMP/home/.kube/config"
+print -l 'apiVersion: v1' 'clusters:' >| "$TMP/kube-good.yaml"
+print -r -- '<html>login</html>' >| "$TMP/kube-bad.yaml"
+kube_probe='print -r -- "${KUBIE_KUBECONFIG-unset}|${KUBECONFIG-unset}"'
+got=$(env -i "${session_env[@]}" KUBIE_KUBECONFIG="$TMP/kube-bad.yaml" KUBECONFIG="$TMP/kube-bad.yaml" zsh -c "$kube_probe" </dev/null 2>/dev/null)
+want="$TMP/home/.kube/config|$TMP/home/.kube/config"
+ok=0; [[ $got == "$want" ]] && ok=1
+report kubeconfig-bad ok $ok "a kubie file with no clusters: gave '$got', expected '$want'"
+got=$(env -i "${session_env[@]}" KUBIE_KUBECONFIG="$TMP/kube-good.yaml" KUBECONFIG="$TMP/kube-good.yaml" zsh -c "$kube_probe" </dev/null 2>/dev/null)
+want="$TMP/kube-good.yaml|$TMP/kube-good.yaml"
+ok=0; [[ $got == "$want" ]] && ok=1
+report kubeconfig-good ok $ok "a valid kubie file gave '$got', expected '$want'"
+# The locale check leaves an inherited UTF-8 LANG alone and fills in a missing one.
+got=$(env -i "${session_env[@]}" LANG=fr_CA.UTF-8 zsh -c 'print -r -- "$LANG|${LC_CTYPE-unset}"' </dev/null 2>/dev/null)
+ok=0; [[ $got == 'fr_CA.UTF-8|unset' ]] && ok=1
+report locale-inherited ok $ok "an inherited fr_CA.UTF-8 gave '$got', expected 'fr_CA.UTF-8|unset'"
+got=$(env -i "${session_env[@]}" zsh -c 'print -r -- "$LANG"' </dev/null 2>/dev/null)
+ok=0; [[ $got == *UTF-8 ]] && ok=1
+report locale-missing ok $ok "with no LANG, the shell set '$got', expected a UTF-8 locale"
 ok=0; [[ ${ENV_VARS[comments]} == on ]] && ok=1
 report interactive-comments ok $ok "interactive_comments is ${ENV_VARS[comments]:-unset}, so # at the prompt is not a comment"
 
