@@ -18,7 +18,7 @@ _Avoid_: installed, copied.
 **Repo-only**: in the repo but never deployed: everything outside `home/` and the linked buckets.
 _Avoid_: local, internal.
 
-**Folding**: Stow linking a whole directory as one link because the target has no directory of that name yet. Wanted for `~/.config/nvim`; must never happen to `~/.config` itself.
+**Folding**: Stow linking a whole directory as one link because the target has no directory of that name yet. Wanted for `~/.config/lazygit`; must never happen to `~/.config` itself.
 
 **Configuration**: a setting the user chose or changed. Tracked under `home/`.
 _Avoid_: settings, prefs, dotfiles.

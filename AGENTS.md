@@ -13,7 +13,7 @@ Personal dotfiles, deployed with GNU Stow. What the repo covers: [SCOPE.md](SCOP
 
 - Track configuration, never app state.
 - Track only settings that differ from the tool's defaults, unless the tool rewrites the whole file itself (btop, htop). A copy of the defaults goes stale on upgrades and hides which lines are choices. Start the file with a comment naming where to see the defaults, such as `lazydocker -c`.
-- A tool whose folder holds only configuration gets one link for the whole folder, for example `~/.config/nvim`.
+- A tool whose folder holds only configuration gets one link for the whole folder, for example `~/.config/lazygit`.
 - A tool whose folder mixes configuration and app state keeps a real folder in `~/.config`, and Stow links only the tracked files, for example `~/.config/git/config`. Such a folder must exist as a real folder in `~/.config` before stowing, or Stow folds it and the tool writes app state into the repo. List it in `scripts/mixed-config-dirs.txt`, which setup, the doctor and the tests read.
 - An entry in `~/.config` that stays local (app state, logins) is listed in `scripts/local-config.txt`, or in `~/.config/dotfiles/local-config.txt` when its name reveals work. The doctor reports any other entry that is not a link into the repo.
 - Some tools save by replacing the file, which turns a file link into a plain file. After using a file-linked tool, `ls -la` must still show a link.
