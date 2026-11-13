@@ -33,4 +33,8 @@ if [ ! -f "$themes/tokyonight_night.tmTheme" ]; then
     bat cache --build
 fi
 
-./scripts/update-skills.sh
+# Links this repo's skills, then installs everyone else's at the pins in scripts/skill-sources.sh.
+mise trust --quiet "$PWD/mise.toml"
+mise install
+./scripts/link-skills.sh
+./scripts/install-skills.sh

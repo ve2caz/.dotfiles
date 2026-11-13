@@ -61,10 +61,11 @@ for dir in "$bucket"/*/; do
     hits="$(grep -rlF "$emdash" "$dir")" && problem "$folder" "em dash in: $hits"
     hits="$(grep -rnE "$abs" "$dir")" && problem "$folder" "absolute skill path: $hits"
 
-    for b in "${SKILL_BUCKETS[@]}"; do
-        [ "$b" = "$bucket" ] && continue
-        [ -e "$b/$folder" ] && problem "$folder" "Matt's clone has a skill with the same name: $b/$folder"
-    done
+    lock="${XDG_STATE_HOME:+$XDG_STATE_HOME/skills/.skill-lock.json}"
+    lock="${lock:-$HOME/.agents/.skill-lock.json}"
+    if [ -f "$lock" ] && grep -qF "\"$folder\": {" "$lock"; then
+        problem "$folder" "a third-party skill with the same name is installed; scripts/skill-sources.sh lists it"
+    fi
 done
 
 find "${SKILL_TARGETS[@]}" "$HOME/.cursor/skills" "$HOME/.cursor/plugins" "$HOME/.claude/plugins" -name SKILL.md 2>/dev/null |

@@ -5,7 +5,7 @@ Personal dotfiles, deployed with GNU Stow. What the repo covers: [SCOPE.md](SCOP
 ## What deploys where
 
 - `home/` is the home package, the only thing deployed to `$HOME`: `stow -d ~/.dotfiles -t ~ home`.
-- Skill buckets are skill packages: this repo's `skills/dotfiles/`, plus Matt Pocock's `engineering` and `productivity` from his clone. `scripts/link-skills.sh` deploys them into `~/.claude/skills` and `~/.agents/skills`. `scripts/skill-sources.sh` is the one list of buckets and targets. Matt's `in-progress`, `misc` and `deprecated` are never linked.
+- This repo's skills, `skills/dotfiles/`, are a skill package: `scripts/link-skills.sh` stows them into `~/.claude/skills` and `~/.agents/skills`. Other people's skills are installed into the same folders by `scripts/install-skills.sh` with the skills CLI. `scripts/skill-sources.sh` is the one list of both. Why: [ADR 0008](.agents/adr/0008-third-party-skills-from-the-skills-cli.md).
 - Everything else is repo-only.
 - `~/.config`, `~/.claude/skills` and `~/.agents/skills` must be real directories before stowing. If one is missing, Stow folds it into a single link into the repo, and tools then write app state into the repo.
 
@@ -45,8 +45,9 @@ Never run `brew install`, `brew upgrade` or `brew bundle install`: the user deci
 ## Skills
 
 - Create or convert skills with the `new-skill` skill in `skills/dotfiles/new-skill/`. It holds the front matter format, writes the files, adds the README entry and links the skill. Its `scripts/check-skills.sh` must pass.
-- Matt's skills come from a clone in `~/.local/share/mattpocock-skills`, outside the repo. Update it only with `scripts/update-skills.sh`; never edit or commit it. Why: [ADR 0006](.agents/adr/0006-matt-skills-from-a-clone.md).
-- Targets are flat, so skill folder names must be unique across linked buckets.
+- Add a third-party skill as a line in `scripts/skill-sources.sh`, pinned to a tag or full commit, then run `scripts/install-skills.sh`. Move pins only with `scripts/update-skills.sh`. Never run `skills add` or `npx skills` directly: without `-g`, it installs into this repo's `.agents/skills/`.
+- Never edit an installed third-party skill: the next install replaces it. Copy it into `skills/dotfiles/` under a new name instead.
+- Targets are flat, so skill names must be unique across this repo's skills and the third-party ones; the install script and `check-skills.sh` refuse a clash.
 - `~/.claude/skills/synced/` belongs to the Claude app. Never touch it.
 - Never add a `.agents/skills/` folder to the repo: pi and other Agent Skills clients load it as project skills when working here.
 

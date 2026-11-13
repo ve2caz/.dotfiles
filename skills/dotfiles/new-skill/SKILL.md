@@ -56,5 +56,5 @@ It must report no problems.
 ## Never
 
 - Write directly into `~/.claude/skills`, `~/.agents/skills` or `~/.cursor/skills`.
-- Edit Matt's clone in `~/.local/share/mattpocock-skills`; copy a skill into this bucket under a new name instead.
+- Edit a third-party skill installed in `~/.agents/skills`: the next install replaces it. Copy it into this bucket under a new name instead.
 - Commit. The user commits.

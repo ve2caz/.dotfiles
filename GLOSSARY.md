@@ -6,7 +6,7 @@ _Avoid_: root package, dotfiles folder.
 **Skill package**: one bucket, stowed as its own package into each skill target.
 _Avoid_: skill set.
 
-**Bucket**: a folder that groups skills: this repo's `skills/dotfiles/`, or a folder under `skills/` in Matt's clone. Which buckets are linked is listed in `scripts/skill-sources.sh`.
+**Bucket**: a folder that groups skills: this repo's `skills/dotfiles/`, or a folder of skills in a third-party repo, installed whole. `scripts/skill-sources.sh` lists them.
 _Avoid_: category, group.
 
 **Target**: the directory Stow links a package into: `$HOME` for the home package, `~/.claude/skills` and `~/.agents/skills` for skill packages.

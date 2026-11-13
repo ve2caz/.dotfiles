@@ -88,6 +88,14 @@ else
     fail "Links that point at nothing:" "$broken"
 fi
 
+if command -v mise >/dev/null && command -v jq >/dev/null; then
+    if third_out="$("$REPO/scripts/install-skills.sh" --check 2>&1)"; then
+        pass "Third-party skills match scripts/skill-sources.sh"
+    else
+        fail "Third-party skills differ from scripts/skill-sources.sh; run scripts/install-skills.sh:" "$third_out"
+    fi
+fi
+
 if skills_out="$("$REPO/skills/dotfiles/new-skill/scripts/check-skills.sh" 2>&1)"; then
     pass "Skills in skills/dotfiles pass check-skills"
 else

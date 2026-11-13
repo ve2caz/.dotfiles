@@ -1,6 +1,6 @@
 # 0006: Matt's skills come from a clone, linked like this repo's skills
 
-Status: accepted, 2026-10-22.
+Status: superseded by ADR 0008, 2026-11-13.
 
 **Context.** Matt Pocock ships his skills through one channel per agent: a self-updating Claude Code plugin, Codex and Copilot plugins, and `npx skills` copies for Cursor, pi and others, updated by hand. Cursor has no plugin channel for his repo, because it imports skills only through a `.cursor-plugin/marketplace.json`, which he does not ship. Only his `engineering` and `productivity` skills are wanted.
 
