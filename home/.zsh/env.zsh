@@ -32,22 +32,26 @@ if [ -f "$_LOCALE_FILE" ]; then
     fi
 fi
 
-# Detect the brew prefix based on OS and architecture
+# Homebrew: what `brew shellenv` prints, written out so no shell has to start brew (about 40 ms).
+# scripts/doctor.sh compares these with `brew shellenv`. PATH is built below.
 _BREW_PREFIX=""
-case "$(uname -s)" in
-    # Set up Homebrew
-    Darwin)
-        # Apple Silicon (M1/M2/M3)
-        if [[ -f "/opt/homebrew/bin/brew" ]]; then
-            eval "$(/opt/homebrew/bin/brew shellenv)"
-            _BREW_PREFIX="/opt/homebrew"
-        # Intel Macs
-        elif [[ -f "/usr/local/Homebrew/bin/brew" ]]; then
-            eval "$(/usr/local/Homebrew/bin/brew shellenv)"
-            _BREW_PREFIX="/usr/local"
-        fi
-        ;;
-esac
+if [[ $OSTYPE == darwin* ]]; then
+    if [[ -x /opt/homebrew/bin/brew ]]; then
+        _BREW_PREFIX=/opt/homebrew _BREW_REPOSITORY=/opt/homebrew
+    elif [[ -x /usr/local/Homebrew/bin/brew ]]; then
+        _BREW_PREFIX=/usr/local _BREW_REPOSITORY=/usr/local/Homebrew
+    fi
+fi
+if [[ -n $_BREW_PREFIX ]]; then
+    export HOMEBREW_PREFIX=$_BREW_PREFIX
+    export HOMEBREW_CELLAR=$_BREW_PREFIX/Cellar
+    export HOMEBREW_REPOSITORY=$_BREW_REPOSITORY
+    fpath[1,0]="$_BREW_PREFIX/share/zsh/site-functions"
+    export FPATH
+    [ -z "${MANPATH-}" ] || { export MANPATH="${MANPATH%"${MANPATH##*[!:]}"}"; export MANPATH=":${MANPATH#"${MANPATH%%[!:]*}"}"; }
+    export INFOPATH="$_BREW_PREFIX/share/info:${INFOPATH:-}"
+    unset _BREW_REPOSITORY
+fi
 
 # --- Unified PATH Management (zsh array) ---
 # Use a unique array for PATH to preserve order and avoid duplicates.

@@ -56,6 +56,27 @@ else
         "cp $REPO/.gitconfig-template ~/.gitconfig, then fill it in: docs/git-identities.md"
 fi
 
+# env.zsh writes out what `brew shellenv` prints. A Homebrew update that prints other names or
+# values must be copied into env.zsh.
+brew_bin=""
+for b in /opt/homebrew/bin/brew /usr/local/Homebrew/bin/brew; do [ -x "$b" ] && { brew_bin=$b; break; }; done
+if [ -n "$brew_bin" ]; then
+    names="$("$brew_bin" shellenv zsh | grep -oE '[A-Za-z_]+(\[1,0\])?=' | LC_ALL=C sort -u | tr '\n' ' ')"
+    known='HOMEBREW_CELLAR= HOMEBREW_PREFIX= HOMEBREW_REPOSITORY= INFOPATH= MANPATH= PATH= fpath[1,0]= '
+    # shellcheck disable=SC2016 # expanded by the shells below, not here
+    show='printf "%s\n" "$HOMEBREW_PREFIX" "$HOMEBREW_CELLAR" "$HOMEBREW_REPOSITORY" "$INFOPATH"'
+    want="$(env -i HOME="$HOME" PATH=/usr/bin:/bin /bin/bash -c "eval \"\$(\"$brew_bin\" shellenv bash)\"; $show")"
+    got="$(env -i HOME="$HOME" PATH=/usr/bin:/bin zsh -c "$show" </dev/null 2>/dev/null)"
+    if [ "$names" = "$known" ] && [ "$want" = "$got" ]; then
+        pass "env.zsh matches brew shellenv"
+    else
+        fail "env.zsh differs from brew shellenv; update its Homebrew block" "brew shellenv sets: $names
+env.zsh handles:     $known
+brew shellenv values: ${want//$'\n'/ }
+env.zsh values:       ${got//$'\n'/ }"
+    fi
+fi
+
 broken="$({
     find "$HOME" -maxdepth 1 -type l -lname '*dotfiles*' ! -exec test -e {} \; -print
     find "$HOME/.config" -maxdepth 2 -type l -lname '*dotfiles*' ! -exec test -e {} \; -print
