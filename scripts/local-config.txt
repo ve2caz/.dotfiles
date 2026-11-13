@@ -27,3 +27,11 @@ herdr/session-snapshots
 herdr/*.sock
 herdr/*.log
 herdr/.plugins.lock
+
+# Written by the tool itself, every setting at its default.
+glow
+superfile
+
+# Downloaded by scripts/setup.sh: lnav's kubectl log formats, and the bat theme.
+lnav
+bat

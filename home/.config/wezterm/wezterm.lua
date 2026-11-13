@@ -1,4 +1,4 @@
--- Pull in the wezterm API
+-- Only settings that differ from the defaults. Defaults: https://wezterm.org/config/lua/config/
 local wezterm = require("wezterm")
 
 -- This will hold the configuration.
@@ -7,9 +7,7 @@ local config_dir = wezterm.config_dir
 
 -- Config choices
 config.enable_tab_bar = false
-config.automatically_reload_config = true
 config.scrollback_lines = 5000
-config.window_background_opacity = 1
 config.window_decorations = "RESIZE"
 
 -- Background
@@ -19,7 +17,6 @@ config.background = {
     hsb = { hue = 1.0, saturation = 1.0, brightness = 0.03 },
     vertical_align = "Middle",
     horizontal_align = "Center",
-    opacity = 1
   }
 }
 
