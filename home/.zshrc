@@ -167,19 +167,8 @@ if (( ! _agent_shell )); then
     alias grep='grep --color=auto'
     alias egrep='grep -E --color=auto'
     alias fgrep='grep -F --color=auto'
-    if command -v delta >/dev/null 2>&1; then
-        # delta on a terminal, diff's own output in a pipe. The function keyword keeps an old diff
-        # alias from renaming it when .zshrc is sourced again.
-        function diff {
-            if [[ -t 1 ]]; then delta "$@"; else command diff "$@"; fi
-        }
-    else
-        if command -v gdiff >/dev/null 2>&1; then
-            alias diff='gdiff --color=auto'
-        else
-            alias diff='diff'
-        fi
-    fi
+    # diff stays diff, so its own flags keep working; run delta by name for its view.
+    alias diff='diff --color=auto'
     if command -v lazygit >/dev/null 2>&1; then
         alias lg='lazygit'
     fi

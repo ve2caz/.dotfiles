@@ -572,13 +572,11 @@ fi
 print -r -- alpha >| "$KB/pipe.txt"
 probe="print -r -- \"\$(grep -E 'al(p)ha' ${(q)KB}/pipe.txt | command cat)|\${aliases[grep]}\""
 agent_probe pipe-grep 'alpha|grep --color=auto' tty
-if (( $+commands[delta] )); then
-    print -r -- one >| "$KB/pipe-a"; print -r -- two >| "$KB/pipe-b"
-    probe="diff ${(q)KB}/pipe-a ${(q)KB}/pipe-b | command grep -c \$'\\e'"
-    agent_probe pipe-diff 0 tty
-else
-    skip pipe-diff "delta is not installed"
-fi
+# diff stays diff, not delta: diff's -r works, and piped output stays plain.
+mkdir -p "$KB/diff-a" "$KB/diff-b"
+print -r -- one >| "$KB/diff-a/f"; print -r -- two >| "$KB/diff-b/f"
+probe="print -r -- \"\$(diff -r ${(q)KB}/diff-a ${(q)KB}/diff-b | command grep -c \$'\\e')|\${aliases[diff]}\""
+agent_probe pipe-diff '0|diff --color=auto' tty
 probe="print -n \$'\\e' | cat -v"
 agent_probe cat-flags '^[' tty
 if (( $+commands[tree] )); then
