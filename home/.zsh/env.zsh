@@ -32,6 +32,11 @@ if [ -f "$_LOCALE_FILE" ]; then
     fi
 fi
 
+# No folder twice in any search path. zsh keeps entries unique only when the array form is
+# assigned, so the end of this file assigns each once more after the string assignments.
+typeset -U path fpath manpath
+typeset -gxTU INFOPATH infopath
+
 # Homebrew: what `brew shellenv` prints, written out so no shell has to start brew (about 40 ms).
 # scripts/doctor.sh compares these with `brew shellenv`. PATH is built below.
 _BREW_PREFIX=""
@@ -65,6 +70,26 @@ if [[ -n "$_BREW_PREFIX" ]]; then
     # Prefer Homebrew curl if available
     [[ -d "$_BREW_PREFIX/opt/curl/bin" ]] && path=( "$_BREW_PREFIX/opt/curl/bin" $path )
 fi
+
+# Folders a parent put in front of PATH (saved in .zshenv) go back in front of Homebrew and the
+# system folders, behind the shims: the leading run before the first shims, Homebrew or system
+# folder. Only absolute folders that exist, never ~/.local/bin or ~/bin, and never mise's version
+# folders: a child in another project gets its versions from the shims (ADR 0005).
+_mise_data=${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/mise}
+_system_path=()
+[[ -r /etc/paths ]] && _system_path=( ${(f)"$(</etc/paths)"} )
+for _f in /etc/paths.d/*(N.); do _system_path+=( ${(f)"$(<$_f)"} ); done
+_front=()
+for _p in $_zsh_inherited_path; do
+    [[ $_p == $_mise_data/shims ]] && break
+    (( ${_system_path[(Ie)$_p]} )) && break
+    [[ -n $_BREW_PREFIX && $_p == $_BREW_PREFIX/(bin|sbin|opt/curl/bin) ]] && break
+    [[ $_p == /* && -d $_p ]] || continue
+    [[ $_p == $_mise_data/installs/* || $_p == $HOME/.local/bin || $_p == $HOME/bin ]] && continue
+    _front+=( $_p )
+done
+path=( $_front $path )
+unset _mise_data _system_path _front _p _f _zsh_inherited_path
 
 # Additional high-priority developer paths (append if present)
 # Append as a security measure to avoid shadowing Brew, and system binaries
@@ -105,3 +130,8 @@ unfunction _kubeconfig_ok
 if command -v mise >/dev/null 2>&1; then
     eval "$(mise activate zsh --shims)"
 fi
+
+path=( $path )
+fpath=( $fpath )
+manpath=( "${manpath[@]}" )
+infopath=( "${infopath[@]}" )

@@ -8,7 +8,7 @@ Run these from the **repository root** (`~/.dotfiles`) unless noted.
 zsh ./scripts/test/test-mise-shims-path.zsh
 ```
 
-This script exercises four zsh session combinations (interactive/login variants) with a clean temporary XDG/mise environment and asserts that **mise shims** appear in `PATH` within the first few entries (`MAX_MISE_INDEX`, default 5). Use it after edits to:
+This script exercises four zsh session combinations (interactive/login variants) with a clean temporary XDG/mise environment and asserts that **mise shims** appear in `PATH` within the first few entries (`MAX_MISE_INDEX`, default 5). It also starts each session type inside another environment and checks that a folder the parent put in front stays right behind the shims, that a mise version folder does not, that no folder appears twice in `PATH`, `fpath`, `MANPATH` or `INFOPATH`, and that a missing `LANG` gets the region's UTF-8 locale in login shells too. Use it after edits to:
 
 - `home/.zshenv`, `home/.zprofile`, `home/.zshrc`, or files under `home/.zsh/`
 - Anything that changes **PATH** order or mise activation

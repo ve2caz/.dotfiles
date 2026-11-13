@@ -13,6 +13,10 @@
 # fi
 # -------------------------
 #
+# A parent can put folders in front of PATH on purpose: a Python venv, direnv's PATH_add, an IDE
+# terminal. path_helper below moves them behind the system folders; env.zsh puts them back.
+_zsh_inherited_path=( $path )
+
 # Work around for macOS path_helper
 if [[ "$OSTYPE" == darwin* ]]; then
   # Prevent /etc/zprofile and /etc/zshrc from loading automatically
@@ -34,7 +38,12 @@ if [[ "$OSTYPE" == darwin* ]]; then
     if [ -f /etc/zprofile ]; then
       # System-wide login profile (e.g. path defaults). User ~/.zprofile runs later in startup.
       # Same ordering for interactive and non-interactive login shells.
+      # It also sets LANG=C.UTF-8 when LANG is empty, which drops the region: leave LANG empty
+      # instead, and ensure_utf8_locale sets it from the region as in non-login shells.
+      _zsh_lang=${LANG-}
       source /etc/zprofile
+      [[ -z $_zsh_lang && $LANG == C.UTF-8 ]] && unset LANG
+      unset _zsh_lang
     fi
   fi
 fi
