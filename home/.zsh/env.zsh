@@ -14,11 +14,11 @@ fi
 # this cost repeatedly).
 __UNIFIED_ENVIRONMENT_LOADER=1
 
-# XDG Base Directory Specification (externalized)
-_XDG_BASE_DIRS_FILE="$HOME/.zsh/.zsh-xdg-base-dirs"
-if [ -f "$_XDG_BASE_DIRS_FILE" ]; then
-    source "$_XDG_BASE_DIRS_FILE"
-fi
+# XDG Base Directory Specification (https://specifications.freedesktop.org/basedir-spec/latest/)
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
 
 # Locale Configuration: enforce UTF-8 while keeping region-specific settings
 _LOCALE_FILE="$HOME/.zsh/locale.zsh"

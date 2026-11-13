@@ -9,7 +9,7 @@ ensure_utf8_locale() {
   if [[ $LANG == *UTF-8* && ( -z $LC_CTYPE || $LC_CTYPE == *UTF-8* ) ]]; then
     return 0
   fi
-  local os region candidate chosen
+  local os region candidate chosen locales
   case $OSTYPE in darwin*) os=Darwin ;; *) os=$(uname -s) ;; esac
 
   # Derive region from existing LANG if present (e.g., fr_CA from fr_CA.UTF-8)
@@ -37,19 +37,19 @@ ensure_utf8_locale() {
     candidate="${region}.UTF-8"
   fi
 
-  # Helper to check availability in locale -a
-  have() { locale -a 2>/dev/null | grep -qx "$1"; }
+  # The installed locales, read once and kept local.
+  locales=("${(@f)$(locale -a 2>/dev/null)}")
 
-  if [[ -n "$candidate" ]] && have "$candidate"; then
+  if [[ -n "$candidate" ]] && (( ${locales[(Ie)$candidate]} )); then
     chosen="$candidate"
   else
     # Try any region-matching UTF-8 locale
     if [[ -n "$region" ]]; then
-      chosen="$(locale -a 2>/dev/null | grep -E "^${region}\.UTF-8$" | head -n1)"
+      chosen="${locales[(r)${region}.UTF-8]}"
     fi
     # Portable fallbacks: C.UTF-8 (Linux), en_US.UTF-8 (common), UTF-8 (macOS)
     if [[ -z "$chosen" ]]; then
-      chosen="$(locale -a 2>/dev/null | grep -E '^(C\.UTF-8|en_US\.UTF-8|UTF-8)$' | head -n1)"
+      chosen="${locales[(r)(C.UTF-8|en_US.UTF-8|UTF-8)]}"
     fi
     # Final fallback: C
     if [[ -z "$chosen" ]]; then
@@ -59,7 +59,7 @@ ensure_utf8_locale() {
 
   # Keep region preferences; ensure UTF-8 codeset
   if [[ -z "$LANG" || "$LANG" != *"UTF-8"* ]]; then
-    if [[ -n "$region" ]] && have "${region}.UTF-8"; then
+    if [[ -n "$region" ]] && (( ${locales[(Ie)${region}.UTF-8]} )); then
       export LANG="${region}.UTF-8"
     else
       export LANG="$chosen"
