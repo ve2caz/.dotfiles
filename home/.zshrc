@@ -33,7 +33,6 @@ if declare -f ensure_utf8_locale >/dev/null 2>&1; then
 fi
 
 # --- Environment Variables ---
-export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship.toml"   # Starship prompt configuration
 FZFGIT_HOME="${XDG_DATA_HOME}/fzf-git"                      # FZF Git integration
 
 # --- Plugin Manager ---
@@ -112,7 +111,6 @@ setopt sharehistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
-setopt hist_ignore_dups
 setopt hist_find_no_dups
 
 # --- Pager & Colors ---
