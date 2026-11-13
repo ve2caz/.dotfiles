@@ -48,6 +48,30 @@ while read -r d; do
     fi
 done < "$REPO/scripts/mixed-config-dirs.txt"
 
+# A new tool's folder in ~/.config, or a new file in a mixed folder, is invisible to git status.
+# Each must be a link into the repo or listed as reviewed and local.
+local_globs="$(cat "$REPO/scripts/local-config.txt" "$HOME/.config/dotfiles/local-config.txt" 2>/dev/null |
+    sed 's/#.*//; s/[[:space:]]*$//' | grep .)"
+unreviewed="$(
+    cd "$HOME/.config" 2>/dev/null || exit 0
+    {
+        find . -mindepth 1 -maxdepth 1 ! -type l
+        while read -r d; do [ -d "$d" ] && find "./$d" -mindepth 1 -maxdepth 1 ! -type l; done < "$REPO/scripts/mixed-config-dirs.txt"
+    } | sed 's|^\./||' | LC_ALL=C sort | while IFS= read -r entry; do
+        grep -qxF "$entry" "$REPO/scripts/mixed-config-dirs.txt" && continue
+        while IFS= read -r glob; do
+            # shellcheck disable=SC2053 # the glob is meant to match as a pattern
+            [[ $entry == $glob ]] && continue 2
+        done <<< "$local_globs"
+        echo "$HOME/.config/$entry"
+    done
+)"
+if [ -z "$unreviewed" ]; then
+    pass "Every entry in ~/.config is tracked or listed as local"
+else
+    fail "Not reviewed: track it (only settings that differ from the defaults), or add it to scripts/local-config.txt, or to ~/.config/dotfiles/local-config.txt when its name reveals work:" "$unreviewed"
+fi
+
 # Without a real ~/.gitconfig, git config --global writes into the repo through the link.
 if [ -f "$HOME/.gitconfig" ] && [ ! -L "$HOME/.gitconfig" ]; then
     pass "$HOME/.gitconfig is a real file"

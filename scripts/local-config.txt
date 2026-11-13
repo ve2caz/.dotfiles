@@ -1,0 +1,29 @@
+# Entries in ~/.config that were reviewed and stay on the machine: app state, credentials and
+# logins. The doctor reports any other entry that is not a link into the repo, so a new tool's
+# configuration gets noticed. One bash glob per line, relative to ~/.config; files inside a folder
+# in mixed-config-dirs.txt are matched as folder/file.
+# A name that reveals work goes in ~/.config/dotfiles/local-config.txt instead (docs/machine-local.md).
+
+.DS_Store
+*/.DS_Store
+
+# This list's machine-local twin.
+dotfiles
+
+# Logins per identity (docs/git-identities.md).
+gh
+gh-*
+
+cursor
+helm
+homebrew
+nx
+
+# Machine-local shell additions (docs/machine-local.md).
+zsh
+
+herdr/session.json
+herdr/session-snapshots
+herdr/*.sock
+herdr/*.log
+herdr/.plugins.lock

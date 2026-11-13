@@ -9,6 +9,7 @@ The repo is public and shared by every machine, so some settings live only on th
 | Work-only Homebrew packages | Installed on the machine, kept out of `Brewfile` | `scripts/brew-dump-clean.sh` drops them when it regenerates the Brewfile |
 | Shell aliases and functions | `~/.config/zsh/local.zsh` | The example below |
 | A work-only tool's own settings | A plain file in the tool's folder, for example `~/.config/granted/config` | The tool writes it |
+| `~/.config` folders whose names reveal work, so the doctor accepts them | `~/.config/dotfiles/local-config.txt`, in the format of `scripts/local-config.txt` | An empty file |
 
 ## Shell additions
 
