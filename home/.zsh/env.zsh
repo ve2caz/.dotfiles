@@ -8,10 +8,10 @@ if [ -n "$__UNIFIED_ENVIRONMENT_LOADER" ]; then
     return
 fi
 # Do not export this flag. Each new zsh child starts fresh and must run this file once: exported
-# variables (e.g. PATH) inherit, but eval "$(mise …)" / eval "$(direnv hook zsh)" define functions
-# and hooks that do not inherit; skipping the whole file (if the guard were exported) would leave
-# those undefined. This runs on every new zsh, so keep the rest of this file fast (builds and tools
-# that spawn many shells pay this cost repeatedly).
+# variables (e.g. PATH) inherit, but eval "$(mise …)" defines functions that do not inherit;
+# skipping the whole file (if the guard were exported) would leave those undefined. This runs on
+# every new zsh, so keep the rest of this file fast (builds and tools that spawn many shells pay
+# this cost repeatedly).
 __UNIFIED_ENVIRONMENT_LOADER=1
 
 # XDG Base Directory Specification (externalized)
@@ -109,9 +109,4 @@ unset -f _validate_kubeconfig_file
 # This ensures version-managed tools are available everywhere
 if command -v mise >/dev/null 2>&1; then
     eval "$(mise activate zsh --shims)"
-fi
-
-# Enable direnv integration with zsh (cross-platform)
-if command -v direnv >/dev/null 2>&1; then
-    eval "$(direnv hook zsh)"
 fi

@@ -13,7 +13,7 @@ Personal dotfiles, deployed with GNU Stow. What the repo covers: [SCOPE.md](SCOP
 
 - Track configuration, never app state.
 - A tool whose folder holds only configuration gets one link for the whole folder, for example `~/.config/nvim`.
-- A tool whose folder mixes configuration and app state keeps a real folder in `~/.config`, and Stow links only the tracked files, for example `~/.config/granted/config`. Such a folder must exist as a real folder in `~/.config` before stowing, or Stow folds it and the tool writes app state into the repo. List it in `scripts/mixed-config-dirs.txt`, which setup, the doctor and the tests read.
+- A tool whose folder mixes configuration and app state keeps a real folder in `~/.config`, and Stow links only the tracked files, for example `~/.config/git/config`. Such a folder must exist as a real folder in `~/.config` before stowing, or Stow folds it and the tool writes app state into the repo. List it in `scripts/mixed-config-dirs.txt`, which setup, the doctor and the tests read.
 - Some tools save by replacing the file, which turns a file link into a plain file. After using a file-linked tool, `ls -la` must still show a link.
 
 ## Stow
@@ -27,7 +27,7 @@ Personal dotfiles, deployed with GNU Stow. What the repo covers: [SCOPE.md](SCOP
 The main job of the zsh files is one fixed `PATH` order in every zsh, despite macOS `path_helper`. Why and how: [ADR 0004](.agents/adr/0004-path-order-over-path-helper.md).
 
 - On macOS, `.zshenv` unsets `GLOBAL_RCS`, runs `path_helper` first, then sources `/etc/zshenv` and, for login shells, `/etc/zprofile` by hand; `.zshrc` sources `/etc/zshrc`. Keep every `path_helper` call before any user entry.
-- `.zshenv` and `.zprofile` both source `.zsh/env.zsh`. A guard runs it once per zsh process. Do not export the guard: every zsh must rebuild `PATH` from the baseline, and `mise` and `direnv` hooks do not inherit.
+- `.zshenv` and `.zprofile` both source `.zsh/env.zsh`. A guard runs it once per zsh process. Do not export the guard: every zsh must rebuild `PATH` from the baseline, and mise's functions do not inherit.
 - `PATH` order is built only in `.zsh/env.zsh`. `~/.local/bin` and `~/bin` go last, so they never shadow Homebrew or system tools. `.zshrc` removes zinit's `$ZPFX/bin` right after loading zinit. Add nothing else to `PATH` anywhere else.
 - `env.zsh` puts the mise shims first in every zsh, so child processes such as Tilt and its extensions resolve each project's `mise.toml` versions without shell hooks. Never limit the shims to interactive or login shells. Why: [ADR 0005](.agents/adr/0005-mise-shims-in-every-zsh.md).
 - `env.zsh` runs in every new zsh, including non-interactive ones. Keep it fast.

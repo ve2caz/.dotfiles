@@ -272,6 +272,12 @@ if command -v fzf >/dev/null 2>&1; then
     fi
 fi
 
+# --- direnv ---
+# Loads an allowed .envrc at each prompt and folder change; the hook does nothing without a prompt.
+if command -v direnv >/dev/null 2>&1; then
+    eval "$(direnv hook zsh)"
+fi
+
 # --- Version Manager Hook Integration ---
 # Enable dynamic version switching on directory change (interactive shells only)
 if command -v mise >/dev/null 2>&1; then

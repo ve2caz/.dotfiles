@@ -364,6 +364,14 @@ typeset -a BINDINGS=("${(@f)$(<$KB/bindings)}")
 typeset -A ENV_VARS
 for line in "${(@f)$(<$KB/env)}"; do ENV_VARS[${line%%=*}]=${line#*=}; done
 FLOW_ON=0; [[ ${ENV_VARS[flowcontrol]} == on ]] && FLOW_ON=1
+if (( $+commands[direnv] )); then
+    hooked_i=$(env -i "${session_env[@]}" zsh -i -c 'print -r -- ${+functions[_direnv_hook]}' </dev/null 2>/dev/null)
+    hooked_c=$(env -i "${session_env[@]}" zsh -c 'print -r -- ${+functions[_direnv_hook]}' </dev/null 2>/dev/null)
+    ok=0; [[ $hooked_i == 1 && $hooked_c == 0 ]] && ok=1
+    report direnv-hook ok $ok "direnv hook: interactive zsh $hooked_i, zsh -c $hooked_c; expected 1 and 0"
+else
+    skip direnv-hook "direnv is not installed"
+fi
 ok=0; [[ ${ENV_VARS[comments]} == on ]] && ok=1
 report interactive-comments ok $ok "interactive_comments is ${ENV_VARS[comments]:-unset}, so # at the prompt is not a comment"
 
