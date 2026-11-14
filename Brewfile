@@ -95,6 +95,8 @@ brew "superfile"
 brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Generator for LS_COLORS with support for multiple color themes
+brew "vivid"
 # CLI for Git worktree management, designed for parallel AI agent workflows
 brew "worktrunk"
 # Command-line tool to install and switch between multiple versions of Xcode

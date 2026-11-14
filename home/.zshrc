@@ -117,7 +117,10 @@ setopt hist_find_no_dups
 if command -v bat >/dev/null 2>&1; then
     export BAT_THEME="Catppuccin Mocha"
 fi
-if command -v dircolors >/dev/null 2>&1; then
+# File colors for ls, eza and completion lists, in the Catppuccin palette (about 8 ms).
+if command -v vivid >/dev/null 2>&1; then
+    export LS_COLORS="$(vivid generate catppuccin-mocha)"
+elif command -v dircolors >/dev/null 2>&1; then
     eval "$(dircolors -b)"
 elif command -v gdircolors >/dev/null 2>&1; then
     eval "$(gdircolors -b)"
