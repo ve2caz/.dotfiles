@@ -8,46 +8,47 @@ Run these from the **repository root** (`~/.dotfiles`) unless noted.
 zsh ./scripts/test/test-mise-shims-path.zsh
 ```
 
-This script exercises four zsh session combinations (interactive/login variants) with a clean temporary XDG/mise environment and asserts that **mise shims** appear in `PATH` within the first few entries (`MAX_MISE_INDEX`, default 5). Use it after edits to:
+This script exercises four zsh session combinations (interactive/login variants) with a clean temporary XDG/mise environment and asserts that **mise shims** appear in `PATH` within the first few entries (`MAX_MISE_INDEX`, default 5). It also starts each session type inside another environment and checks that a folder the parent put in front stays right behind the shims, that a mise version folder does not, that no folder appears twice in `PATH`, `fpath`, `MANPATH` or `INFOPATH`, and that a missing `LANG` gets the region's UTF-8 locale in login shells too. Use it after edits to:
 
-- `.zshenv`, `.zprofile`, `.zshrc`, or files under `.zsh/`
+- `home/.zshenv`, `home/.zprofile`, `home/.zshrc`, or files under `home/.zsh/`
 - Anything that changes **PATH** order or mise activation
 
 Optional environment overrides (see script): `TEST_HOME`, `TEST_ZDOTDIR`, `MAX_MISE_INDEX`.
 
-## Installation smoke check
+The test runs without zinit and without prompt hooks, so it cannot see what `.zshrc` does to `PATH`. After changing `.zshrc`, `zsh -i -c 'print -l $path'` and `zsh -c 'print -l $path'` must print the same list.
+
+The shims matter most to processes that never see a prompt, such as Tilt and its extensions ([ADR 0005](adr/0005-mise-shims-in-every-zsh.md)). After changes to startup files, `PATH` or mise, run this from a project folder with a `mise.toml`, replacing `<tool>` with any tool it pins: `env -i HOME="$HOME" TERM="$TERM" PATH=/usr/bin:/bin zsh -c 'sh -c "command -v <tool>; mise current <tool>"'`. It must print `~/.local/share/mise/shims/<tool>` and the version the project pins.
+
+The script also prints `PATH` one entry per line for each session type, which is the quickest way to inspect startup order when debugging.
+
+## Key bindings
 
 ```bash
-./scripts/check-installation.sh
+zsh ./scripts/test/test-keybindings.zsh
 ```
 
-Lists whether expected CLI tools are on `PATH` (bash; safe before zsh is fully configured).
+Checks every layer a key passes through against that tool's own documentation, not against the cheat sheets: WezTerm's key table, a real herdr, zsh's emacs keymap (zshzle), fzf's defaults (man fzf) through a real fzf, and the fzf-driven widgets with a stub `fzf`. Each keymap may differ from its tool's defaults only as listed in the test's change tables (`ZSH_CHANGES`, `FZF_CHANGES`, `WEZ_ACCEPTED`); an unlisted change, or a listed one that is gone, fails. To change a key binding, change the config and its table entry together. It also fails if a cheat sheet lists a key the test does not cover. Known-broken keys are expected failures with a reason; one that starts working fails the run until its marker is removed. Run it after changes to key bindings, zsh plugins, `FZF_DEFAULT_OPTS`, `wezterm.lua` or `herdr/config.toml`; it takes about 30 seconds. It needs a real pseudo terminal, so it cannot run inside the Cursor agent sandbox. `KB_LOG=<file>` saves the session output and `KB_KEEP=1` keeps the temporary folder.
 
-## Session-type probes (manual / debugging)
+One check stays manual: that WezTerm sends `ESC` plus the key for left Option on this keyboard. In WezTerm, run `cat -v`, press left Option-C, and expect `^[c`. Last confirmed 2026-10-23.
 
-Small scripts that print `PATH` one entry per line for a given session type. They are **not** a single combined automated suite; use them to inspect PATH when debugging startup.
+## Startup time
 
-| Script | Session |
-|--------|---------|
-| `scripts/test/interactive-login.sh` | interactive login |
-| `scripts/test/interactive-non-login.sh` | interactive non-login |
-| `scripts/test/non-interactive-login.sh` | non-interactive login |
-| `scripts/test/non-interactive-non-login.sh` | non-interactive non-login |
-
-Example:
+`env.zsh` runs in every zsh, and tools such as Tilt start many. After a change to the startup files, compare against zsh with no startup files at all, from a folder with no `mise.toml` or `.envrc`:
 
 ```bash
-bash ./scripts/test/non-interactive-non-login.sh
+cd /tmp && hyperfine --warmup 3 'zsh -f -c exit' 'zsh -c exit' 'zsh -i -c exit'
 ```
 
-## Shell harness scripts (broader checks)
+Run it in a terminal: an agent shell sets markers that change what `.zshrc` does.
 
-Under `scripts/test/` there are additional drivers for interactive vs non-interactive shells (see file names). Prefer **`test-mise-shims-path.zsh`** for routine validation of PATH/mise behavior after dotfile changes.
+## Packages
+
+`brew bundle check --no-upgrade --verbose` lists what the `Brewfile` asks for and is not installed. Without `--no-upgrade` it also lists every outdated package, so its answer changes with each new release.
 
 ## When to run what
 
 | Change | Suggested check |
 |--------|-----------------|
-| zsh init / PATH / mise | `zsh ./scripts/test/test-mise-shims-path.zsh` |
-| New CLI expected from install script | `./scripts/check-installation.sh` |
-| Only theme assets | No strict automated test in-repo; follow [`doc/tokyo-night-theme.md`](../doc/tokyo-night-theme.md) if touching theme scripts |
+| zsh init / PATH / mise | `zsh ./scripts/test/test-mise-shims-path.zsh`, then the startup time check |
+| Key bindings, zsh plugins, fzf options, WezTerm or herdr keys | `zsh ./scripts/test/test-keybindings.zsh` |
+| `Brewfile` | `brew bundle check --no-upgrade --verbose` |

@@ -1,0 +1,11 @@
+# 0005: mise shims in every zsh, so child processes resolve project tool versions
+
+Status: accepted, 2026-10-22.
+
+**Context.** Git projects elsewhere on disk pin tool versions in their own `mise.toml`. Tilt scaffolds KinD clusters, deploys to them and runs tests; its Tiltfiles and the external extensions they load can call any tool installed and managed by mise, as child processes, through non-interactive shells that never show a prompt. `mise activate zsh` without `--shims` updates `PATH` from prompt hooks, so those child processes never see the project's tools: they fail to start them, or start an unpinned copy from Homebrew or `/usr/local/bin`. Finding this took a lot of debugging.
+
+**Decision.** `.zsh/env.zsh` runs `mise activate zsh --shims` in every zsh: login or not, interactive or not. The shims folder is first in `PATH`, and ADR 0004 keeps it there despite `path_helper`. A shim resolves the version on every call, from the working directory of the process that runs it and the `mise.toml` files above it, so every descendant process (Tilt, its extensions, scripts, `sh -c`) gets the project's pinned version without any shell hook. Interactive shells also run `mise activate zsh` from `.zshrc` for prompt-time switching; the shims stay first.
+
+**Alternatives rejected.** `mise activate` hooks only: works at an interactive prompt, fails in every child process that is not one. Shims only in interactive or login shells: non-interactive shells started by tools miss them. Shims after Homebrew or system folders: an unpinned copy of a tool from Homebrew or `/usr/local/bin` wins over the project's version. Wrapping each call in `mise exec`: needs changes in every Tiltfile and extension, including third-party ones.
+
+**Consequences.** The shims must stay first in `PATH` in every session type; `scripts/test/test-mise-shims-path.zsh` asserts this for the four zsh session types, and `.agents/testing.md` adds a check from a project folder. Never move the `--shims` activation out of `env.zsh` or behind a login or interactive condition. Outside any folder with a `mise.toml`, a shim uses the global config in `~/.config/mise/config.toml`; with no version there, it runs the next same-named binary on `PATH`, or fails with `No version is set for shim` when there is none.

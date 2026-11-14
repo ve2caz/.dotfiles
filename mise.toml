@@ -1,0 +1,9 @@
+# Tools for this repo's scripts: the skills CLI that installs third-party skills (ADR 0008).
+[tools]
+node = "24"
+"npm:skills" = "1.8.1"
+
+[env]
+# The skills CLI sends usage data and security-audit requests unless these are set.
+DISABLE_TELEMETRY = "1"
+DO_NOT_TRACK = "1"

@@ -1,44 +1,30 @@
 # .dotfiles
-This directory contains the dotfiles for a development shell environment that works on both macOS and Debian/Ubuntu Linux.
 
-## 🚀 Quick Setup
+Shell, terminal and Neovim configuration for macOS, with zsh and Homebrew, deployed with GNU Stow.
+
+## New Mac
 
 ```zsh
-# Clone the repository
-git clone https://github.com/ve2caz/.dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-
-# Run the master setup script (installs everything)
-./scripts/setup.sh
+xcode-select --install
 ```
 
-## �️ What's Included
+Install Homebrew from https://brew.sh, then:
 
-This configuration includes modern command-line tools across these categories:
+```zsh
+git clone https://github.com/ve2caz/.dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+./scripts/setup.sh
+./scripts/doctor.sh
+```
 
-- **Core Development Tools** - git, neovim, GitHub CLI, and more
-- **Container & Kubernetes Management** - k9s, kubie, lazydocker
-- **File & Directory Navigation** - eza, fd, tree, yazi, zoxide
-- **Text Processing & Search** - bat, fzf, ripgrep, jq, yq
-- **System Monitoring & Utilities** - btop, htop, nmap, imagemagick
-- **Terminal & Productivity** - tmux, thefuck, wezterm
-- **Fonts & Typography** - MesloLG Nerd Font and more
+`setup.sh` is safe to rerun. `doctor.sh` must report no problems.
 
-See **[Included Tools](doc/tools.md)** for the complete list of modern command-line tools included in this configuration
+## Cheat sheets
 
-## 📚 Documentation
-
-- **[ZSH Shell Primer](doc/zsh-shell-primer.md)** - Introduction to ZSH shell fundamentals and best practices
-- **[Requirements](doc/requirements.md)** - Platform-specific prerequisites and dependencies
-- **[Setup Guide](doc/setup.md)** - Complete installation, configuration, maintenance, and troubleshooting instructions
-- **[Cross-Platform Tools](doc/cross-platform-tools.md)** - How macOS Brewfile tools are installed on Linux
-- **[Tokyo Night Theme](doc/tokyo-night-theme.md)** - Unified dark theme configuration across all tools
-
-## ⌨️ Key Bindings
-
-Comprehensive key bindings for efficient command line usage:
-
-- **[zsh key bindings](doc/zsh-keybindings.md)** - Emacs-style key bindings for command line editing
-- **[tmux key bindings](doc/tmux-keybindings.md)** - Terminal multiplexer shortcuts for session, window, and pane management
-- **[fzf key bindings](doc/fzf-keybindings.md)** - Fuzzy finder shortcuts for files, directories, and command history
-- **[fzf-git key bindings](doc/fzf-git-keybindings.md)** - Interactive Git operations with fzf integration
+- [ZSH shell primer](docs/cheatsheets/zsh-shell-primer.md)
+- [zsh key bindings](docs/cheatsheets/zsh-keybindings.md)
+- [fzf key bindings](docs/cheatsheets/fzf-keybindings.md)
+- [fzf-git key bindings](docs/cheatsheets/fzf-git-keybindings.md)
+- [herdr keys](docs/cheatsheets/herdr-keys.md)
+- [yazi keys](docs/cheatsheets/yazi-keys.md)
+- [aliases and functions](docs/cheatsheets/aliases.md)

@@ -1,0 +1,21 @@
+# Only settings that differ from the defaults. Defaults: hunk --help and
+# https://github.com/modem-dev/hunk/blob/main/docs/themes.md
+# hunk reads this file; its state goes to ~/.local/state/hunk and its extensions to
+# ~/.config/hunk/extensions, which stay out of the repo (scripts/mixed-config-dirs.txt).
+
+# Catppuccin Mocha (the palette set in wezterm.lua), with the diff backgrounds of Catppuccin's
+# official delta port so hunk matches git diff, and lighter comments that stay readable on them.
+theme = "custom"
+transparent_background = true
+
+[custom_theme]
+base = "catppuccin-mocha"
+label = "Catppuccin Mocha"
+addedBg = "#394545"
+addedContentBg = "#4e6356"
+removedBg = "#493447"
+removedContentBg = "#694559"
+
+[custom_theme.syntax_scopes]
+"comment" = "#9399b2"
+"punctuation.definition.comment" = "#9399b2"

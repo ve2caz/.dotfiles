@@ -1,0 +1,5 @@
+interface:
+  display_name: "Clone PR"
+  short_description: "Worktree from a pull request"
+policy:
+  allow_implicit_invocation: false

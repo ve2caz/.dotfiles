@@ -1,0 +1,5 @@
+interface:
+  display_name: "Git Rebase"
+  short_description: "Rebase onto trunk, keeping all work"
+policy:
+  allow_implicit_invocation: false

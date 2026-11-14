@@ -1,0 +1,5 @@
+interface:
+  display_name: "Clean Local Branches"
+  short_description: "Propose safe local branch deletions"
+policy:
+  allow_implicit_invocation: false
