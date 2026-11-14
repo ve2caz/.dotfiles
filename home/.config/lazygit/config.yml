@@ -1,0 +1,11 @@
+# Only settings that differ from the defaults. Defaults: lazygit --config
+git:
+  diffRenderers:
+    - command: delta --{{colorScheme}} --paging=never
+    - type: rawGit
+      name: default # git's own diff, no renderer
+  mainBranches: [main, master]
+gui:
+  nerdFontsVersion: 3
+  showDivergenceFromBaseBranch: arrowAndNumber
+  showCommandLog: false

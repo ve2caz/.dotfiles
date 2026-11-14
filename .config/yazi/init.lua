@@ -1,1 +1,0 @@
--- Keep init.lua present for future plugin setup; no plugin is required for built-in previews.

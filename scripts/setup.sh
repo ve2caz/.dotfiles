@@ -1,69 +1,33 @@
 #!/bin/bash
-# Orchestrates complete .dotfiles installation
-#
-# Note: Using bash instead of zsh for maximum compatibility during initial setup.
-# This script runs before zsh configuration is deployed, so bash ensures it works
-# on fresh systems where zsh might not be the default shell yet. Bash is guaranteed
-# to be available on macOS and virtually all Linux distributions out of the box.
+# Bootstraps a Mac: packages, the home package and skills. Safe to rerun.
+set -euo pipefail
+cd "$(dirname "$0")/.."
 
-# Ensure script exits on error
-set -e
+command -v brew >/dev/null || { echo "Install Homebrew first: https://brew.sh" >&2; exit 1; }
+brew bundle
 
-echo "🎛️  .dotfiles Master Setup"
-echo "======================="
-echo ""
+data="${XDG_DATA_HOME:-$HOME/.local/share}"
+[ -d "$data/zinit/zinit.git" ] || git clone https://github.com/zdharma-continuum/zinit.git "$data/zinit/zinit.git"
+[ -d "$data/fzf-git" ] || git clone https://github.com/junegunn/fzf-git.sh.git "$data/fzf-git"
 
-# Step 1: Install packages first (if not already done)
-echo "📦 Step 1: Installing packages..."
-if [ -f "./scripts/install-packages.sh" ]; then
-    echo "🔧 Running package installation (this may take a while)..."
-    ./scripts/install-packages.sh
-else
-    echo "⚠️  install-packages.sh not found, skipping package installation"
-    echo "   Make sure required tools are installed manually"
-fi
-echo ""
-
-# Step 2: Check if stow is available (should be installed by step 1)
-if ! command -v stow >/dev/null 2>&1; then
-    echo "❌ GNU Stow is required but not installed."
-    echo "   Install with: brew install stow (macOS) or sudo apt install stow (Linux)"
-    exit 1
+# lnav writes to ~/.lnav unless ~/.config/lnav exists. A second lnav -i of the same repo fails.
+if [ ! -d "$HOME/.config/lnav/formats/installed" ]; then
+    mkdir -p "$HOME/.config/lnav"
+    lnav -i https://github.com/shoffmeister/lnav-formats.git
 fi
 
-# Step 3: Stow dotfiles
-echo "📂 Step 2: Installing dotfiles with stow..."
-echo "  1. Running 'stow . --target="$HOME"' from the .dotfiles directory to activate configuration"
-echo "  2. Restart your shell or run 'exec zsh' to load the new environment once setup completes"
-stow . --target="$HOME"
-echo "✅ Dotfiles stowed successfully"
-echo ""
+while read -r d; do mkdir -p "$HOME/.config/$d"; done < scripts/mixed-config-dirs.txt
+stow -t "$HOME" home
 
-# Step 4: Setup Tokyo Night theme
-echo "🎨 Step 3: Setting up Tokyo Night theme..."
-./scripts/setup-tokyo-night-theme.sh
-echo ""
+# ~/.gitconfig holds this machine's identities and accounts, so it is copied once and never
+# overwritten. Until it exists, git config --global writes into the repo through the link.
+if [ ! -e "$HOME/.gitconfig" ]; then
+    cp .gitconfig-template "$HOME/.gitconfig"
+    echo "Created ~/.gitconfig from the template: fill it in, see docs/git-identities.md."
+fi
 
-# Step 5: Final instructions
-echo "🎉 Setup Complete!"
-echo "================="
-echo ""
-echo "Your dotfiles are now installed with:"
-echo "• All required packages installed via install-packages.sh"
-echo "• XDG Base Directory Specification compliance"
-echo "• Consistent Tokyo Night theming across all tools"
-echo "• All dependencies properly configured"
-echo ""
-echo "To apply all changes:"
-echo "1. Restart your terminal"
-echo "2. Run: exec zsh"
-echo ""
-echo "Tools configured:"
-echo "• WezTerm (terminal with Tokyo Night colors)"
-echo "• Zsh with Starship (Tokyo Night colors)"
-echo "• Tmux with plugins (blue theme)"
-echo "• Bat (Tokyo Night syntax highlighting)"
-echo "• Yazi (Tokyo Night file manager)"
-echo "• btop (Tokyo Night system monitor)"
-echo ""
-echo "Enjoy your new development environment! ✨"
+# Links this repo's skills, then installs everyone else's at the pins in scripts/skill-sources.sh.
+mise trust --quiet "$PWD/mise.toml"
+mise install
+./scripts/link-skills.sh
+./scripts/install-skills.sh

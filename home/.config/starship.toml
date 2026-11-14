@@ -1,0 +1,19 @@
+# Only settings that differ from the defaults. Defaults: starship print-config --default
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Wait up to 5 s for a command a module runs, instead of 500 ms.
+command_timeout = 5000
+
+# The default modules ($all leaves out those named here), then the time at the right end of the
+# first line, a blank line, and the prompt character.
+format = """$all$fill$time
+$line_break$character"""
+
+[time]
+disabled = false
+format = "[$time]($style)"
+time_format = "%Y-%m-%d %H:%M:%S"
+style = "bold yellow"
+
+[fill]
+symbol = " "

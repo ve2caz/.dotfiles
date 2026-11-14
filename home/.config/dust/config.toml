@@ -1,0 +1,8 @@
+# Only settings that differ from the defaults. Defaults: dust --help (every option is off by default).
+# Biggest folders at the top.
+reverse = true
+# File sizes rather than disk blocks.
+display-apparent-size = true
+skip-total = true
+# Powers of 1000 (1.1G).
+output-format = "si"

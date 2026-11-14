@@ -1,12 +1,19 @@
 #!/bin/bash
-# Generate Brewfile without VS Code extensions
-brew bundle dump --force --describe --no-vscode
-# Remove Atlassian CLI entries
-# The .brewignore functionality isn't working properly
-sed -i '' '/^tap "atlassian\/acli"/d' Brewfile
-sed -i '' '/^# Software to interact with Atlassian Cloud from the terminal/d' Brewfile
-sed -i '' '/^brew "atlassian\/acli\/acli"/d' Brewfile
-# Remove asdf entries
-sed -i '' '/^# Extendable version manager with support for Ruby, Node.js, Erlang & more$/d' Brewfile
-sed -i '' '/^brew "asdf"$/d' Brewfile
-echo "Brewfile updated, Atlassian CLI and asdf entries removed."
+# Regenerates the Brewfile from what is installed, without work-only tools: they stay local.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+# Only taps, formulae and casks; add --mas to include Mac App Store apps. Listing other package
+# types (npm, uv, Go, Cargo) runs those tools through the mise shims, which fail outside a project.
+brew bundle dump --force --tap --formula --cask
+
+# Work-only taps and formulae. Each goes with the description comment Homebrew writes above it.
+work_only='^(tap "atlassian/acli"|brew "atlassian/acli/acli"|brew "awscli"|tap "fwdcloudsec/granted"|brew "fwdcloudsec/granted/granted")'
+awk -v work_only="$work_only" '
+    /^#/ { held = held $0 "\n"; next }
+    $0 ~ work_only { held = ""; next }
+    { printf "%s", held; held = ""; print }
+    END { printf "%s", held }
+' Brewfile > Brewfile.tmp
+mv Brewfile.tmp Brewfile
+echo "Brewfile updated, work-only entries removed."

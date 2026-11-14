@@ -1,0 +1,82 @@
+# ~/.gitconfig: this machine's identities, accounts and hosts. Never tracked.
+#
+# Read docs/git-identities.md in the .dotfiles repo first: it explains the layers, why
+# nothing is set by default, and how git and gh share one login per account.
+#
+# scripts/setup.sh copied this template because ~/.gitconfig was missing; it never copies
+# over an existing file. Replace every placeholder and delete what this machine does not
+# use. Settings shared by every machine live in ~/.config/git/config, which git reads
+# before this file.
+#
+# Placeholders:
+#   github.example.com          the GitHub Enterprise host
+#   enterprise-account          your account on the Enterprise host
+#   ID                          a github.com account's numeric ID: Settings, Emails
+#   ~/dev/personal/             folder of personal projects on github.com
+#   ~/dev/work-github/          folder of work projects on github.com
+#   ~/dev/work-enterprise/      folder of work projects on the Enterprise host
+
+# --- Enterprise host -----------------------------------------------------------------
+# One account uses this host, so its credentials go by host, not by folder. That covers
+# clones that tools make outside every folder. The empty helper drops Homebrew's keychain.
+[credential "https://github.example.com"]
+	username = enterprise-account
+	helper =
+	helper = !GH_CONFIG_DIR=$HOME/.config/gh-work /opt/homebrew/bin/gh auth git-credential
+
+# --- SSH remotes go over HTTPS ----------------------------------------------------------
+# Clones made with SSH URLs keep working through the same gh login as HTTPS ones.
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+	insteadOf = ssh://git@github.com/
+[url "https://github.example.com/"]
+	insteadOf = git@github.example.com:
+	insteadOf = ssh://git@github.example.com/
+
+# --- Folders choose the identity --------------------------------------------------------
+# Outside these folders git has no identity and no github.com credentials: commits, pushes
+# and private clones fail until the repo sits in one of them.
+#
+# The dotfiles repo. Its worktrees keep their git dir in ~/.dotfiles/.git/worktrees/,
+# so this one rule covers them too.
+[includeIf "gitdir:~/.dotfiles/"]
+	path = ~/.gitconfig-personal
+[includeIf "gitdir:~/dev/personal/"]
+	path = ~/.gitconfig-personal
+[includeIf "gitdir:~/dev/work-github/"]
+	path = ~/.gitconfig-work-github
+[includeIf "gitdir:~/dev/work-enterprise/"]
+	path = ~/.gitconfig-work-enterprise
+
+# --- Identity files ---------------------------------------------------------------------
+# One file per identity, next to this one. Copy a block into its file and fill it in.
+# A github.com identity names its account: gh returns that account's token, read from the
+# identity's own gh config folder, and nothing else. An Enterprise identity needs only a
+# name and email, because the host section above supplies its credentials.
+#
+# ~/.gitconfig-personal
+#   [user]
+#   	name = Your Name
+#   	email = ID+personal-account@users.noreply.github.com
+#   [credential "https://github.com"]
+#   	username = personal-account
+#   	helper = !GH_CONFIG_DIR=$HOME/.config/gh-personal /opt/homebrew/bin/gh auth git-credential
+#   [credential "https://gist.github.com"]
+#   	username = personal-account
+#   	helper = !GH_CONFIG_DIR=$HOME/.config/gh-personal /opt/homebrew/bin/gh auth git-credential
+#
+# ~/.gitconfig-work-github
+#   [user]
+#   	name = Your Name
+#   	email = ID+work-account@users.noreply.github.com
+#   [credential "https://github.com"]
+#   	username = work-account
+#   	helper = !GH_CONFIG_DIR=$HOME/.config/gh-work /opt/homebrew/bin/gh auth git-credential
+#   [credential "https://gist.github.com"]
+#   	username = work-account
+#   	helper = !GH_CONFIG_DIR=$HOME/.config/gh-work /opt/homebrew/bin/gh auth git-credential
+#
+# ~/.gitconfig-work-enterprise
+#   [user]
+#   	name = Your Name
+#   	email = you@work.example.com

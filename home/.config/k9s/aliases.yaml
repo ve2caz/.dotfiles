@@ -1,0 +1,10 @@
+# Short names k9s does not have built in. The rest of its settings stay at their defaults: k9s info.
+aliases:
+  dp: deployments
+  sec: v1/secrets
+  jo: jobs
+  cr: clusterroles
+  crb: clusterrolebindings
+  ro: roles
+  rb: rolebindings
+  np: networkpolicies

@@ -1,0 +1,37 @@
+# Only settings that differ from the defaults. Defaults: lazydocker -c
+gui:
+  wrapMainPanel: false
+
+logs:
+  tail: '300'
+
+stats:
+  maxDuration: 24h
+
+customCommands:
+  containers:
+    - name: bash
+      attach: true
+      command: 'docker exec -it {{ .Container.Name }} /bin/bash'
+      serviceNames: []
+    - name: sh (fallback)
+      attach: true
+      command: 'docker exec -it {{ .Container.Name }} /bin/sh'
+      serviceNames: []
+    - name: htop
+      attach: true
+      command: 'docker exec -it {{ .Container.Name }} htop'
+      serviceNames: []
+  services:
+    - name: bash
+      attach: true
+      command: '{{ .DockerCompose }} exec {{ .Service.Name }} /bin/bash'
+      serviceNames: []
+    - name: sh (fallback)
+      attach: true
+      command: '{{ .DockerCompose }} exec {{ .Service.Name }} /bin/sh'
+      serviceNames: []
+  images:
+    - name: dive
+      command: 'dive {{ .Image.ID }}'
+      serviceNames: []
