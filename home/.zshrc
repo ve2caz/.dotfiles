@@ -269,3 +269,8 @@ if command -v mise >/dev/null 2>&1; then
     eval "$(mise activate zsh)"  # Without --shims
 fi
 
+# --- worktrunk ---
+# wt's shell function lets it cd into a worktree. Agent shells skip it: cd stays zsh's builtin (ADR 0007).
+if (( ! _agent_shell )) && command -v wt >/dev/null 2>&1; then
+    eval "$(command wt config shell init zsh)"
+fi
