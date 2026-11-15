@@ -1,0 +1,6 @@
+# Only settings that differ from worktrunk's defaults. See them with: wt config create
+# (prints the commented defaults) and wt config show.
+
+# Worktrees of <repo> live in a sibling folder, <repo>-worktree/<branch>, for example
+# ~/.dotfiles-worktree/<branch>. The default is a sibling per branch, <repo>.<branch>.
+worktree-path = "{{ repo_path }}/../{{ repo }}-worktree/{{ branch | sanitize }}"
