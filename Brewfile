@@ -15,6 +15,8 @@ brew "coreutils"
 brew "csvlens"
 # Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
+# Git diff pager based on delta but with a file tree
+brew "diffnav"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Tool for exploring each layer in a docker image
