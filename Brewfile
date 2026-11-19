@@ -1,10 +1,10 @@
 tap "gromgit/brewtils"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@4"
 # Download with resuming and segmented downloading
 brew "aria2"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3", link: true
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
@@ -15,6 +15,10 @@ brew "coreutils"
 brew "csvlens"
 # Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
+# Git diff pager based on delta but with a file tree
+brew "diffnav"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Tool for exploring each layer in a docker image
@@ -33,8 +37,6 @@ brew "fzf"
 brew "gh"
 # Distributed revision control system
 brew "git"
-# Syntax-highlighting pager for git and diff output
-brew "git-delta"
 # Render markdown on the CLI
 brew "glow"
 # GNU Privacy Guard (OpenPGP)
