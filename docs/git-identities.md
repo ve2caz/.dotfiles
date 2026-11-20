@@ -92,7 +92,7 @@ direnv reads only the nearest `.envrc`, so a project with its own `.envrc` would
 
 Run `direnv allow` in the folder once. The `.envrc` files are local; none is in the repo.
 
-A gh config folder with at least one login also reaches hosts it does not list: gh falls back to the keychain's last token for that host. From a personal folder, `gh api --hostname github.example.com` therefore acts as the Enterprise account, which matches the host rule above. Both gh folders list github.com, so github.com never falls back. gh's default folder holds no login, so outside every folder gh stops before the keychain.
+A gh config folder with at least one login also reaches hosts it does not list: gh falls back to the keychain's last token for that host. From a personal folder, `gh api --hostname github.example.com` therefore acts as the Enterprise account, which matches the host rule above. Both gh folders list github.com, so github.com never falls back. gh's default folder holds no login, so outside every folder gh's commands stop before the keychain. `gh auth token` does not: it still returns the keychain's last token for the host.
 
 direnv acts when an interactive zsh shows a prompt or changes folder. That covers terminals, herdr panes, IDE terminals and agent shells that run an interactive zsh, such as Cursor's. Scripts and other non-interactive shells do not get it. There gh finds no login and fails, the safe direction. Name the folder for one command when needed:
 
@@ -108,7 +108,7 @@ For the dotfiles repo, put the `.envrc` in the repo and keep it out of git with 
 |---|---|---|
 | `git`, including `git clone` | Yes | The identity file sets the account and the helper |
 | `gh` in an interactive shell | Yes | direnv sets the gh config folder |
-| `gh dash` | Yes | direnv sets the gh config folder, and `GH_HOST` on the Enterprise host |
+| `gh dash` | Yes | The `dash` alias passes it the folder's tokens, and starts it only where gh is logged in. gh extensions otherwise take the keychain's last token for the host. |
 | `git` on the Enterprise host | Not needed | `~/.gitconfig` sets its credentials for the host |
 | `gh` in a script | No, fails | No direnv; set `GH_CONFIG_DIR` for the command |
 | VS Code, Cursor | Yes, for git | They run the system git, which reads these files |
@@ -154,4 +154,5 @@ IDE features that call GitHub directly, such as pull request panels, use the IDE
 | `remote: Repository not found.` | The folder's account has no access: the repo belongs to the other identity. |
 | `To get started with GitHub CLI, please run: gh auth login` | No `.envrc` in the folder, it is not allowed yet, or the shell is non-interactive. |
 | `gh dash` lists pull requests from the wrong host | The Enterprise folder's `.envrc` does not set `GH_HOST`, so gh-dash queries github.com. |
+| `gh dash` shows another account's pull requests | It was started as `gh dash`, not `dash`: gh extensions take the keychain's last login for the host. |
 | Desktop pushes as the wrong account | Expected: Desktop has its own single github.com sign-in. |
