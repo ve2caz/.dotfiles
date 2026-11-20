@@ -176,9 +176,11 @@ if (( ! _agent_shell )); then
     if command -v lazydocker >/dev/null 2>&1; then
         alias lzd='lazydocker'
     fi
-    # dash runs gh-dash; macOS's /bin/dash shell stays reachable as /bin/dash.
+    # dash runs gh-dash; macOS's /bin/dash shell stays reachable as /bin/dash. gh extensions take
+    # the keychain's last login for a host, whatever the folder, so dash gets the folder's tokens,
+    # and starts only where gh itself is logged in (docs/git-identities.md).
     if command -v gh >/dev/null 2>&1; then
-        alias dash='gh dash'
+        alias dash='gh auth status -h "${GH_HOST:-github.com}" >/dev/null && GH_TOKEN=$(gh auth token -h github.com) GH_ENTERPRISE_TOKEN=$(gh auth token -h "${GH_HOST:-github.com}") gh dash'
     fi
     if command -v nvim >/dev/null 2>&1; then
         alias vim='nvim'

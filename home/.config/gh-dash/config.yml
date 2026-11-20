@@ -1,8 +1,10 @@
 # Reference: gh-dash.dev/configuration. Defaults: gh-dash.dev/configuration/defaults
 
 prSections:
-  - title: My Pull Requests
+  - title: My Open PRs
     filters: is:open author:@me
+  - title: My Closed PRs
+    filters: is:closed author:@me
   - title: Needs My Review
     filters: is:open review-requested:@me
   - title: Involved
@@ -13,8 +15,10 @@ prSections:
     filters: is:closed
 
 issuesSections:
-  - title: My Issues
+  - title: My Open Issues
     filters: is:open author:@me
+  - title: My Closed Issues
+    filters: is:closed author:@me
   - title: Assigned
     filters: is:open assignee:@me
   - title: Involved
