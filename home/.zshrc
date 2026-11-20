@@ -183,6 +183,15 @@ if (( ! _agent_shell )); then
     if command -v nvim >/dev/null 2>&1; then
         alias vim='nvim'
     fi
+    # superfile draws images only as Kitty graphics with Unicode placeholders, chosen by a
+    # TERM_PROGRAM allowlist. herdr renders those (it reports itself as libghostty) but is not
+    # listed; WezTerm is listed but cannot place them, so it gets superfile's half-block fallback.
+    if command -v spf >/dev/null 2>&1; then
+        case $TERM_PROGRAM in
+            herdr) alias spf='TERM_PROGRAM=ghostty spf' ;;
+            WezTerm) alias spf='TERM_PROGRAM= spf' ;;
+        esac
+    fi
     # Machine-local aliases and functions, never tracked: docs/machine-local.md.
     if [[ -r ${XDG_CONFIG_HOME:-$HOME/.config}/zsh/local.zsh ]]; then
         source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/local.zsh"
