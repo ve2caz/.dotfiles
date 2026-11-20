@@ -63,6 +63,10 @@ Never run `brew install`, `brew upgrade` or `brew bundle install`: the user deci
 - Write an ADR in `.agents/adr/` (`NNNN-slug.md`) only for a decision that is hard to reverse, surprising, and the result of a real trade-off.
 - `AGENTS.md` is the only agent memory file. Do not add a `CLAUDE.md` or `CLAUDE.local.md` to the repo: Claude Code reads `AGENTS.md` only when neither exists.
 
+## Git
+
+Branch before the first edit: a branch in the main checkout for a small change, a worktree (`wt switch -c <branch>`) for a large one, one concern each. Every change reaches `main` through a pull request the user merges. Small or large, and why: [ADR 0009](.agents/adr/0009-every-change-through-a-pr.md).
+
 ## Never in this repo
 
 The repo is public. Never commit:
