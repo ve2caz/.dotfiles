@@ -31,3 +31,6 @@ mise trust --quiet "$PWD/mise.toml"
 mise install
 ./scripts/link-skills.sh
 ./scripts/install-skills.sh
+
+# Installs the gh extensions at the pins in scripts/gh-extensions.sh.
+./scripts/gh-extensions.sh

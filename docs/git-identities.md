@@ -78,6 +78,18 @@ gh does not read git's configuration, so it needs its own way to pick the identi
 export GH_CONFIG_DIR="$HOME/.config/gh-work"
 ```
 
+A folder of projects on the Enterprise host also sets the host:
+
+```sh
+# ~/dev/work-enterprise/.envrc
+export GH_CONFIG_DIR="$HOME/.config/gh-work"
+export GH_HOST=github.example.com
+```
+
+gh reads the host from a repo's remote, but gh-dash does not: it detects the repo and its host, then queries `GH_HOST`, or github.com when that is unset. Without the line, a dashboard launched in an Enterprise clone lists the work github.com account's pull requests. Folders on github.com never set `GH_HOST`.
+
+direnv reads only the nearest `.envrc`, so a project with its own `.envrc` would hide the folder's. `home/.config/direnv/direnvrc` prevents that: it makes every `.envrc` also load the nearest one above it. direnv does not run its security check on a file loaded this way, so allow only identity folders you control.
+
 Run `direnv allow` in the folder once. The `.envrc` files are local; none is in the repo.
 
 A gh config folder with at least one login also reaches hosts it does not list: gh falls back to the keychain's last token for that host. From a personal folder, `gh api --hostname github.example.com` therefore acts as the Enterprise account, which matches the host rule above. Both gh folders list github.com, so github.com never falls back. gh's default folder holds no login, so outside every folder gh stops before the keychain.
@@ -96,6 +108,7 @@ For the dotfiles repo, put the `.envrc` in the repo and keep it out of git with 
 |---|---|---|
 | `git`, including `git clone` | Yes | The identity file sets the account and the helper |
 | `gh` in an interactive shell | Yes | direnv sets the gh config folder |
+| `gh dash` | Yes | direnv sets the gh config folder, and `GH_HOST` on the Enterprise host |
 | `git` on the Enterprise host | Not needed | `~/.gitconfig` sets its credentials for the host |
 | `gh` in a script | No, fails | No direnv; set `GH_CONFIG_DIR` for the command |
 | VS Code, Cursor | Yes, for git | They run the system git, which reads these files |
@@ -121,7 +134,7 @@ IDE features that call GitHub directly, such as pull request panels, use the IDE
    When gh asks "Authenticate Git with your GitHub credentials?", answer no. Yes would add a helper without an account name to `~/.gitconfig`, which is a default.
 
    If `~/.config/gh/hosts.yml` exists from an earlier plain `gh auth login`, move it aside so gh's default folder holds no login. Do not run `gh auth logout` there: logout removes the account's token from the keychain, which the identity folders share.
-5. **Add a `.envrc` to each identity folder** and run `direnv allow` there.
+5. **Add a `.envrc` to each identity folder** and run `direnv allow` there. A folder on the Enterprise host also sets `GH_HOST`.
 6. **Check each folder.** These print no secrets:
 
    ```sh
@@ -140,4 +153,5 @@ IDE features that call GitHub directly, such as pull request panels, use the IDE
 | `fatal: unable to get password from user` | Outside every identity folder, the identity file has no section for this host, or the gh folder has no login for the account. |
 | `remote: Repository not found.` | The folder's account has no access: the repo belongs to the other identity. |
 | `To get started with GitHub CLI, please run: gh auth login` | No `.envrc` in the folder, it is not allowed yet, or the shell is non-interactive. |
+| `gh dash` lists pull requests from the wrong host | The Enterprise folder's `.envrc` does not set `GH_HOST`, so gh-dash queries github.com. |
 | Desktop pushes as the wrong account | Expected: Desktop has its own single github.com sign-in. |

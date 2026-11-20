@@ -15,6 +15,7 @@
 #   ~/dev/personal/             folder of personal projects on github.com
 #   ~/dev/work-github/          folder of work projects on github.com
 #   ~/dev/work-enterprise/      folder of work projects on the Enterprise host
+#                               its .envrc also sets GH_HOST (docs/git-identities.md)
 
 # --- Enterprise host -----------------------------------------------------------------
 # One account uses this host, so its credentials go by host, not by folder. That covers

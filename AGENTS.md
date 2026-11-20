@@ -6,17 +6,18 @@ Personal dotfiles, deployed with GNU Stow. What the repo covers: [SCOPE.md](SCOP
 
 - `home/` is the home package, the only thing deployed to `$HOME`: `stow -d ~/.dotfiles -t ~ home`.
 - This repo's skills, `skills/dotfiles/`, are a skill package: `scripts/link-skills.sh` stows them into `~/.claude/skills` and `~/.agents/skills`. Other people's skills are installed into the same folders by `scripts/install-skills.sh` with the skills CLI. `scripts/skill-sources.sh` is the one list of both. Why: [ADR 0008](.agents/adr/0008-third-party-skills-from-the-skills-cli.md).
+- gh extensions are installed at pinned tags by `scripts/gh-extensions.sh`, into `~/.local/share/gh/extensions`, which every gh identity shares.
 - Everything else is repo-only.
 - `~/.config`, `~/.claude/skills` and `~/.agents/skills` must be real directories before stowing. If one is missing, Stow folds it into a single link into the repo, and tools then write app state into the repo.
 
 ## ~/.config
 
 - Track configuration, never app state.
-- Track only settings that differ from the tool's defaults, unless the tool rewrites the whole file itself (btop, htop). A copy of the defaults goes stale on upgrades and hides which lines are choices. Start the file with a comment naming where to see the defaults, such as `lazydocker -c`.
+- Match how the tool treats its file. A tool that writes the whole file itself, on every save (btop, htop), on first run (gh-dash) or from a save prompt (hunk), keeps what it writes. A tool that never writes its file gets only the settings that differ from its defaults: a copy of the defaults goes stale on upgrades and hides which lines are choices. A full copy is fine as a starting point to edit. Either way, start the file with a comment naming where to see the defaults, such as `lazydocker -c`.
 - A tool whose folder holds only configuration gets one link for the whole folder, for example `~/.config/lazygit`.
 - A tool whose folder mixes configuration and app state keeps a real folder in `~/.config`, and Stow links only the tracked files, for example `~/.config/git/config`. Such a folder must exist as a real folder in `~/.config` before stowing, or Stow folds it and the tool writes app state into the repo. List it in `scripts/mixed-config-dirs.txt`, which setup, the doctor and the tests read.
 - An entry in `~/.config` that stays local (app state, logins) is listed in `scripts/local-config.txt`, or in `~/.config/dotfiles/local-config.txt` when its name reveals work. The doctor reports any other entry that is not a link into the repo.
-- Colors come from WezTerm's palette, Catppuccin Mocha. A tool gets its own theme only when it draws its own colors, and then by its built-in Catppuccin Mocha name or Catppuccin's official port.
+- Colors come from WezTerm's palette, Catppuccin Mocha. A tool gets its own theme only when it draws its own colors, and then by its built-in Catppuccin Mocha name or Catppuccin's official port. The diff tools (delta, hunk, diffnav) show a diff in the same colors as far as each allows: a color change in one goes into the others.
 - Some tools save by replacing the file, which turns a file link into a plain file. After using a file-linked tool, `ls -la` must still show a link.
 
 ## Stow
@@ -75,5 +76,7 @@ The repo is public. Never commit:
 ## Checks
 
 After changes to zsh startup, `PATH` or mise, run the checks in [.agents/testing.md](.agents/testing.md).
+
+Fixes waiting on another project's release are listed in [.agents/waiting-on.md](.agents/waiting-on.md), each with a check. Before working on a tool listed there, run its check; when it prints `ready`, make the fix and delete the entry.
 
 After deploying, or when something seems off, run `scripts/doctor.sh`. It reports drift between the repo and `$HOME`, and must report no problems.

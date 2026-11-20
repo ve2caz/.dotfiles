@@ -1,0 +1,4 @@
+# Only settings that differ from the defaults. Defaults: github.com/dlvhdr/diffnav#configuration
+ui:
+  # diffnav draws diffs and its UI with its own theme (Tokyo Night by default), not delta's.
+  theme: catppuccin_mocha
