@@ -4,3 +4,14 @@
 # Worktrees of <repo> live in a sibling folder, <repo>-worktree/<branch>, for example
 # ~/.dotfiles-worktree/<branch>. The default is a sibling per branch, <repo>.<branch>.
 worktree-path = "{{ repo_path }}/../{{ repo }}-worktree/{{ branch | sanitize }}"
+
+# direnv blocks the .envrc of every new worktree until it is allowed, so its panes lose the folder's
+# gh login and host. Allow it only when it matches the main checkout's .envrc, which is already
+# allowed: a branch that changes .envrc stays blocked for review.
+[pre-start]
+direnv = '''
+if [ -f "{{ worktree_path }}/.envrc" ] && cmp -s "{{ worktree_path }}/.envrc" "{{ repo_path }}/.envrc" \
+    && (cd "{{ repo_path }}" && direnv status --json | jq -e '.state.foundRC.allowed == 0' >/dev/null); then
+    direnv allow "{{ worktree_path }}"
+fi
+'''

@@ -176,6 +176,10 @@ if (( ! _agent_shell )); then
     if command -v lazydocker >/dev/null 2>&1; then
         alias lzd='lazydocker'
     fi
+    # dash runs gh-dash; macOS's /bin/dash shell stays reachable as /bin/dash.
+    if command -v gh >/dev/null 2>&1; then
+        alias dash='gh dash'
+    fi
     if command -v nvim >/dev/null 2>&1; then
         alias vim='nvim'
     fi

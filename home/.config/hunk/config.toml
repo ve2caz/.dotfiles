@@ -1,5 +1,5 @@
-# Only settings that differ from the defaults. Defaults: hunk --help and
-# https://github.com/modem-dev/hunk/blob/main/docs/themes.md
+# hunk writes its view settings below when you accept its save prompt; they stay as it writes them.
+# Defaults: hunk --help and https://github.com/modem-dev/hunk/blob/main/docs/themes.md
 # hunk reads this file; its state goes to ~/.local/state/hunk and its extensions to
 # ~/.config/hunk/extensions, which stay out of the repo (scripts/mixed-config-dirs.txt).
 
@@ -7,6 +7,14 @@
 # official delta port so hunk matches git diff, and lighter comments that stay readable on them.
 theme = "custom"
 transparent_background = true
+mode = "split"
+line_numbers = true
+wrap_lines = true
+hunk_headers = true
+menu_bar = true
+agent_notes = true
+copy_decorations = false
+cursor_line = "row"
 
 [custom_theme]
 base = "catppuccin-mocha"
@@ -15,7 +23,13 @@ addedBg = "#394545"
 addedContentBg = "#4e6356"
 removedBg = "#493447"
 removedContentBg = "#694559"
+# delta's line-numbers-left/right/zero-style, so unchanged line numbers match git diff.
+lineNumberFg = "#6c7086"
 
 [custom_theme.syntax_scopes]
 "comment" = "#9399b2"
 "punctuation.definition.comment" = "#9399b2"
+# TOML keys in blue, as bat's Catppuccin grammar colors them in delta.
+"support.type.property-name.toml" = "#89b4fa"
+"variable.other.key.toml" = "#89b4fa"
+"keyword.key.toml" = "#89b4fa"
