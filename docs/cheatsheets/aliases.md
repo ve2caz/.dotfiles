@@ -2,6 +2,7 @@
 
 | Alias | Runs |
 |-------|------|
+| `dash` | gh dash: the GitHub dashboard (macOS's `dash` shell is `/bin/dash`) |
 | `fm` | yazi; on quit with `q`, the shell moves to the folder yazi was in (`Q` quits without moving) |
 | `lg` | lazygit |
 | `lzd` | lazydocker |

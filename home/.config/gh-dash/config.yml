@@ -1,0 +1,124 @@
+# Reference: gh-dash.dev/configuration. Defaults: gh-dash.dev/configuration/defaults
+
+prSections:
+  - title: My Pull Requests
+    filters: is:open author:@me
+  - title: Needs My Review
+    filters: is:open review-requested:@me
+  - title: Involved
+    filters: is:open involves:@me -author:@me
+  - title: All Open Pull Requests
+    filters: is:open
+  - title: All Closed Pull Requests
+    filters: is:closed
+
+issuesSections:
+  - title: My Issues
+    filters: is:open author:@me
+  - title: Assigned
+    filters: is:open assignee:@me
+  - title: Involved
+    filters: is:open involves:@me -author:@me
+
+notificationsSections:
+  - title: All
+    filters: ""
+  - title: Created
+    filters: reason:author
+  - title: Participating
+    filters: reason:participating
+  - title: Mentioned
+    filters: reason:mention
+  - title: Review Requested
+    filters: reason:review-requested
+  - title: Assigned
+    filters: reason:assign
+  - title: Subscribed
+    filters: reason:subscribed
+  - title: Team Mentioned
+    filters: reason:team-mention
+
+repo:
+  branchesRefetchIntervalSeconds: 30
+  prsRefetchIntervalSeconds: 60
+
+defaults:
+  preview:
+    open: false
+    # Below 1 it is a share of the terminal width; 1 and above, a number of columns.
+    width: 0.6
+    position: right
+  prsLimit: 20
+  prApproveComment: LGTM
+  issuesLimit: 20
+  notificationsLimit: 20
+  view: prs
+  layout:
+    prs:
+      updatedAt:
+        width: 5
+      createdAt:
+        width: 5
+      repo:
+        width: 20
+      author:
+        width: 30
+
+# C reviews the selected PR in a worktrunk worktree, in a new herdr tab: Hunk on top, Claude below.
+# Hunk diffs locally, so it works on any GitHub host. Needs wt, herdr, hunk, claude, gh and jq;
+# launch gh-dash inside herdr, from a clone of the PR's repo.
+# wt reuses an existing worktree without updating it, so the pull brings in commits pushed since; it
+# only fast-forwards and leaves a worktree with local commits as it is. The base branch is fetched
+# from the PR's own repo, not origin, which can be a fork or out of date.
+keybindings:
+  prs:
+    - key: C
+      name: review in herdr
+      command: |
+        dir=$(wt switch pr:{{.PrNumber}} --no-cd --format json | jq -r .path)
+        git -C "$dir" pull --ff-only -q || true
+        tab=$(herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd "$dir" --label "PR-{{.PrNumber}}" --focus)
+        top=$(echo "$tab" | jq -r .result.root_pane.pane_id)
+        bottom=$(herdr pane split "$top" --direction down --ratio 0.7 --cwd "$dir" --no-focus | jq -r .result.pane.pane_id)
+        herdr pane run "$top" 'git fetch -q "$(gh repo view --json url --jq .url)" "$(gh pr view {{.PrNumber}} --json baseRefName --jq .baseRefName)" && hunk diff FETCH_HEAD...HEAD'
+        herdr pane run "$bottom" 'claude "The diff of pull request {{.PrNumber}} is open in Hunk in the pane above, and this folder is its worktree. Use the hunk-review skill on the session for this repo (hunk session get --repo .; if it is not there yet, wait a few seconds and retry). Read the changes with hunk session review --repo . --include-patch, then explain the code by adding short inline comments with hunk session comment add, one per meaningful hunk, saying what it does and why. Do not edit any files."'
+
+confirmQuit: false
+showAuthorIcons: true
+smartFilteringAtLaunch: true
+
+# Open PR diffs in diffnav.
+pager:
+  diff: diffnav
+
+# gh-dash needs every color defined once any is. Defaults: gh-dash.dev/configuration/theme
+# Catppuccin Mocha (blue accent), from its official port: github.com/catppuccin/gh-dash
+# The port leaves out text.actor and icon, so those fell back to gh-dash's default gray and 256-color
+# codes; they are picked here from the same palette.
+theme:
+  ui:
+    table:
+      compact: true
+  colors:
+    text:
+      primary: "#cdd6f4"
+      secondary: "#89b4fa"
+      inverted: "#11111b"
+      faint: "#bac2de"
+      warning: "#f9e2af"
+      success: "#a6e3a1"
+      error: "#f38ba8"
+      actor: "#bac2de"
+    background:
+      selected: "#313244"
+    border:
+      primary: "#89b4fa"
+      secondary: "#45475a"
+      faint: "#313244"
+    icon:
+      newcontributor: "#a6e3a1"
+      contributor: "#89b4fa"
+      collaborator: "#f9e2af"
+      member: "#f9e2af"
+      owner: "#f9e2af"
+      unknownrole: "#6c7086"

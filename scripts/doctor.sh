@@ -69,7 +69,7 @@ unreviewed="$(
 if [ -z "$unreviewed" ]; then
     pass "Every entry in ~/.config is tracked or listed as local"
 else
-    fail "Not reviewed: track it (only settings that differ from the defaults), or add it to scripts/local-config.txt, or to ~/.config/dotfiles/local-config.txt when its name reveals work:" "$unreviewed"
+    fail "Not reviewed: track it (the ~/.config rules in AGENTS.md), or add it to scripts/local-config.txt, or to ~/.config/dotfiles/local-config.txt when its name reveals work:" "$unreviewed"
 fi
 
 # Without a real ~/.gitconfig, git config --global writes into the repo through the link.
@@ -117,6 +117,14 @@ if command -v mise >/dev/null && command -v jq >/dev/null; then
         pass "Third-party skills match scripts/skill-sources.sh"
     else
         fail "Third-party skills differ from scripts/skill-sources.sh; run scripts/install-skills.sh:" "$third_out"
+    fi
+fi
+
+if command -v gh >/dev/null; then
+    if ext_out="$("$REPO/scripts/gh-extensions.sh" --check 2>&1)"; then
+        pass "gh extensions match scripts/gh-extensions.sh"
+    else
+        fail "gh extensions differ from scripts/gh-extensions.sh; run it:" "$ext_out"
     fi
 fi
 
