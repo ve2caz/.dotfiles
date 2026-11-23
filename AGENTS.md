@@ -1,5 +1,46 @@
 # .dotfiles
 
+## How to work
+
+Adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT). These rules favor caution over speed; on a trivial change, use judgment.
+
+### Think before acting
+
+- State your assumptions. When uncertain, ask.
+- When a request reads more than one way, lay out the readings instead of picking one silently.
+- When a simpler approach exists, say so, and push back when it is warranted.
+- When something is unclear, stop, name what is confusing, and ask.
+
+### Simplicity first
+
+Write the least code that solves the problem.
+
+- Build only what was asked: no speculative features, options or configurability.
+- Keep single-use code inline rather than abstracting it.
+- Handle the errors that can actually happen.
+- If 200 lines could be 50, rewrite them. The test: would a senior engineer call this overcomplicated?
+
+### Surgical changes
+
+Change only what the task needs: every changed line traces to the request.
+
+- Match the surrounding style and comment density, even where you would write it differently.
+- Leave adjacent code, comments and formatting as they are, and refactor only what is broken.
+- Mention unrelated dead code; delete it only when asked.
+- Remove the imports, variables and functions your own change left unused.
+
+### Goal-driven execution
+
+Turn each task into a check that proves it done, and loop until the check passes.
+
+- A bug: write a test that reproduces it, then make it pass.
+- A refactor: the tests pass before and after.
+- Multi-step work: state a short plan, each step with its check.
+
+This repo's checks are listed under [Checks](#checks).
+
+## The repo
+
 Personal dotfiles, deployed with GNU Stow. What the repo covers: [SCOPE.md](SCOPE.md). Terms: [GLOSSARY.md](GLOSSARY.md). Decisions and their reasons: [.agents/adr/](.agents/adr/).
 
 ## What deploys where
@@ -59,7 +100,6 @@ Never run `brew install`, `brew upgrade` or `brew bundle install`: the user deci
 
 - No em dashes anywhere: prose, docs, comments, commit messages.
 - Each fact lives in one place. Docs record conventions, reasons and gotchas; they do not restate what files and commands already show.
-- Change only what the task needs. Match the surrounding style and comment density.
 - Write an ADR in `.agents/adr/` (`NNNN-slug.md`) only for a decision that is hard to reverse, surprising, and the result of a real trade-off.
 - `AGENTS.md` is the only agent memory file. Do not add a `CLAUDE.md` or `CLAUDE.local.md` to the repo: Claude Code reads `AGENTS.md` only when neither exists.
 
